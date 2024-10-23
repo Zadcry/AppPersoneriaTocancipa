@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".Abogado">
+
+    <!-- Sección superior -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/escudo"/>
+
+        <TextView
+            android:id="@+id/txtUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bienvenido, señor Usuario"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <!-- Empuja botones -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4" />
+
+    <!-- Contenedor con imágenes y botones -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="1">
+
+            <!-- Agendar Cita -->
+            <GridLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:columnCount="1"
+                android:rowCount="2">
+
+                <ImageView
+                    android:id="@+id/imgNuevaCita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/escudo">
+                </ImageView>
+
+                <Button
+                    android:id="@+id/btnNuevaCita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:backgroundTint="@color/negroSecundario"
+                    android:text="Agendar Cita"
+                    android:textColor="@color/white" />
+            </GridLayout>
+
+            <!-- Ver citas agendadas -->
+            <GridLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:columnCount="1"
+                android:rowCount="2">
+
+                <ImageView
+                    android:id="@+id/imgVerCitas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/escudo">
+                </ImageView>
+
+                <Button
+                    android:id="@+id/btnCamara"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:backgroundTint="@color/negroSecundario"
+                    android:text="Ver citas agendadas"
+                    android:textColor="@color/white" />
+            </GridLayout>
+
+        </GridLayout>
+
+        <GridLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <!-- Contáctenos -->
+            <GridLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:columnCount="1"
+                android:rowCount="2">
+
+                <ImageView
+                    android:id="@+id/imgChat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/escudo">
+                </ImageView>
+
+                <Button
+                    android:id="@+id/btnChat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:backgroundTint="@color/negroSecundario"
+                    android:text="Contáctenos"
+                    android:textColor="@color/white" />
+            </GridLayout>
+        </GridLayout>
+    </GridLayout>
+
+    <!-- Espacio para empujar el botón hacia abajo -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/negroSecundario"
+        android:text="Salir"
+        android:textColor="@color/white"
+        />
+</LinearLayout>

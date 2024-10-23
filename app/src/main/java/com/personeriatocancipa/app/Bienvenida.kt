@@ -59,7 +59,7 @@ class Bienvenida : AppCompatActivity() {
                 .addOnCompleteListener(this){
                         task ->
                     if(task.isSuccessful){
-                        val intent = Intent(this@Bienvenida, MenuPrincipal::class.java)
+                        val intent = Intent(this@Bienvenida, Cliente::class.java)
                         finish()
                         startActivity(intent)
                     }else{
