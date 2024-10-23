@@ -26,7 +26,7 @@
             android:id="@+id/txtUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bienvenido, señor Usuario"
+            android:text="Bienvenido, señor Abogado"
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="25dp"
@@ -75,12 +75,12 @@
                 </ImageView>
 
                 <Button
-                    android:id="@+id/btnNuevaCita"
+                    android:id="@+id/btnCalendario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:backgroundTint="@color/negroSecundario"
-                    android:text="Agendar Cita"
+                    android:text="Opción 1"
                     android:textColor="@color/white" />
             </GridLayout>
 
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:backgroundTint="@color/negroSecundario"
-                    android:text="Ver citas agendadas"
+                    android:text="Opción 2"
                     android:textColor="@color/white" />
             </GridLayout>
 
@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:backgroundTint="@color/negroSecundario"
-                    android:text="Contáctenos"
+                    android:text="Opción 3"
                     android:textColor="@color/white" />
             </GridLayout>
         </GridLayout>
@@ -158,6 +158,7 @@
         android:layout_weight="1" />
 
     <Button
+        android:id="@+id/btnSalir"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
