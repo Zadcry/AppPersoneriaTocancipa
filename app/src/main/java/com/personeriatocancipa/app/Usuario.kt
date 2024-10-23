@@ -13,6 +13,7 @@ class Usuario {
     var grupoSi: String? = null
     var grupo: String? = null
     var comunidad: String? = null
+    var rol: String? = null
 
     constructor(
         nombreCompleto: String?,
@@ -25,7 +26,9 @@ class Usuario {
         escolaridad: String?,
         grupoSi: String?,
         grupo: String?,
-        comunidad: String?
+        comunidad: String?,
+        //0 -> Cliente, 1 -> Abogado, 2 -> Admin
+        rol: String?
     ) {
         this.nombreCompleto = nombreCompleto
         this.documento = documento
@@ -38,9 +41,11 @@ class Usuario {
         this.grupoSi = grupoSi
         this.grupo = grupo
         this.comunidad = comunidad
+        this.rol = rol
     }
 
     constructor(){
 
     }
+
 }

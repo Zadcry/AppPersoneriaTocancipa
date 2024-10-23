@@ -63,6 +63,12 @@
         <activity
             android:name=".Cliente"
             android:exported="false" />
+        <activity
+            android:name=".Admin"
+            android:exported="false" />
+        <activity
+            android:name=".Abogado"
+            android:exported="false" />
     </application>
 
 </manifest>
