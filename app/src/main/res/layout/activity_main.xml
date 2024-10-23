@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Título de la Aplicación -->
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agendar Cita"
+        android:textSize="24sp"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Campo para el primer correo -->
+    <EditText
+        android:id="@+id/emailField1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Correo 1"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp" />
+
+    <!-- Campo para el segundo correo -->
+    <EditText
+        android:id="@+id/emailField2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Correo 2"
+        android:inputType="textEmailAddress"
+        app:layout_constraintTop_toBottomOf="@id/emailField1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp" />
+
+    <!-- Botón para programar la cita -->
+    <Button
+        android:id="@+id/scheduleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Programar Cita"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/emailField2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Texto para mostrar el ID de la cita -->
+    <TextView
+        android:id="@+id/appointmentDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Detalles de la cita aparecerán aquí"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/scheduleButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

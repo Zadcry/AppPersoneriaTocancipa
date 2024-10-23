@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Personería</string>
+    <string-array name="opcionesSexo">
+        <item>M</item>
+        <item>F</item>
+        <item>Inter Sex</item>
+    </string-array>
+    <string-array name="opcionesEscolaridad">
+        <item>Primaria</item>
+        <item>Bachillerato</item>
+        <item>Técnico</item>
+        <item>Tecnólogo</item>
+        <item>Profesional</item>
+        <item>Posgrado</item>
+    </string-array>
+    <string-array name="opcionesGrupo">
+        <item>Sí</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="opcionesComunidad">
+        <item>Madre cabeza de familia</item>
+        <item>Víctima del conflicto</item>
+        <item>Discapacidad</item>
+        <item>Adulto Mayor</item>
+        <item>LGBTIQ+</item>
+    </string-array>
+</resources>
