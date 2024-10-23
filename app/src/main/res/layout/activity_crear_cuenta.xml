@@ -59,6 +59,32 @@
             android:layout_marginBottom="5dp"
         />
 
+        <!-- Contraseña -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contraseña"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <EditText
+            android:id="@+id/txtClave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/grisClaro"
+            android:textSize="15dp"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:background="@drawable/edittext_format"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
         <!-- Documento -->
         <TextView
             android:layout_width="match_parent"
@@ -318,14 +344,34 @@
             android:layout_marginBottom="5dp"
             />
 
-        <Button
-            android:id="@+id/btnSalir"
-            android:layout_width="match_parent"
+        <GridLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/negroSecundario"
-            android:text="Volver"
-            android:layout_margin="10dp"
-            />
+            android:rowCount="1"
+            android:columnCount="2"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/btnSalir"
+                android:layout_column="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Volver"
+                android:layout_margin="10dp"
+                />
+            <Button
+                android:id="@+id/btnSignUp"
+                android:layout_column="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Crear Cuenta"
+                android:layout_margin="10dp"
+                />
+        </GridLayout>
+
     </LinearLayout>
 </ScrollView>

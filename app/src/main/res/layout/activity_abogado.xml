@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:backgroundTint="@color/negroSecundario"
-                    android:text="Opción 1"
+                    android:text="Consultar Itinerario"
                     android:textColor="@color/white" />
             </GridLayout>
 
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:backgroundTint="@color/negroSecundario"
-                    android:text="Opción 2"
+                    android:text="Cambiar Estado Cita"
                     android:textColor="@color/white" />
             </GridLayout>
 
