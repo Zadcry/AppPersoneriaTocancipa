@@ -1,5 +1,6 @@
 package com.personeriatocancipa.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -33,7 +34,7 @@ class AdminCRUD : AppCompatActivity() {
 
     private fun setupMainSpinner() {
         // Opciones del primer Spinner
-        val options = arrayOf("1", "2", "3", "4")
+        val options = arrayOf("Crear", "Leer", "Actualizar", "Borrar")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, options)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spCRUD.adapter = adapter
@@ -42,10 +43,10 @@ class AdminCRUD : AppCompatActivity() {
         spCRUD.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 when (options[position]) {
-                    "1" -> showSecondarySpinnerAndButton()
-                    "2" -> showRecyclerViewForOption2()
-                    "3" -> showRecyclerViewForOption3()
-                    "4" -> hideAllComponents()
+                    "Crear" -> showSecondarySpinnerAndButton()
+                    "Actualizar" -> showRecyclerViewForOption2()
+                    "Borrar" -> showRecyclerViewForOption3()
+                    "Leer" -> hideAllComponents()//TODO
                 }
             }
 
@@ -62,14 +63,25 @@ class AdminCRUD : AppCompatActivity() {
         recyclerView.visibility = View.GONE
 
         // Configurar segundo Spinner
-        val secondOptions = arrayOf("Layout A", "Layout B")
+        val secondOptions = arrayOf("Usuario", "Abogado", "Admin")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, secondOptions)
         spUsuario.adapter = adapter
 
         button.setOnClickListener {
             val selectedLayout = spUsuario.selectedItem.toString()
             when (selectedLayout) {
-
+                "Usuario" -> {
+                    val intent = Intent(this@AdminCRUD, CrearCuenta::class.java)
+                    finish()
+                    startActivity(intent)}
+                "Abogado" -> {
+                    val intent = Intent(this@AdminCRUD, CrearCuenta::class.java)
+                    finish()
+                    startActivity(intent)}
+                "Admin" -> {
+                    val intent = Intent(this@AdminCRUD, CrearCuenta::class.java)
+                    finish()
+                    startActivity(intent)}
             }
         }
     }
