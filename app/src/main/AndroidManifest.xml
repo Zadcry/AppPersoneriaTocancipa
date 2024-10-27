@@ -24,6 +24,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Citas"
         tools:targetApi="31">
+        <activity
+            android:name=".CRUDCitas"
+            android:exported="false" />
+        <activity
+            android:name=".CRUDUsuarios"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
