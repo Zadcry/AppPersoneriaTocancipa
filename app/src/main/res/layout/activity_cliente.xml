@@ -67,7 +67,7 @@
                 android:rowCount="2">
 
                 <ImageView
-                    android:id="@+id/imgNuevaCita"
+                    android:id="@+id/imgAgendarCita"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
@@ -76,7 +76,7 @@
                 </ImageView>
 
                 <Button
-                    android:id="@+id/btnNuevaCita"
+                    android:id="@+id/btnAgendarCita"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
@@ -105,7 +105,7 @@
                 </ImageView>
 
                 <Button
-                    android:id="@+id/btnCamara"
+                    android:id="@+id/btnVerCitas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
@@ -132,7 +132,7 @@
                 android:rowCount="2">
 
                 <ImageView
-                    android:id="@+id/imgChat"
+                    android:id="@+id/imgContactenos"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
@@ -141,7 +141,7 @@
                 </ImageView>
 
                 <Button
-                    android:id="@+id/btnChat"
+                    android:id="@+id/btnContactenos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"

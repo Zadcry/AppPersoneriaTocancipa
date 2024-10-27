@@ -67,7 +67,7 @@
                 android:rowCount="2">
 
                 <ImageView
-                    android:id="@+id/imgNuevaCita"
+                    android:id="@+id/imgConsultarCitas"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
@@ -76,7 +76,7 @@
                 </ImageView>
 
                 <Button
-                    android:id="@+id/btnCalendario"
+                    android:id="@+id/btnConsultarCitas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
@@ -96,7 +96,7 @@
                 android:rowCount="2">
 
                 <ImageView
-                    android:id="@+id/imgVerCitas"
+                    android:id="@+id/imgEstadoCitas"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
@@ -105,7 +105,7 @@
                 </ImageView>
 
                 <Button
-                    android:id="@+id/btnCamara"
+                    android:id="@+id/btnEstadoCitas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
