@@ -2,11 +2,17 @@ package com.personeriatocancipa.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class Bienvenida : AppCompatActivity() {
 
@@ -19,6 +25,8 @@ class Bienvenida : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bienvenida)
+
+        mAuth = FirebaseAuth.getInstance()
 
         //Obtiene valores de Layout
         txtCorreo = findViewById(R.id.txtCorreo)
@@ -59,9 +67,7 @@ class Bienvenida : AppCompatActivity() {
                 .addOnCompleteListener(this){
                         task ->
                     if(task.isSuccessful){
-                        val intent = Intent(this@Bienvenida, Cliente::class.java)
-                        finish()
-                        startActivity(intent)
+                        showRoleScreen()
                     }else{
                         Toast.makeText(
                             this@Bienvenida,
@@ -73,5 +79,37 @@ class Bienvenida : AppCompatActivity() {
         }
     }
 
+    private fun showRoleScreen() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val databaseRef = FirebaseDatabase.getInstance().getReference("userData").child(userId)
+        val userRolRef = databaseRef.child("rol")
+
+        userRolRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Aquí obtienes el valor del rol
+                val userRol = snapshot.getValue(String::class.java)
+                userRol?.let {
+                    println("El rol del usuario es: $it")
+                    if(userRol == "2") {
+                        val intent = Intent(this@Bienvenida, Admin::class.java)
+                        finish()
+                        startActivity(intent)
+                    } else if(userRol == "1") {
+                        val intent = Intent(this@Bienvenida, Abogado::class.java)
+                        finish()
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this@Bienvenida, Cliente::class.java)
+                        finish()
+                        startActivity(intent)
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                // Maneja cualquier error de lectura de la base de datos
+                Log.w("FirebaseDatabase", "Error al obtener el rol del usuario.", error.toException())
+            }
+        })
+    }
 
 }
