@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:backgroundTint="@color/negroSecundario"
-                    android:text="Estado de citas"
+                    android:text="Estado de Citas"
                     android:textColor="@color/white" />
             </GridLayout>
 
