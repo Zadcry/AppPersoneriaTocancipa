@@ -25,10 +25,13 @@
         android:theme="@style/Theme.Citas"
         tools:targetApi="31">
         <activity
-            android:name=".CRUDCitas"
+            android:name=".GestionarCita"
             android:exported="false" />
         <activity
-            android:name=".CRUDUsuarios"
+            android:name=".GestionarUsuario"
+            android:exported="false" />
+        <activity
+            android:name=".CRUD"
             android:exported="false" />
 
         <meta-data

@@ -34,6 +34,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var btnSignUp: Button
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
+    private var tarea = intent.getStringExtra("tarea")
 
 
     @SuppressLint("ResourceType")
@@ -126,6 +127,10 @@ class CrearCuenta : AppCompatActivity() {
         txtGrupoEtnico = findViewById(R.id.txtGrupoEtnico)
         btnSalir = findViewById(R.id.btnSalir)
         btnSignUp = findViewById(R.id.btnSignUp)
+
+        if(!tarea.equals("crear")){
+
+        }
 
         btnSalir.setOnClickListener(){
             saltarBienvenida()

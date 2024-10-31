@@ -72,7 +72,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/escudo">
+                    android:src="@drawable/agendarcita">
                 </ImageView>
 
                 <Button
@@ -101,7 +101,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/escudo">
+                    android:src="@drawable/consultarcita">
                 </ImageView>
 
                 <Button
@@ -137,7 +137,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/escudo">
+                    android:src="@drawable/contactenos">
                 </ImageView>
 
                 <Button

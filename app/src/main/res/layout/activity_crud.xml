@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".CRUDUsuarios">
+    tools:context=".CRUD">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,11 +23,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Gestión de Usuarios"
+            android:text="Gestión de ..."
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="25dp"
             android:textStyle="bold"
+            android:textColor="@color/negroSecundario"
             />
 
         <!-- Contenedor con imágenes y botones -->
@@ -39,7 +40,7 @@
             android:layout_gravity="center"
             android:gravity="center">
 
-            <!-- Crear Usuario -->
+            <!-- Crear  -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -50,15 +51,15 @@
                 android:rowCount="2">
 
                 <ImageView
-                    android:id="@+id/imgCrearUsuario"
+                    android:id="@+id/imgCrear"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/escudo" />
+                    android:src="@drawable/crear" />
 
                 <Button
-                    android:id="@+id/btnCrearUsuario"
+                    android:id="@+id/btnCrear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
@@ -67,7 +68,7 @@
                     android:textColor="@color/white" />
             </GridLayout>
 
-            <!-- Consultar Usuario -->
+            <!-- Consultar  -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -78,15 +79,15 @@
                 android:rowCount="2">
 
                 <ImageView
-                    android:id="@+id/imgConsultarUsuario"
+                    android:id="@+id/imgConsultar"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/escudo" />
+                    android:src="@drawable/consultar" />
 
                 <Button
-                    android:id="@+id/btnConsultarUsuario"
+                    android:id="@+id/btnConsultar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
@@ -95,7 +96,7 @@
                     android:textColor="@color/white" />
             </GridLayout>
 
-            <!-- Modificar Usuario -->
+            <!-- Modificar  -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -106,15 +107,15 @@
                 android:rowCount="2">
 
                 <ImageView
-                    android:id="@+id/imgModificarUsuario"
+                    android:id="@+id/imgModificar"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/escudo" />
+                    android:src="@drawable/modificar" />
 
                 <Button
-                    android:id="@+id/btnModificarUsuario"
+                    android:id="@+id/btnModificar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
@@ -123,7 +124,7 @@
                     android:textColor="@color/white" />
             </GridLayout>
 
-            <!-- Eliminar Usuario -->
+            <!-- Eliminar  -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -134,15 +135,15 @@
                 android:rowCount="2">
 
                 <ImageView
-                    android:id="@+id/imgEliminarUsuario"
+                    android:id="@+id/imgEliminar"
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/escudo" />
+                    android:src="@drawable/eliminar" />
 
                 <Button
-                    android:id="@+id/btnEliminarUsuario"
+                    android:id="@+id/btnEliminar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
