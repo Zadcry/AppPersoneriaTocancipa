@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.GridLayout
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -19,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase
 class CrearCuenta : AppCompatActivity() {
     //Crea variables de Layout
 
+    private lateinit var gridConsultar: GridLayout
+    private lateinit var txtAnuncio: TextView
     private lateinit var txtNombre: EditText
     private lateinit var txtClave: EditText
     private lateinit var txtDocumento: EditText
@@ -32,12 +35,14 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var txtGrupoEtnico: EditText
     private lateinit var btnSalir: Button
     private lateinit var btnSignUp: Button
+    private lateinit var btnModificar: Button
+    private lateinit var btnEliminar: Button
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea = intent.getStringExtra("tarea")
 
 
-    @SuppressLint("ResourceType")
+    @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_cuenta)
@@ -117,6 +122,8 @@ class CrearCuenta : AppCompatActivity() {
 
 
         //Obtiene demás elementos de Layout
+        gridConsultar = findViewById(R.id.gridConsultar)
+        txtAnuncio = findViewById(R.id.txtAnuncio)
         txtNombre = findViewById(R.id.txtNombre)
         txtClave = findViewById(R.id.txtClave)
         txtDocumento = findViewById(R.id.txtDocumento)
@@ -127,13 +134,28 @@ class CrearCuenta : AppCompatActivity() {
         txtGrupoEtnico = findViewById(R.id.txtGrupoEtnico)
         btnSalir = findViewById(R.id.btnSalir)
         btnSignUp = findViewById(R.id.btnSignUp)
+        btnModificar = findViewById(R.id.btnModificar)
+        btnEliminar = findViewById(R.id.btnEliminar)
 
         if(!tarea.equals("crear")){
-
+            txtAnuncio.setText("Gestión de Cuenta")
+            gridConsultar.visibility = View.VISIBLE
+            btnSignUp.visibility = View.GONE
+        }else{
+            txtAnuncio.setText("Crear Cuenta")
+            gridConsultar.visibility = View.GONE
+            btnEliminar.visibility = View.GONE
+            btnModificar.visibility = View.GONE
         }
 
         btnSalir.setOnClickListener(){
-            saltarBienvenida()
+            if(tarea.equals("crear")){
+                saltarBienvenida()
+            }else{
+                val intent = Intent(this@CrearCuenta, CRUD::class.java)
+                finish()
+                startActivity(intent)
+            }
         }
 
         btnSignUp.setOnClickListener(){
@@ -167,6 +189,14 @@ class CrearCuenta : AppCompatActivity() {
                     direccion, telefono, correo, sexo, escolaridad,
                     grupo, siGrupo, comunidad)
             }
+
+        }
+
+        btnModificar.setOnClickListener{
+
+        }
+
+        btnEliminar.setOnClickListener{
 
         }
 
