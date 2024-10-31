@@ -6,10 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class CRUDUsuarios : AppCompatActivity() {
+class GestionarCita : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_crudusuarios)
-
+        setContentView(R.layout.activity_gestionar_cita)
     }
 }

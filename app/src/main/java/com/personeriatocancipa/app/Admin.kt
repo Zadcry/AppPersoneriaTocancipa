@@ -1,7 +1,9 @@
 package com.personeriatocancipa.app
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,14 +19,38 @@ class Admin : AppCompatActivity() {
 
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var btnGestionarCitas: Button
+    private lateinit var btnGestionarUsuarios: Button
+    private lateinit var btnSalir: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
 
         mAuth = FirebaseAuth.getInstance()
+        btnGestionarUsuarios = findViewById(R.id.btnGestionarUsuarios)
+        btnGestionarCitas = findViewById(R.id.btnGestionarCitas)
+        btnSalir = findViewById(R.id.btnSalir)
 
         cargarNombre()
+
+        btnGestionarUsuarios.setOnClickListener{
+            val intent = Intent(this@Admin, CRUD::class.java)
+            intent.putExtra("tipo", "usuario")
+            startActivity(intent)
+        }
+
+        btnGestionarCitas.setOnClickListener{
+            val intent = Intent(this@Admin, CRUD::class.java)
+            intent.putExtra("tipo", "cita")
+            startActivity(intent)
+        }
+
+        btnSalir.setOnClickListener{
+            val intent = Intent(this@Admin, Bienvenida::class.java)
+            finish()
+            startActivity(intent)
+        }
     }
 
     private fun cargarNombre() {
