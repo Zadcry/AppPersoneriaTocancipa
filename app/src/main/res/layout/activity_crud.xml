@@ -21,6 +21,7 @@
             android:src="@drawable/escudo"/>
 
         <TextView
+            android:id="@+id/txtTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Gestión de ..."

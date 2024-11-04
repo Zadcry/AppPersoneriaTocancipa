@@ -16,6 +16,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlin.math.log
 
 class CrearCuenta : AppCompatActivity() {
     //Crea variables de Layout
@@ -32,6 +33,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var spSexo: Spinner
     private lateinit var spEscolaridad: Spinner
     private lateinit var spGrupo: Spinner
+    private lateinit var spComunidad: Spinner
     private lateinit var txtGrupoEtnico: EditText
     private lateinit var btnSalir: Button
     private lateinit var btnSignUp: Button
@@ -39,8 +41,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var btnEliminar: Button
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
-    private var tarea = intent.getStringExtra("tarea")
-
+    private var tarea: String = ""
 
     @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,8 @@ class CrearCuenta : AppCompatActivity() {
         supportActionBar?.hide()
         mAuth = FirebaseAuth.getInstance()
 
+        tarea = intent.getStringExtra("tarea").toString()
+        println(tarea)
         //Manejo valores de Combo Box
 
         //Sexo
@@ -109,7 +112,7 @@ class CrearCuenta : AppCompatActivity() {
         })
 
         //Comunidad Vulnerable
-        val spComunidad: Spinner = findViewById(R.id.spComunidad)
+        spComunidad = findViewById(R.id.spComunidad)
         ArrayAdapter.createFromResource(
             this,
             R.array.opcionesComunidad,
@@ -137,25 +140,34 @@ class CrearCuenta : AppCompatActivity() {
         btnModificar = findViewById(R.id.btnModificar)
         btnEliminar = findViewById(R.id.btnEliminar)
 
-        if(!tarea.equals("crear")){
+        if(tarea.equals("crear")){
+            txtAnuncio.setText("Crear Cuenta")
+            gridConsultar.visibility = GridLayout.GONE
+            btnSignUp.visibility = Button.VISIBLE
+            btnModificar.visibility = Button.GONE
+            btnEliminar.visibility = Button.GONE
+        }else{
             txtAnuncio.setText("Gestión de Cuenta")
             gridConsultar.visibility = View.VISIBLE
-            btnSignUp.visibility = View.GONE
-        }else{
-            txtAnuncio.setText("Crear Cuenta")
-            gridConsultar.visibility = View.GONE
-            btnEliminar.visibility = View.GONE
-            btnModificar.visibility = View.GONE
+            if (tarea.equals("consultar")){
+                btnSignUp.visibility = Button.GONE
+                btnModificar.visibility = Button.GONE
+                btnEliminar.visibility = Button.GONE
+                disableFields()
+            }else if(tarea.equals("modificar")){
+                btnSignUp.visibility = Button.GONE
+                btnModificar.visibility = Button.VISIBLE
+                btnEliminar.visibility = Button.GONE
+            }else{
+                btnSignUp.visibility = Button.GONE
+                btnModificar.visibility = Button.GONE
+                btnEliminar.visibility = Button.VISIBLE
+                disableFields()
+            }
         }
 
         btnSalir.setOnClickListener(){
-            if(tarea.equals("crear")){
-                saltarBienvenida()
-            }else{
-                val intent = Intent(this@CrearCuenta, CRUD::class.java)
-                finish()
-                startActivity(intent)
-            }
+            finish()
         }
 
         btnSignUp.setOnClickListener(){
@@ -260,6 +272,21 @@ class CrearCuenta : AppCompatActivity() {
             "Cuenta creada exitosamente",
             Toast.LENGTH_SHORT,
         ).show()
+    }
+
+    private fun disableFields(){
+        txtNombre.isEnabled = false
+        txtClave.isEnabled = false
+        txtDocumento.isEnabled = false
+        txtEdad.isEnabled = false
+        txtDireccion.isEnabled = false
+        txtTelefono.isEnabled = false
+        txtCorreo.isEnabled = false
+        spSexo.isEnabled = false
+        spEscolaridad.isEnabled = false
+        spGrupo.isEnabled = false
+        spComunidad.isEnabled = false
+        txtGrupoEtnico.isEnabled = false
     }
 
     private fun saltarBienvenida() {
