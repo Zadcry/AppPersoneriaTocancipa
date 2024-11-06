@@ -28,12 +28,6 @@
             android:name=".CrearCita"
             android:exported="false" />
         <activity
-            android:name=".GestionarCita"
-            android:exported="false" />
-        <activity
-            android:name=".GestionarUsuario"
-            android:exported="false" />
-        <activity
             android:name=".CRUD"
             android:exported="false" />
 

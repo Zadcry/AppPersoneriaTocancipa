@@ -76,6 +76,7 @@
                 android:textColor="@color/black"
                 android:inputType="text"
                 android:padding="10dp"
+                android:hint="Digite el número de cita"
                 android:background="@drawable/edittext_format"
                 android:layout_marginTop="5dp" />
         </GridLayout>
@@ -83,30 +84,40 @@
 
         <!-- Inputs -->
 
+        <!-- Cédula (Por si entra Admin.) -->
 
-
-        <!-- Seleccionar Abogado -->
-
-        <TextView
+        <GridLayout
+            android:id="@+id/gridCedula"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Seleccionar Abogado"
-            android:textColor="@color/black"
-            android:textSize="15dp" />
+            android:columnCount="1"
+            android:rowCount="2">
 
-        <Spinner
-            android:id="@+id/spAbogado"
-            android:background="@drawable/spinner_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:spinnerMode="dropdown"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_marginLeft="5dp"
+                android:text="Cédula del usuario"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/txtCedula"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="2"
+                android:layout_gravity="fill_horizontal"
+                android:textColorHint="@color/grisClaro"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:inputType="text"
+                android:padding="10dp"
+                android:background="@drawable/edittext_format"
+                android:layout_margin="5dp" />
+
+        </GridLayout>
 
         <!-- Tipo de Cita -->
 
@@ -131,6 +142,31 @@
             android:layout_marginBottom="5dp"
             />
 
+        <!-- Seleccionar Abogado -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Seleccionar Abogado"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <Spinner
+            android:id="@+id/spAbogado"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
+
+
         <!-- Descripción -->
         <TextView
             android:layout_width="match_parent"
@@ -142,7 +178,7 @@
             />
 
         <EditText
-            android:id="@+id/txtCorreo"
+            android:id="@+id/txtDescripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/grisClaro"
@@ -168,24 +204,27 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Fecha y Hora"
                 android:textSize="15sp"
                 android:textColor="@color/black"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:gravity="center"/>
 
             <!-- Botón -->
             <Button
+                android:id="@+id/btnHorarios"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ver posibles horarios"
+                android:textColor="@color/white"
                 android:backgroundTint="@color/negroSecundario" />
 
         </LinearLayout>
 
 
         <Button
-            android:id="@+id/btnFecha"
+            android:id="@+id/btnSeleccionar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Seleccionar Fecha"
@@ -196,6 +235,7 @@
 
         <!-- Ver Selección -->
         <TextView
+            android:id="@+id/txtFecha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Aquí se mostrará la fecha seleccionada"
@@ -222,12 +262,12 @@
                 android:layout_gravity="center"
                 />
             <Button
-                android:id="@+id/btnSignUp"
+                android:id="@+id/btnCrear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/negroSecundario"
-                android:text="Crear Cuenta"
+                android:text="Crear Cita"
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
                 />
@@ -244,6 +284,7 @@
                 />
 
             <Button
+
                 android:id="@+id/btnEliminar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
