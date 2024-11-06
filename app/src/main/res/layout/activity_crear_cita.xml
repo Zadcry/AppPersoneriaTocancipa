@@ -42,13 +42,13 @@
             android:columnCount="2"
             android:padding="5dp">
 
-            <!-- Texto "Consultar Usuario" -->
+            <!-- Texto "Consultar Cita" -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_columnSpan="1"
                 android:layout_gravity="fill"
-                android:text="Consultar Usuario"
+                android:text="Consultar Cita"
                 android:textSize="15dp"
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
@@ -83,170 +83,59 @@
 
         <!-- Inputs -->
 
-        <!-- Nombre -->
+
+
+        <!-- Seleccionar Abogado -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombres y Apellidos"
-            android:textSize="15dp"
-            android:textColor="@color/black"
             android:layout_marginLeft="5dp"
-            />
+            android:text="Seleccionar Abogado"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
 
-        <EditText
-            android:id="@+id/txtNombre"
+        <Spinner
+            android:id="@+id/spAbogado"
+            android:background="@drawable/spinner_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/grisClaro"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:inputType="text"
-            android:padding="10dp"
-            android:background="@drawable/edittext_format"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             />
 
-        <!-- Contraseña -->
+        <!-- Tipo de Cita -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Contraseña"
-            android:textSize="15dp"
-            android:textColor="@color/black"
             android:layout_marginLeft="5dp"
-            />
+            android:text="Tipo de cita"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
 
-        <EditText
-            android:id="@+id/txtClave"
+        <Spinner
+            android:id="@+id/spTipo"
+            android:background="@drawable/spinner_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@color/grisClaro"
-            android:textSize="15dp"
-            android:inputType="textPassword"
-            android:textColor="@color/black"
-            android:padding="10dp"
-            android:background="@drawable/edittext_format"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             />
 
-        <!-- Documento -->
+        <!-- Descripción -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Documento de Identidad"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="5dp"
-            />
-
-        <EditText
-            android:id="@+id/txtDocumento"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/grisClaro"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:padding="10dp"
-            android:inputType="number"
-            android:hint="Digite sin comas ni puntos"
-            android:background="@drawable/edittext_format"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            />
-
-        <!-- Edad -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Edad"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="5dp"
-            />
-
-        <EditText
-            android:id="@+id/txtEdad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/grisClaro"
-            android:textSize="15dp"
-            android:hint="Digite sus años cumplidos"
-            android:inputType="number"
-            android:textColor="@color/black"
-            android:padding="10dp"
-            android:background="@drawable/edittext_format"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            />
-
-        <!-- Dirección -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dirección"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="5dp"
-            />
-
-        <EditText
-            android:id="@+id/txtDireccion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/grisClaro"
-            android:textSize="15dp"
-            android:inputType="text"
-            android:textColor="@color/black"
-            android:padding="10dp"
-            android:background="@drawable/edittext_format"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            />
-
-        <!-- Teléfono -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Teléfono"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="5dp"
-            />
-
-        <EditText
-            android:id="@+id/txtTelefono"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="@color/grisClaro"
-            android:hint="Teléfono o Celular"
-            android:textSize="15dp"
-            android:inputType="number"
-            android:textColor="@color/black"
-            android:padding="10dp"
-            android:background="@drawable/edittext_format"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            />
-
-        <!-- Correo -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Correo Electrónico"
+            android:text="Descripción"
             android:textSize="15dp"
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"
@@ -266,133 +155,54 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
+            android:hint="Describa su necesidad aquí"
             />
 
-        <!-- Sexo -->
-        <TextView
+        <!-- Fecha y Hora -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sexo"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="5dp"
-            />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_margin="5dp">
 
-        <Spinner
-            android:id="@+id/spSexo"
-            android:background="@drawable/spinner_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:spinnerMode="dropdown"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            />
-
-        <!-- Escolaridad -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Escolaridad"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="5dp"
-            />
-
-        <Spinner
-            android:id="@+id/spEscolaridad"
-            android:background="@drawable/spinner_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:spinnerMode="dropdown"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            />
-
-        <!-- Grupo Étnico -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Pertenece a Grupo Étnico"
-            android:textSize="15dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="5dp"
-            />
-
-        <Spinner
-            android:id="@+id/spGrupo"
-            android:background="@drawable/spinner_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:spinnerMode="dropdown"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            />
-
-        <GridLayout
-            android:id="@+id/gridSiGrupo"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:rowCount="2"
-            android:columnCount="1"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp">
-
-            <!-- En caso de SÍ -->
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="¿Cuál?"
-                android:textSize="15dp"
+                android:text="Fecha y Hora"
+                android:textSize="15sp"
                 android:textColor="@color/black"
-                android:layout_marginLeft="5dp"
-                />
+                android:layout_weight="1" />
 
-            <EditText
-                android:id="@+id/txtGrupoEtnico"
-                android:layout_width="match_parent"
+            <!-- Botón -->
+            <Button
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/grisClaro"
-                android:textSize="15dp"
-                android:textColor="@color/black"
-                android:padding="10dp"
-                android:background="@drawable/edittext_format"
-                />
-        </GridLayout>
+                android:text="Ver posibles horarios"
+                android:backgroundTint="@color/negroSecundario" />
 
-        <!-- Comunidad Vulnerable -->
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar Fecha"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/negroSecundario"
+            android:layout_margin="5dp"
+            />
+
+        <!-- Ver Selección -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Comunidad Vulnerable"
+            android:text="Aquí se mostrará la fecha seleccionada"
             android:textSize="15dp"
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"
-            />
-
-        <Spinner
-            android:id="@+id/spComunidad"
-            android:background="@drawable/spinner_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:spinnerMode="dropdown"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-
+            android:gravity="center"
             />
 
         <LinearLayout
