@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -91,15 +90,15 @@ class Bienvenida : AppCompatActivity() {
                 userRol?.let {
                     println("El rol del usuario es: $it")
                     if(userRol == "2") {
-                        val intent = Intent(this@Bienvenida, Admin::class.java)
+                        val intent = Intent(this@Bienvenida, InterfazAdmin::class.java)
                         finish()
                         startActivity(intent)
                     } else if(userRol == "1") {
-                        val intent = Intent(this@Bienvenida, Abogado::class.java)
+                        val intent = Intent(this@Bienvenida, InterfazAbogado::class.java)
                         finish()
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@Bienvenida, Cliente::class.java)
+                        val intent = Intent(this@Bienvenida, InterfazCliente::class.java)
                         finish()
                         startActivity(intent)
                     }

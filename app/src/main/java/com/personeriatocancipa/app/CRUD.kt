@@ -82,7 +82,7 @@ class CRUD : AppCompatActivity() {
         }
 
         btnSalir.setOnClickListener{
-            intent = Intent(this@CRUD, Admin::class.java)
+            intent = Intent(this@CRUD, InterfazAdmin::class.java)
             startActivity(intent)
         }
     }

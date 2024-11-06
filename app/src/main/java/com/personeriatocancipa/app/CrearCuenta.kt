@@ -16,7 +16,6 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlin.math.log
 
 class CrearCuenta : AppCompatActivity() {
     //Crea variables de Layout
@@ -237,7 +236,7 @@ class CrearCuenta : AppCompatActivity() {
                         telefono, correo, sexo, escolaridad, grupo,
                         siGrupo, comunidad, mAuth.currentUser?.uid!!)
 
-                    val intent = Intent(this@CrearCuenta, Cliente::class.java)
+                    val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
                     finish()
                     startActivity(intent)
 

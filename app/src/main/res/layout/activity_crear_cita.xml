@@ -30,7 +30,7 @@
             android:textColor="@color/black"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-        />
+            />
 
         <!-- Consulta -->
 
@@ -91,7 +91,7 @@
             android:textSize="15dp"
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"
-        />
+            />
 
         <EditText
             android:id="@+id/txtNombre"
@@ -107,7 +107,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-        />
+            />
 
         <!-- Contraseña -->
         <TextView
@@ -312,7 +312,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-        />
+            />
 
         <!-- Grupo Étnico -->
         <TextView
@@ -357,7 +357,7 @@
                 android:textSize="15dp"
                 android:textColor="@color/black"
                 android:layout_marginLeft="5dp"
-            />
+                />
 
             <EditText
                 android:id="@+id/txtGrupoEtnico"
@@ -368,7 +368,7 @@
                 android:textColor="@color/black"
                 android:padding="10dp"
                 android:background="@drawable/edittext_format"
-            />
+                />
         </GridLayout>
 
         <!-- Comunidad Vulnerable -->

@@ -3,6 +3,7 @@ package com.personeriatocancipa.app
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -11,17 +12,42 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class Cliente : AppCompatActivity() {
+class InterfazAdmin : AppCompatActivity() {
 
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var btnGestionarCitas: Button
+    private lateinit var btnGestionarUsuarios: Button
+    private lateinit var btnSalir: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cliente)
+        setContentView(R.layout.activity_admin)
+
         mAuth = FirebaseAuth.getInstance()
+        btnGestionarUsuarios = findViewById(R.id.btnGestionarUsuarios)
+        btnGestionarCitas = findViewById(R.id.btnGestionarCitas)
+        btnSalir = findViewById(R.id.btnSalir)
 
         cargarNombre()
+
+        btnGestionarUsuarios.setOnClickListener{
+            val intent = Intent(this@InterfazAdmin, CRUD::class.java)
+            intent.putExtra("tipo", "usuario")
+            startActivity(intent)
+        }
+
+        btnGestionarCitas.setOnClickListener{
+            val intent = Intent(this@InterfazAdmin, CRUD::class.java)
+            intent.putExtra("tipo", "cita")
+            startActivity(intent)
+        }
+
+        btnSalir.setOnClickListener{
+            val intent = Intent(this@InterfazAdmin, Bienvenida::class.java)
+            finish()
+            startActivity(intent)
+        }
     }
 
     private fun cargarNombre() {
@@ -49,5 +75,4 @@ class Cliente : AppCompatActivity() {
         txtUsuario = findViewById(R.id.txtUsuario)
         txtUsuario.text = "Bienvenido(a), señor(a) $primerNombre"
     }
-
 }

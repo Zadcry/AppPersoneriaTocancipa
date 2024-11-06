@@ -1,56 +1,26 @@
 package com.personeriatocancipa.app
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class Admin : AppCompatActivity() {
-
+class InterfazAbogado : AppCompatActivity() {
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var btnGestionarCitas: Button
-    private lateinit var btnGestionarUsuarios: Button
-    private lateinit var btnSalir: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin)
+        setContentView(R.layout.activity_abogado)
 
         mAuth = FirebaseAuth.getInstance()
-        btnGestionarUsuarios = findViewById(R.id.btnGestionarUsuarios)
-        btnGestionarCitas = findViewById(R.id.btnGestionarCitas)
-        btnSalir = findViewById(R.id.btnSalir)
 
         cargarNombre()
-
-        btnGestionarUsuarios.setOnClickListener{
-            val intent = Intent(this@Admin, CRUD::class.java)
-            intent.putExtra("tipo", "usuario")
-            startActivity(intent)
-        }
-
-        btnGestionarCitas.setOnClickListener{
-            val intent = Intent(this@Admin, CRUD::class.java)
-            intent.putExtra("tipo", "cita")
-            startActivity(intent)
-        }
-
-        btnSalir.setOnClickListener{
-            val intent = Intent(this@Admin, Bienvenida::class.java)
-            finish()
-            startActivity(intent)
-        }
     }
 
     private fun cargarNombre() {
@@ -78,4 +48,5 @@ class Admin : AppCompatActivity() {
         txtUsuario = findViewById(R.id.txtUsuario)
         txtUsuario.text = "Bienvenido(a), señor(a) $primerNombre"
     }
+
 }
