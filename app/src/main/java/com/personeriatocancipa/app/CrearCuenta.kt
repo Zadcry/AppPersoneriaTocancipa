@@ -14,14 +14,18 @@ import android.widget.GridLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlin.math.log
 
 class CrearCuenta : AppCompatActivity() {
     //Crea variables de Layout
 
     private lateinit var gridConsultar: GridLayout
+    private lateinit var txtConsultar: EditText
     private lateinit var txtAnuncio: TextView
     private lateinit var txtNombre: EditText
     private lateinit var txtClave: EditText
@@ -35,6 +39,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var spGrupo: Spinner
     private lateinit var spComunidad: Spinner
     private lateinit var txtGrupoEtnico: EditText
+    private lateinit var btnConsultar: Button
     private lateinit var btnSalir: Button
     private lateinit var btnSignUp: Button
     private lateinit var btnModificar: Button
@@ -126,6 +131,7 @@ class CrearCuenta : AppCompatActivity() {
 
         //Obtiene demás elementos de Layout
         gridConsultar = findViewById(R.id.gridConsultar)
+        txtConsultar = findViewById(R.id.txtConsultar)
         txtAnuncio = findViewById(R.id.txtAnuncio)
         txtNombre = findViewById(R.id.txtNombre)
         txtClave = findViewById(R.id.txtClave)
@@ -135,6 +141,7 @@ class CrearCuenta : AppCompatActivity() {
         txtTelefono = findViewById(R.id.txtTelefono)
         txtCorreo = findViewById(R.id.txtCorreo)
         txtGrupoEtnico = findViewById(R.id.txtGrupoEtnico)
+        btnConsultar = findViewById(R.id.btnConsultar)
         btnSalir = findViewById(R.id.btnSalir)
         btnSignUp = findViewById(R.id.btnSignUp)
         btnModificar = findViewById(R.id.btnModificar)
@@ -202,6 +209,10 @@ class CrearCuenta : AppCompatActivity() {
                     grupo, siGrupo, comunidad)
             }
 
+        }
+
+        btnConsultar.setOnClickListener{
+            consultarPorCedula()
         }
 
         btnModificar.setOnClickListener{
@@ -293,5 +304,70 @@ class CrearCuenta : AppCompatActivity() {
         val intent = Intent(this@CrearCuenta, Bienvenida::class.java)
         finish()
         startActivity(intent)
+    }
+
+    private fun consultarPorCedula() {
+        val cedula = txtConsultar.text.toString()
+        if (cedula.isEmpty()) {
+            Toast.makeText(
+                this@CrearCuenta,
+                "Ingrese un número de cédula",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
+        mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+
+        val query = mDbRef.orderByChild("documento").equalTo(cedula)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                println(snapshot)
+                if (snapshot.exists()) {
+                    snapshot.children.forEach {
+                        println(it)
+                        val nombre = it.child("nombreCompleto").value.toString()
+                        println(nombre)
+                        val clave = it.child("clave").value.toString()
+                        val documento = it.child("documento").value.toString()
+                        val edad = it.child("edad").value.toString()
+                        val direccion = it.child("direccion").value.toString()
+                        val telefono = it.child("telefono").value.toString()
+                        val correo = it.child("correo").value.toString()
+                        val sexo = it.child("sexo").value.toString()
+                        val escolaridad = it.child("escolaridad").value.toString()
+                        val grupo = it.child("grupo").value.toString()
+                        val grupoSi = it.child("grupoSi").value.toString()
+                        val comunidad = it.child("comunidad").value.toString()
+
+                        txtNombre.setText(nombre)
+                        txtClave.setText("********")
+                        txtDocumento.setText(documento)
+                        txtEdad.setText(edad)
+                        txtDireccion.setText(direccion)
+                        txtTelefono.setText(telefono)
+                        txtCorreo.setText(correo)
+                        spSexo.setSelection((spSexo.adapter as ArrayAdapter<String>).getPosition(sexo))
+                        spEscolaridad.setSelection((spEscolaridad.adapter as ArrayAdapter<String>).getPosition(escolaridad))
+                        spGrupo.setSelection((spGrupo.adapter as ArrayAdapter<String>).getPosition(grupo))
+                        spComunidad.setSelection((spComunidad.adapter as ArrayAdapter<String>).getPosition(comunidad))
+                        txtGrupoEtnico.setText(grupoSi)
+                    }
+                } else {
+                    Toast.makeText(
+                        this@CrearCuenta,
+                        "No se encontró un usuario con la cédula ingresada",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(
+                    this@CrearCuenta,
+                    "Error al consultar la base de datos",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        })
     }
 }
