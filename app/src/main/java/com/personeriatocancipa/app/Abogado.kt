@@ -2,6 +2,7 @@ package com.personeriatocancipa.app
 
 class Abogado {
     var cedula: String? = null // LLave primaria
+    var nombreCompleto: String? = null // LLave primaria
     var seccion: String? = null // Consultorio jurídico, tutela, otro, etc.
     var correo: String? = null
     var contrasena: String? = null
@@ -11,12 +12,14 @@ class Abogado {
 
     constructor(
         cedula: String?,
+        nombreCompleto: String?,
         seccion: String?,
         correo: String?,
         contrasena: String?,
         estado: String?
     ) {
         this.cedula = cedula
+        this.nombreCompleto = nombreCompleto
         this.seccion = seccion
         this.correo = correo
         this.contrasena = contrasena

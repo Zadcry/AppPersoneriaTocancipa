@@ -84,41 +84,6 @@
 
         <!-- Inputs -->
 
-        <!-- Cédula (Por si entra Admin.) -->
-
-        <GridLayout
-            android:id="@+id/gridCedula"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="1"
-            android:rowCount="2">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:layout_marginLeft="5dp"
-                android:text="Cédula del usuario"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-
-            <EditText
-                android:id="@+id/txtCedula"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="2"
-                android:layout_gravity="fill_horizontal"
-                android:textColorHint="@color/grisClaro"
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                android:inputType="text"
-                android:padding="10dp"
-                android:background="@drawable/edittext_format"
-                android:layout_margin="5dp" />
-
-        </GridLayout>
-
         <!-- Tipo de Cita -->
 
         <TextView
@@ -227,7 +192,7 @@
             android:id="@+id/btnSeleccionar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Seleccionar Fecha"
+            android:text="Crear Cita"
             android:textColor="@color/white"
             android:backgroundTint="@color/negroSecundario"
             android:layout_margin="5dp"
@@ -258,16 +223,6 @@
                 android:textColor="@color/white"
                 android:backgroundTint="@color/negroSecundario"
                 android:text="Volver"
-                android:layout_margin="10dp"
-                android:layout_gravity="center"
-                />
-            <Button
-                android:id="@+id/btnCrear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/negroSecundario"
-                android:text="Crear Cita"
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
                 />

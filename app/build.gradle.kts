@@ -8,6 +8,11 @@ android {
     namespace = "com.personeriatocancipa.app"
     compileSdk = 34
 
+    packaging {
+        exclude ("META-INF/NOTICE.md")
+        exclude ("META-INF/LICENSE.md")
+    }
+
     defaultConfig {
         applicationId = "com.personeriatocancipa.app"
         minSdk = 31
@@ -47,6 +52,13 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.database.ktx)
+
+    // Dependencias para enviar correos en segundo plano
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

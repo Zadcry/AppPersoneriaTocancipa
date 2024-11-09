@@ -30,6 +30,7 @@ class InterfazCliente : AppCompatActivity() {
         btnAgendar.setOnClickListener{
             // Redirigir a la actividad de creación de cita
             val intent = Intent(this@InterfazCliente, CrearCita::class.java)
+            intent.putExtra("tarea", "crear")
             finish()
             startActivity(intent)
         }
