@@ -3,6 +3,7 @@ package com.personeriatocancipa.app
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -11,17 +12,29 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class Cliente : AppCompatActivity() {
+class InterfazCliente : AppCompatActivity() {
 
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var btnAgendar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cliente)
+
         mAuth = FirebaseAuth.getInstance()
+        btnAgendar = findViewById(R.id.btnAgendarCita)
 
         cargarNombre()
+
+        btnAgendar.setOnClickListener{
+            // Redirigir a la actividad de creación de cita
+            val intent = Intent(this@InterfazCliente, CrearCita::class.java)
+            intent.putExtra("tarea", "crear")
+            finish()
+            startActivity(intent)
+        }
+
     }
 
     private fun cargarNombre() {

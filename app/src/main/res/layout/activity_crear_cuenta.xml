@@ -392,18 +392,17 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
+
             />
 
-        <GridLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:rowCount="1"
-            android:columnCount="2"
-            android:layout_gravity="center">
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <Button
                 android:id="@+id/btnSalir"
-                android:layout_column="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -414,7 +413,6 @@
                 />
             <Button
                 android:id="@+id/btnSignUp"
-                android:layout_column="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -426,7 +424,6 @@
 
             <Button
                 android:id="@+id/btnModificar"
-                android:layout_column="0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -435,9 +432,9 @@
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
                 />
+
             <Button
                 android:id="@+id/btnEliminar"
-                android:layout_column="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -446,7 +443,7 @@
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
                 />
-        </GridLayout>
 
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

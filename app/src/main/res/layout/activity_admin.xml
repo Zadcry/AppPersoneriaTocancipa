@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".Admin">
+    tools:context=".InterfazAdmin">
 
     <!-- Sección superior -->
     <LinearLayout
