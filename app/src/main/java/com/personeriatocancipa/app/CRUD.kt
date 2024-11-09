@@ -43,9 +43,9 @@ class CRUD : AppCompatActivity() {
                 intent.putExtra("tarea", "crear")
                 intent.putExtra("usuario", "admin")
             }else{
-                intent = Intent(this@CRUD, GestionarCita::class.java)
-                intent.putExtra("tarea", "gestionar")
+                intent = Intent(this@CRUD, CrearCita::class.java)
             }
+            intent.putExtra("tarea", "crear")
             startActivity(intent)
         }
 
@@ -54,7 +54,7 @@ class CRUD : AppCompatActivity() {
                 intent = Intent(this@CRUD, CrearCuenta::class.java)
                 intent.putExtra("tarea", "consultar")
             }else{
-                intent = Intent(this@CRUD, GestionarCita::class.java)
+                intent = Intent(this@CRUD, CrearCita::class.java)
                 intent.putExtra("tarea", "gestionar")
             }
             startActivity(intent)
@@ -65,7 +65,7 @@ class CRUD : AppCompatActivity() {
                 intent = Intent(this@CRUD, CrearCuenta::class.java)
                 intent.putExtra("tarea", "modificar")
             }else{
-                intent = Intent(this@CRUD, GestionarCita::class.java)
+                intent = Intent(this@CRUD, CrearCita::class.java)
                 intent.putExtra("tarea", "gestionar")
             }
             startActivity(intent)
@@ -76,14 +76,15 @@ class CRUD : AppCompatActivity() {
                 intent = Intent(this@CRUD, CrearCuenta::class.java)
                 intent.putExtra("tarea", "eliminar")
             }else{
-                intent = Intent(this@CRUD, GestionarCita::class.java)
+                intent = Intent(this@CRUD, CrearCita::class.java)
                 intent.putExtra("tarea", "gestionar")
             }
             startActivity(intent)
         }
 
         btnSalir.setOnClickListener{
-            intent = Intent(this@CRUD, Admin::class.java)
+            intent = Intent(this@CRUD, InterfazAdmin::class.java)
+            finish()
             startActivity(intent)
         }
     }

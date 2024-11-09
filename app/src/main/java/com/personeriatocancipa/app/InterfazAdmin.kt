@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class Admin : AppCompatActivity() {
+class InterfazAdmin : AppCompatActivity() {
 
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
@@ -35,19 +32,19 @@ class Admin : AppCompatActivity() {
         cargarNombre()
 
         btnGestionarUsuarios.setOnClickListener{
-            val intent = Intent(this@Admin, CRUD::class.java)
+            val intent = Intent(this@InterfazAdmin, CRUD::class.java)
             intent.putExtra("tipo", "usuario")
             startActivity(intent)
         }
 
         btnGestionarCitas.setOnClickListener{
-            val intent = Intent(this@Admin, CRUD::class.java)
+            val intent = Intent(this@InterfazAdmin, CRUD::class.java)
             intent.putExtra("tipo", "cita")
             startActivity(intent)
         }
 
         btnSalir.setOnClickListener{
-            val intent = Intent(this@Admin, Bienvenida::class.java)
+            val intent = Intent(this@InterfazAdmin, Bienvenida::class.java)
             finish()
             startActivity(intent)
         }

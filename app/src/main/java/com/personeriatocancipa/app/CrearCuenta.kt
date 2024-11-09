@@ -178,7 +178,9 @@ class CrearCuenta : AppCompatActivity() {
         }
 
         btnSalir.setOnClickListener(){
+            val intent = Intent(this@CrearCuenta, Bienvenida::class.java)
             finish()
+            startActivity(intent)
         }
 
         btnSignUp.setOnClickListener(){
@@ -283,9 +285,10 @@ class CrearCuenta : AppCompatActivity() {
                     addUserToDatabase(nombre, documento, edad, direccion,
                         telefono, correo, sexo, escolaridad, grupo,
                         siGrupo, comunidad, mAuth.currentUser?.uid!!)
+
                     println(mAuth.currentUser?.uid)
                     if (usuario.equals("cliente")){
-                        val intent = Intent(this@CrearCuenta, Cliente::class.java)
+                        val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
                         finish()
                         startActivity(intent)
                     } else{

@@ -6,7 +6,6 @@
         android:name="android.hardware.camera"
         android:required="false" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -25,10 +24,7 @@
         android:theme="@style/Theme.Citas"
         tools:targetApi="31">
         <activity
-            android:name=".GestionarCita"
-            android:exported="false" />
-        <activity
-            android:name=".GestionarUsuario"
+            android:name=".CrearCita"
             android:exported="false" />
         <activity
             android:name=".CRUD"
@@ -40,7 +36,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.carlosazmora.citas.fileprovider"
+            android:authorities="com.personeriatocancipa.app.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -59,7 +55,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -70,13 +65,13 @@
             android:name=".CrearCuenta"
             android:exported="false" />
         <activity
-            android:name=".Cliente"
+            android:name=".InterfazCliente"
             android:exported="false" />
         <activity
-            android:name=".Admin"
+            android:name=".InterfazAdmin"
             android:exported="false" />
         <activity
-            android:name=".Abogado"
+            android:name=".InterfazAbogado"
             android:exported="false" />
     </application>
 

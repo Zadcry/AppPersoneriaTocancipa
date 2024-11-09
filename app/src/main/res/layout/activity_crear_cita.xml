@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Imagen -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/escudo"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/txtAnuncio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crear o Gestionar"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            android:textColor="@color/black"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            />
+
+        <!-- Consulta -->
+
+        <!-- Consulta -->
+        <GridLayout
+            android:id="@+id/gridConsultar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:padding="5dp">
+
+            <!-- Texto "Consultar Cita" -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_gravity="fill"
+                android:text="Consultar Cita"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:gravity="bottom"/>
+
+            <!-- Botón para la acción de consultar -->
+            <Button
+                android:id="@+id/btnConsultar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Consultar"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                />
+
+            <!-- EditText para ingresar datos de consulta -->
+            <EditText
+                android:id="@+id/txtConsultar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal"
+                android:textColorHint="@color/grisClaro"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:inputType="text"
+                android:padding="10dp"
+                android:hint="Digite el número de cita"
+                android:background="@drawable/edittext_format"
+                android:layout_marginTop="5dp" />
+        </GridLayout>
+
+
+        <!-- Inputs -->
+
+        <!-- Tipo de Cita -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Tipo de cita"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <Spinner
+            android:id="@+id/spTipo"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
+        <!-- Seleccionar Abogado -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Seleccionar Abogado"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <Spinner
+            android:id="@+id/spAbogado"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
+
+
+        <!-- Descripción -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <EditText
+            android:id="@+id/txtDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/grisClaro"
+            android:textSize="15dp"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:background="@drawable/edittext_format"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:hint="Describa su necesidad aquí"
+            />
+
+        <!-- Fecha y Hora -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Fecha y Hora"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+            <!-- Botón -->
+            <Button
+                android:id="@+id/btnHorarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ver posibles horarios"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnSeleccionar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crear Cita"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/negroSecundario"
+            android:layout_margin="5dp"
+            />
+
+        <!-- Ver Selección -->
+        <TextView
+            android:id="@+id/txtFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aquí se mostrará la fecha seleccionada"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnSalir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Volver"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                />
+
+            <Button
+                android:id="@+id/btnModificar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Modificar"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                />
+
+            <Button
+
+                android:id="@+id/btnEliminar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Eliminar"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
