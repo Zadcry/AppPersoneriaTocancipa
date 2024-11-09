@@ -51,7 +51,6 @@ class Bienvenida : AppCompatActivity() {
         val intent = Intent(this@Bienvenida, CrearCuenta::class.java)
         intent.putExtra("tarea","crear")
         intent.putExtra("usuario","cliente")
-        finish()
         startActivity(intent)
     }
 
