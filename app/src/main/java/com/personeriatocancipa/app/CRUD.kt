@@ -41,6 +41,7 @@ class CRUD : AppCompatActivity() {
             if(tipo.equals("usuario")){
                 intent = Intent(this@CRUD, CrearCuenta::class.java)
                 intent.putExtra("tarea", "crear")
+                intent.putExtra("usuario", "admin")
             }else{
                 intent = Intent(this@CRUD, GestionarCita::class.java)
                 intent.putExtra("tarea", "gestionar")
