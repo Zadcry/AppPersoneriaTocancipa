@@ -40,6 +40,8 @@ class CRUD : AppCompatActivity() {
         btnCrear.setOnClickListener{
             if(tipo.equals("usuario")){
                 intent = Intent(this@CRUD, CrearCuenta::class.java)
+                intent.putExtra("tarea", "crear")
+                intent.putExtra("usuario", "admin")
             }else{
                 intent = Intent(this@CRUD, CrearCita::class.java)
             }
