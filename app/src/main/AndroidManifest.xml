@@ -59,9 +59,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".CrearCuenta"
             android:exported="false" />
         <activity
