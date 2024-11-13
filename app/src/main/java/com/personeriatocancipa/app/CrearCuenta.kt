@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.GridLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -24,7 +25,7 @@ import kotlin.math.log
 class CrearCuenta : AppCompatActivity() {
     //Crea variables de Layout
 
-    private lateinit var gridConsultar: GridLayout
+    private lateinit var gridConsultar: LinearLayout
     private lateinit var txtConsultar: EditText
     private lateinit var txtAnuncio: TextView
     private lateinit var txtNombre: EditText
