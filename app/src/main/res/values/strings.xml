@@ -24,34 +24,23 @@
         <item>Adulto Mayor</item>
         <item>LGBTIQ+</item>
     </string-array>
-    <string-array name="opcionesConsultorio">
-        <item>Paula Juliana Paez Rodriguez</item>
-        <item>Julian Geronimo Puentes Rodriguez</item>
-        <item>Brayan Sebastian Melo Quintero</item>
-        <item>Dayana Sánchez Carreño</item>
-        <item>Lina Maria Fandiño Correa</item>
-        <item>Jose Mateo Piñeros Mestizo</item>
-        <item>Ana Patricia Rosas Enriquez</item>
-    </string-array>
     <string-array name="opcionesAbogado">
-        <item>Kewin Pardo</item>
-        <item>Mauricio Díaz</item>
-        <item>Edwin Franco</item>
-        <item>Nydia Suárez</item>
-        <item>Diana Camila Salinas</item>
-        <item>Fransy Mambuscay</item>
-        <item>Juana Toro</item>
-        <item>Nelson Bello</item>
-        <item>José Omar Chaves</item>
+        <item>Edwin Yovanni Franco Bahamón</item>
+        <item>Emilio Alexander Mejía Ángulo</item>
+        <item>Fransy Yanet Mambuscay López</item>
+        <item>José Francisco Alfonso Rojas</item>
+        <item>Jose Omar Chaves Bautista</item>
+        <item>Kewin Paul Pardo Cortés</item>
         <item>Liliana Zambrano</item>
+        <item>Nydia Yurani Suárez Moscoso</item>
+        <item>Oscar Mauricio Díaz Muñoz</item>
         <item>Santiago Garzón</item>
-        <item>Francisco Alfonso</item>
-        <item>Francisco Alfonso</item>
-        <item>Alexander Mejía</item>
-        <item>Natalia Díaz</item>
     </string-array>
-    <string-array name="opcionesTipoCita">
-        <item>Consultorio jurídico</item>
-        <item>Tipo 2</item>
+    <string-array name="opcionesTema">
+        <item>Víctimas</item>
+        <item>Servicios Públicos</item>
+        <item>Adminsitrativo</item>
+        <item>Menores y Familia</item>
+        <item>Familia y Civil</item>
     </string-array>
 </resources>

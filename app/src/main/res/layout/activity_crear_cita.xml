@@ -84,18 +84,18 @@
 
         <!-- Inputs -->
 
-        <!-- Tipo de Cita -->
+        <!-- Tema -->
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="Tipo de cita"
+            android:text="Tema"
             android:textColor="@color/black"
             android:textSize="15dp" />
 
         <Spinner
-            android:id="@+id/spTipo"
+            android:id="@+id/spTema"
             android:background="@drawable/spinner_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

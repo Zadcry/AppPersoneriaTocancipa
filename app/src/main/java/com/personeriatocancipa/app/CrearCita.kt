@@ -39,7 +39,7 @@ class CrearCita : AppCompatActivity() {
     private lateinit var txtConsultar: EditText
     private lateinit var txtDescripcion: EditText
     private lateinit var spAbogado: Spinner
-    private lateinit var spTipo: Spinner
+    private lateinit var spTema: Spinner
     private lateinit var btnHorarios: Button
     private lateinit var btnSeleccionar: Button
     private lateinit var btnSalir: Button
@@ -54,7 +54,7 @@ class CrearCita : AppCompatActivity() {
 
     val auth = FirebaseAuth.getInstance()
 
-    @SuppressLint("ResourceType")
+    @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_cita)
@@ -74,21 +74,21 @@ class CrearCita : AppCompatActivity() {
         obtenerUltimoID()
 
         // Tipo de cita
-        spTipo = findViewById(R.id.spTipo)
+        spTema = findViewById(R.id.spTema)
         ArrayAdapter.createFromResource(
             this,
-            R.array.opcionesTipoCita,
+            R.array.opcionesTema,
             R.drawable.spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
-            spTipo.adapter = adapter
+            spTema.adapter = adapter
         }
 
         // Abogado
         spAbogado = findViewById(R.id.spAbogado)
         ArrayAdapter.createFromResource(
             this,
-            R.array.opcionesConsultorio,
+            R.array.opcionesAbogado,
             R.drawable.spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
@@ -150,10 +150,9 @@ class CrearCita : AppCompatActivity() {
 
     private fun scheduleAppointment() {
         val calendar = Calendar.getInstance()
-        val tipoCita = spTipo.selectedItem.toString()
+        val tema = spTema.selectedItem.toString()
         val abogado = spAbogado.selectedItem.toString()
         var nombreCliente = ""
-        println("El abogado seleccionado es: $abogado")
         var correoAbogado = ""
         var correoCliente = ""
 
@@ -169,9 +168,6 @@ class CrearCita : AppCompatActivity() {
                     snapshot.children.forEach { childSnapshot ->
                         // Extraer el correo
                         correoAbogado = childSnapshot.child("correo").value.toString()
-
-                        // Aquí puedes hacer lo que necesites con el correo, por ejemplo:
-                        println("Correo del abogado: $correoAbogado")
                     }
                 } else {
                     // Si no se encontró el nombre en los datos
@@ -234,18 +230,18 @@ class CrearCita : AppCompatActivity() {
                 val hora = String.format("%02d:%02d", hourOfDay, minute) // Formato de hora y minuto con dos dígitos
 
                 // Crear la cita con el ID único obtenido
-                val cita = Cita(appointmentID, descripcion, fecha, hora, correoAbogado, correoCliente, tipoCita, "Pendiente")
+                val cita = Cita(appointmentID, descripcion, fecha, hora, correoAbogado, correoCliente, tema, "Pendiente")
 
                 // Guardar la cita en Firebase
                 saveAppointmentToFirebase(cita)
 
                 // Enviar el correo con la información de la cita
                 val subject = "Cita en Personería - ID: ${cita.id}"
-                var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
 
                 sendEmailInBackground(correoCliente, subject, body)
 
-                body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                 sendEmailInBackground(correoAbogado, subject, body)
 
                 // Mostrar detalles en la pantalla
@@ -268,16 +264,16 @@ class CrearCita : AppCompatActivity() {
             "hora" to cita.hora,
             "correoAbogado" to cita.correoAbogado,
             "correoCliente" to cita.correoCliente,
-            "tipoCita" to cita.tipo,
+            "tema" to cita.tema,
             "estado" to cita.estado
         )
 
         ref.child(cita.id.toString()).setValue(appointmentData)
             .addOnSuccessListener {
-                Toast.makeText(this, "Cita guardada en Firebase", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Cita agendada exitosamente", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Error al guardar la cita", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al agendar la cita", Toast.LENGTH_SHORT).show()
             }
     }
 
