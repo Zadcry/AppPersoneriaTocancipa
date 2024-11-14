@@ -250,7 +250,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/grisClaro"
-            android:hint="Teléfono o Celular"
+            android:hint="Fijo o Celular"
             android:textSize="15dp"
             android:inputType="number"
             android:textColor="@color/black"
