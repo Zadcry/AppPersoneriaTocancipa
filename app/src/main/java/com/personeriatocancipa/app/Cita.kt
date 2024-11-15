@@ -7,7 +7,7 @@ class Cita {
     var hora: String? = null
     var correoAbogado: String? = null
     var correoCliente: String? = null // A dónde se notifica
-    var tema: String? = null // Consultorio jurídico, tutela, otro, etc.
+    var tema: String? = null // Víctimas, Administrativo, etc.
     var estado: String? = null // Pendiente, cancelada, realizada, etc.
 
     constructor()
