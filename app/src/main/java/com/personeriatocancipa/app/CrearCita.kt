@@ -314,6 +314,7 @@ class CrearCita : AppCompatActivity() {
         ref.child(cita.id.toString()).setValue(appointmentData)
             .addOnSuccessListener {
                 Toast.makeText(this, "Cita agendada exitosamente", Toast.LENGTH_SHORT).show()
+                txtDescripcion.text.clear()
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Error al agendar la cita", Toast.LENGTH_SHORT).show()
