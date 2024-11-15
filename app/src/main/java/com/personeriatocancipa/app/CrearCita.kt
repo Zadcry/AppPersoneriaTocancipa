@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -36,6 +38,7 @@ class CrearCita : AppCompatActivity() {
 
     private var appointmentID = 1 // ID consecutivo para las citas
 
+    private lateinit var gridSeleccionarAbogado: GridLayout
     private lateinit var txtConsultar: EditText
     private lateinit var txtDescripcion: EditText
     private lateinit var spAbogado: Spinner
@@ -69,11 +72,33 @@ class CrearCita : AppCompatActivity() {
         btnEliminar = findViewById(R.id.btnEliminar)
         txtFecha = findViewById(R.id.txtFecha)
         gridConsultar = findViewById(R.id.gridConsultar)
+        gridSeleccionarAbogado = findViewById(R.id.gridSeleccionarAbogado)
 
         // Obtener el ID más alto de citas en Firebase al iniciar
         obtenerUltimoID()
 
-        // Tipo de cita
+        // Mapear opciones de abogados según tema
+        val temaAbogadoMap = mapOf(
+            "Víctimas" to listOf("Edwin Yovanni Franco Bahamón"),
+            "Servicios Públicos" to listOf("Emilio Alexander Mejía Ángulo",
+                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
+                "Jose Omar Chaves Bautista", "Kewin Paul Pardo Cortés",
+                "Oscar Mauricio Díaz Muñoz"),
+            "Administrativo" to listOf("Emilio Alexander Mejía Ángulo",
+                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
+                "Kewin Paul Pardo Cortés", "Liliana Zambrano",
+                "Oscar Mauricio Díaz Muñoz"),
+            "Menores y Familia" to listOf("Emilio Alexander Mejía Ángulo",
+                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
+                "Kewin Paul Pardo Cortés", "Nydia Yurani Suárez Moscoso",
+                "Oscar Mauricio Díaz Muñoz"),
+            "Familia y Civil" to listOf("Emilio Alexander Mejía Ángulo",
+                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
+                "Kewin Paul Pardo Cortés", "Oscar Mauricio Díaz Muñoz",
+                "Santiago Garzón")
+        )
+
+        // Tema de la cita
         spTema = findViewById(R.id.spTema)
         ArrayAdapter.createFromResource(
             this,
@@ -84,15 +109,33 @@ class CrearCita : AppCompatActivity() {
             spTema.adapter = adapter
         }
 
-        // Abogado
+        // Configurar abogado según el tema seleccionado
         spAbogado = findViewById(R.id.spAbogado)
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.opcionesAbogado,
-            R.drawable.spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
-            spAbogado.adapter = adapter
+        spTema.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedTema = spTema.selectedItem.toString()
+                val abogados = temaAbogadoMap[selectedTema] ?: emptyList()
+
+                // Mostrar u ocultar la grilla de selección de abogado
+                if (selectedTema == "Administrativo") {
+                    gridSeleccionarAbogado.visibility = View.GONE
+                } else {
+                    gridSeleccionarAbogado.visibility = View.VISIBLE
+
+                    // Configurar el adaptador del Spinner de abogados
+                    val abogadoAdapter = ArrayAdapter(
+                        this@CrearCita,
+                        R.drawable.spinner_item, // Usa el estilo definido
+                        abogados
+                    )
+                    abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+                    spAbogado.adapter = abogadoAdapter
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // No se necesita acción
+            }
         }
 
         // Obtener el valor de la tarea desde el Intent
