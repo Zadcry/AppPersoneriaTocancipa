@@ -52,7 +52,75 @@ class CrearCita : AppCompatActivity() {
     private lateinit var gridConsultar: GridLayout
     private lateinit var mDbRef: DatabaseReference
     private lateinit var tarea: String
+    private lateinit var abogado: String
 
+    private val horariosAbogados = mapOf(
+        "Edwin Yovanni Franco Bahamón" to mapOf(
+            "Lunes" to Pair("07:00", "16:00"),
+            "Martes" to Pair("07:00", "16:00"),
+            "Miércoles" to Pair("07:00", "16:00"),
+            "Jueves" to Pair("07:00", "16:00"),
+            "Viernes" to Pair("07:00", "15:00")
+        ),
+        "Emilio Alexander Mejía Ángulo" to mapOf(
+            "Jueves" to Pair("09:00", "16:00")
+        ),
+        "Fransy Yanet Mambuscay López" to mapOf(
+            "Lunes" to Pair("07:00", "16:00"),
+            "Martes" to Pair("13:00", "16:00"),
+            "Miércoles" to Pair("07:00", "16:00"),
+            "Jueves" to Pair("13:00", "16:00"),
+            "Viernes" to Pair("07:00", "15:00")
+        ),
+        "José Francisco Alfonso Rojas" to mapOf(
+            "Jueves" to Pair("09:00", "16:00")
+        ),
+        "Jose Omar Chaves Bautista" to mapOf(
+            "Lunes" to Pair("09:00", "16:00"),
+            "Martes" to Pair("09:00", "16:00"),
+            "Miércoles" to Pair("09:00", "16:00")
+        ),
+        "Kewin Paul Pardo Cortés" to mapOf(
+            "Lunes" to Pair("07:00", "13:00"),
+            "Martes" to Pair("07:00", "13:00"),
+            "Miércoles" to Pair("07:00", "11:00"),
+            "Jueves" to Pair("07:00", "13:00"),
+            "Viernes" to Pair("07:00", "11:00")
+        ),
+        "Liliana Zambrano" to mapOf(
+            "Miércoles" to Pair("08:00", "11:00")
+        ),
+        "Nydia Yurani Suárez Moscoso" to mapOf(
+            "Lunes" to Pair("07:00", "16:00"),
+            "Martes" to Pair("07:00", "16:00"),
+            "Miércoles" to Pair("07:00", "16:00"),
+            "Jueves" to Pair("07:00", "16:00"),
+            "Viernes" to Pair("07:00", "13:00")
+        ),
+        "Oscar Mauricio Díaz Muñoz" to mapOf(
+            "Lunes" to Pair("07:00", "16:00"),
+            "Martes" to Pair("13:00", "16:00"),
+            "Miércoles" to Pair("07:00", "16:00"),
+            "Jueves" to Pair("13:00", "16:00"),
+            "Viernes" to Pair("07:00", "11:00")
+        ),
+        "Santiago Garzón" to mapOf(
+            "Miércoles" to Pair("08:00", "11:30")
+        )
+    )
+
+    private val duracionCitas = mapOf(
+        "Edwin Yovanni Franco Bahamón" to 60, // Duración en minutos
+        "Emilio Alexander Mejía Ángulo" to 60,
+        "Fransy Yanet Mambuscay López" to 60,
+        "José Francisco Alfonso Rojas" to 60,
+        "Jose Omar Chaves Bautista" to 60,
+        "Kewin Paul Pardo Cortés" to 60,
+        "Liliana Zambrano" to 60,
+        "Nydia Yurani Suárez Moscoso" to 60,
+        "Oscar Mauricio Díaz Muñoz" to 60,
+        "Santiago Garzón" to 30
+    )
 
 
     val auth = FirebaseAuth.getInstance()
@@ -117,8 +185,9 @@ class CrearCita : AppCompatActivity() {
                 val abogados = temaAbogadoMap[selectedTema] ?: emptyList()
 
                 // Mostrar u ocultar la grilla de selección de abogado
-                if (selectedTema == "Administrativo") {
+                if (selectedTema == "Víctimas") {
                     gridSeleccionarAbogado.visibility = View.GONE
+                    abogado = "Edwin Yovanni Franco Bahamón"
                 } else {
                     gridSeleccionarAbogado.visibility = View.VISIBLE
 
@@ -191,13 +260,17 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
+    @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun scheduleAppointment() {
         val calendar = Calendar.getInstance()
         val tema = spTema.selectedItem.toString()
-        val abogado = spAbogado.selectedItem.toString()
+        val descripcion = txtDescripcion.text.toString()
         var nombreCliente = ""
         var correoAbogado = ""
         var correoCliente = ""
+        if(spTema.selectedItem.toString() != "Víctimas"){
+            abogado = spAbogado.selectedItem.toString()
+        }
 
         // Obtener correo del abogado teniendo su nombre
         mDbRef = FirebaseDatabase.getInstance().getReference("userData")
@@ -223,7 +296,7 @@ class CrearCita : AppCompatActivity() {
             }
         })
 
-        // Obtener el correo del usuario actual
+        // Obtener el correo del cliente (Asumiendo que es el usuario actual)
         val currentUser = auth.currentUser
         if (currentUser != null) {
             correoCliente = currentUser.email.toString()
@@ -231,7 +304,7 @@ class CrearCita : AppCompatActivity() {
             println("No hay un usuario autenticado.")
         }
 
-        // Obtener correo del abogado teniendo su nombre
+        // Obtener nombre del usuario teniendo su correo
         mDbRef = FirebaseDatabase.getInstance().getReference("userData")
 
         query = mDbRef.orderByChild("correo").equalTo(correoCliente)
@@ -255,52 +328,109 @@ class CrearCita : AppCompatActivity() {
             }
         })
 
-        /*if (tarea.equals("crear")) {
-            // Obtener el correo del usuario actual
-            val currentUser = auth.currentUser
-            if (currentUser != null) {
-                correoCliente = currentUser.email.toString()
-            } else {
-                println("No hay un usuario autenticado.")
-            }
-        }*/
-
-        val descripcion = txtDescripcion.text.toString()
-
         DatePickerDialog(this, { _, year, month, day ->
-            TimePickerDialog(this, { _, hourOfDay, minute ->
-                val fecha = "$day-${month + 1}-$year"
-                val hora = String.format("%02d:%02d", hourOfDay, minute) // Formato de hora y minuto con dos dígitos
 
-                // Crear la cita con el ID único obtenido
-                val cita = Cita(appointmentID, descripcion, fecha, hora, correoAbogado, correoCliente, tema, "Pendiente")
+            val fechaSeleccionada = Calendar.getInstance().apply { set(year, month, day) }
+            val diaSemana = fechaSeleccionada.get(Calendar.DAY_OF_WEEK)
+            val dias = arrayOf("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
+            val diaNombre = dias[diaSemana - 1]
+            val horarioAbogado = horariosAbogados[abogado]?.get(diaNombre)
 
-                // Guardar la cita en Firebase
-                saveAppointmentToFirebase(cita)
+            if(horarioAbogado != null){
+                val (horaInicio, horaFin) = horarioAbogado
+                TimePickerDialog(this, { _, hourOfDay, minute ->
+                    val horaSeleccionada = String.format("%02d:%02d", hourOfDay, minute)
+                    if(horaSeleccionada !in horaInicio..horaFin){
+                        Toast.makeText(this, "Hora seleccionada no disponible", Toast.LENGTH_SHORT).show()
+                        return@TimePickerDialog
+                    }else{
+                        val duracion = duracionCitas[abogado] ?: 60 // Duración predeterminada de 60 minutos
+                        val fecha = "$day-${month + 1}-$year"
+                        val horaFinCita = calcularHoraFin(hourOfDay, minute, duracion)
 
-                // Enviar el correo con la información de la cita
-                val subject = "Cita en Personería - ID: ${cita.id}"
-                var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                        verificarDisponibilidad(abogado, fecha, horaSeleccionada, horaFinCita) { disponible ->
+                            if (disponible) {
+                                val cita = Cita(
+                                    appointmentID,
+                                    descripcion,
+                                    fecha,
+                                    horaSeleccionada,
+                                    correoAbogado,
+                                    correoCliente,
+                                    tema,
+                                    "Pendiente"
+                                )
+                                saveAppointmentToFirebase(cita, abogado, fecha, horaSeleccionada, horaFinCita)
+                                // Enviar el correo con la información de la cita
+                                val subject = "Cita en Personería - ID: ${cita.id}"
+                                var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
 
-                sendEmailInBackground(correoCliente, subject, body)
+                                sendEmailInBackground(correoCliente, subject, body)
 
-                body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
-                sendEmailInBackground(correoAbogado, subject, body)
+                                body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                sendEmailInBackground(correoAbogado, subject, body)
 
-                // Mostrar detalles en la pantalla
-                txtFecha.text = "Cita agendada para $fecha, $hora con ID: ${cita.id}"
-
-            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
-
+                                // Mostrar detalles en la pantalla
+                                txtFecha.text = "Cita agendada para $fecha, $horaSeleccionada con ID: ${cita.id}"
+                            } else {
+                                Toast.makeText(this, "La hora seleccionada ya está ocupada.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
+            }else{
+                Toast.makeText(this, "Día no disponible", Toast.LENGTH_SHORT).show()
+            }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
     }
 
+    @SuppressLint("DefaultLocale")
+    private fun calcularHoraFin(hour: Int, minute: Int, duracion: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minute)
+        calendar.add(Calendar.MINUTE, duracion)
+        return String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE))
+    }
 
-    private fun saveAppointmentToFirebase(cita: Cita) {
+    private fun verificarDisponibilidad(
+        abogado: String,
+        fecha: String,
+        horaInicio: String,
+        horaFin: String,
+        callback: (Boolean) -> Unit
+    ) {
+        val ref = FirebaseDatabase.getInstance().getReference("horariosOcupados/$abogado/$fecha")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (horario in snapshot.children) {
+                        val horaOcupadaInicio = horario.child("horaInicio").value.toString()
+                        val horaOcupadaFin = horario.child("horaFin").value.toString()
+
+                        // Verificar si las horas se solapan
+                        if (!(horaFin <= horaOcupadaInicio || horaInicio >= horaOcupadaFin)) {
+                            callback(false)
+                            return
+                        }
+                    }
+                }
+                callback(true)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback(false)
+            }
+        })
+    }
+
+
+    private fun saveAppointmentToFirebase(cita: Cita, abogado: String, fecha: String, horaInicio: String, horaFin: String) {
         val database = FirebaseDatabase.getInstance()
-        val ref = database.getReference("citas")
+        val citasRef = database.getReference("citas")
+        val horariosRef = database.getReference("horariosOcupados/$abogado/$fecha")
 
-        val appointmentData = mapOf(
+        val citaData = mapOf(
             "id" to cita.id,
             "descripcion" to cita.descripcion,
             "fecha" to cita.fecha,
@@ -311,9 +441,20 @@ class CrearCita : AppCompatActivity() {
             "estado" to cita.estado
         )
 
-        ref.child(cita.id.toString()).setValue(appointmentData)
+        val horarioData = mapOf(
+            "horaInicio" to horaInicio,
+            "horaFin" to horaFin
+        )
+
+        citasRef.child(cita.id.toString()).setValue(citaData)
             .addOnSuccessListener {
-                Toast.makeText(this, "Cita agendada exitosamente", Toast.LENGTH_SHORT).show()
+                horariosRef.push().setValue(horarioData)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Cita agendada exitosamente", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Error al guardar el horario ocupado", Toast.LENGTH_SHORT).show()
+                    }
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Error al agendar la cita", Toast.LENGTH_SHORT).show()
@@ -359,7 +500,6 @@ class CrearCita : AppCompatActivity() {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
         }
     }
 }
