@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -7,6 +8,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:orientation="vertical">
 
         <!-- Imagen -->
@@ -15,7 +18,7 @@
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:src="@drawable/escudo"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             >
         </ImageView>
@@ -28,19 +31,19 @@
             android:textAlignment="center"
             android:textSize="25dp"
             android:textColor="@color/black"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
+            android:paddingBottom="15dp"
         />
 
         <!-- Consulta -->
 
         <!-- Consulta -->
-        <GridLayout
+        <LinearLayout
             android:id="@+id/gridConsultar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:orientation="vertical"
+            >
 
             <!-- Texto "Consultar Usuario" -->
             <TextView
@@ -53,34 +56,44 @@
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
 
-            <!-- Botón para la acción de consultar -->
-            <Button
-                android:id="@+id/btnConsultar"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Consultar"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/negroSecundario"
-                />
+                android:orientation="horizontal">
 
-            <!-- EditText para ingresar datos de consulta -->
-            <EditText
-                android:id="@+id/txtConsultar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
-                android:layout_gravity="fill_horizontal"
-                android:textColorHint="@color/grisClaro"
-                android:textSize="15dp"
-                android:textColor="@color/black"
-                android:hint="Digite la cédula del usuario"
-                android:inputType="text"
-                android:padding="10dp"
-                android:background="@drawable/edittext_format"
-                android:layout_marginTop="5dp"
-                android:singleLine="true"/>
-        </GridLayout>
+                <!-- EditText para ingresar datos de consulta -->
+                <EditText
+                    android:id="@+id/txtConsultar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/grisClaro"
+                    android:textSize="15dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:hint="Digite la cédula del usuario"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:background="@drawable/edittext_format"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:singleLine="true"/>
+
+                <!-- Botón para la acción de consultar -->
+                <Button
+                    android:id="@+id/btnConsultar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consultar"
+                    android:textSize="15dp"
+                    android:layout_gravity="right"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/negroSecundario"
+                    />
+
+
+            </LinearLayout>
+        </LinearLayout>
 
 
         <!-- Inputs -->
@@ -108,7 +121,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             android:singleLine="true"
         />
 
@@ -135,7 +148,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             android:singleLine="true"
             />
 
@@ -163,7 +176,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             android:singleLine="true"
             />
 
@@ -191,7 +204,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             android:singleLine="true"
             />
 
@@ -218,7 +231,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             android:singleLine="true"
             />
 
@@ -237,7 +250,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/grisClaro"
-            android:hint="Teléfono o Celular"
+            android:hint="Fijo o Celular"
             android:textSize="15dp"
             android:inputType="number"
             android:textColor="@color/black"
@@ -246,7 +259,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             android:singleLine="true"
             />
 
@@ -273,7 +286,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             android:singleLine="true"
             />
 
@@ -297,7 +310,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             />
 
         <!-- Escolaridad -->
@@ -320,7 +333,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
         />
 
         <!-- Grupo Étnico -->
@@ -343,7 +356,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             />
 
         <GridLayout
@@ -378,6 +391,7 @@
                 android:padding="10dp"
                 android:background="@drawable/edittext_format"
                 android:singleLine="true"
+                android:layout_marginBottom="15dp"
             />
         </GridLayout>
 
@@ -402,14 +416,15 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
-
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp">
 
             <Button
                 android:id="@+id/btnSalir"

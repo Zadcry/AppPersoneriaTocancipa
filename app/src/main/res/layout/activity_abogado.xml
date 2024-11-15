@@ -64,7 +64,8 @@
                 android:layout_column="0"
                 android:layout_columnWeight="1"
                 android:columnCount="1"
-                android:rowCount="2">
+                android:rowCount="2"
+                android:padding="15dp">
 
                 <ImageView
                     android:id="@+id/imgConsultarCitas"
@@ -93,7 +94,8 @@
                 android:layout_column="1"
                 android:layout_columnWeight="1"
                 android:columnCount="1"
-                android:rowCount="2">
+                android:rowCount="2"
+                android:padding="15dp">
 
                 <ImageView
                     android:id="@+id/imgEstadoCitas"
