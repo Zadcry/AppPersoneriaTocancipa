@@ -178,9 +178,7 @@ class CrearCuenta : AppCompatActivity() {
         }
 
         btnSalir.setOnClickListener(){
-            val intent = Intent(this@CrearCuenta, Bienvenida::class.java)
             finish()
-            startActivity(intent)
         }
 
         btnSignUp.setOnClickListener(){
