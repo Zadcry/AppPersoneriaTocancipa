@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -36,10 +38,11 @@ class CrearCita : AppCompatActivity() {
 
     private var appointmentID = 1 // ID consecutivo para las citas
 
+    private lateinit var gridSeleccionarAbogado: GridLayout
     private lateinit var txtConsultar: EditText
     private lateinit var txtDescripcion: EditText
     private lateinit var spAbogado: Spinner
-    private lateinit var spTipo: Spinner
+    private lateinit var spTema: Spinner
     private lateinit var btnHorarios: Button
     private lateinit var btnSeleccionar: Button
     private lateinit var btnSalir: Button
@@ -54,7 +57,7 @@ class CrearCita : AppCompatActivity() {
 
     val auth = FirebaseAuth.getInstance()
 
-    @SuppressLint("ResourceType")
+    @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_cita)
@@ -69,30 +72,70 @@ class CrearCita : AppCompatActivity() {
         btnEliminar = findViewById(R.id.btnEliminar)
         txtFecha = findViewById(R.id.txtFecha)
         gridConsultar = findViewById(R.id.gridConsultar)
+        gridSeleccionarAbogado = findViewById(R.id.gridSeleccionarAbogado)
 
         // Obtener el ID más alto de citas en Firebase al iniciar
         obtenerUltimoID()
 
-        // Tipo de cita
-        spTipo = findViewById(R.id.spTipo)
+        // Mapear opciones de abogados según tema
+        val temaAbogadoMap = mapOf(
+            "Víctimas" to listOf("Edwin Yovanni Franco Bahamón"),
+            "Servicios Públicos" to listOf("Emilio Alexander Mejía Ángulo",
+                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
+                "Jose Omar Chaves Bautista", "Kewin Paul Pardo Cortés",
+                "Oscar Mauricio Díaz Muñoz"),
+            "Administrativo" to listOf("Emilio Alexander Mejía Ángulo",
+                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
+                "Kewin Paul Pardo Cortés", "Liliana Zambrano",
+                "Oscar Mauricio Díaz Muñoz"),
+            "Menores y Familia" to listOf("Emilio Alexander Mejía Ángulo",
+                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
+                "Kewin Paul Pardo Cortés", "Nydia Yurani Suárez Moscoso",
+                "Oscar Mauricio Díaz Muñoz"),
+            "Familia y Civil" to listOf("Emilio Alexander Mejía Ángulo",
+                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
+                "Kewin Paul Pardo Cortés", "Oscar Mauricio Díaz Muñoz",
+                "Santiago Garzón")
+        )
+
+        // Tema de la cita
+        spTema = findViewById(R.id.spTema)
         ArrayAdapter.createFromResource(
             this,
-            R.array.opcionesTipoCita,
+            R.array.opcionesTema,
             R.drawable.spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
-            spTipo.adapter = adapter
+            spTema.adapter = adapter
         }
 
-        // Abogado
+        // Configurar abogado según el tema seleccionado
         spAbogado = findViewById(R.id.spAbogado)
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.opcionesConsultorio,
-            R.drawable.spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
-            spAbogado.adapter = adapter
+        spTema.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selectedTema = spTema.selectedItem.toString()
+                val abogados = temaAbogadoMap[selectedTema] ?: emptyList()
+
+                // Mostrar u ocultar la grilla de selección de abogado
+                if (selectedTema == "Administrativo") {
+                    gridSeleccionarAbogado.visibility = View.GONE
+                } else {
+                    gridSeleccionarAbogado.visibility = View.VISIBLE
+
+                    // Configurar el adaptador del Spinner de abogados
+                    val abogadoAdapter = ArrayAdapter(
+                        this@CrearCita,
+                        R.drawable.spinner_item, // Usa el estilo definido
+                        abogados
+                    )
+                    abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+                    spAbogado.adapter = abogadoAdapter
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // No se necesita acción
+            }
         }
 
         // Obtener el valor de la tarea desde el Intent
@@ -150,10 +193,9 @@ class CrearCita : AppCompatActivity() {
 
     private fun scheduleAppointment() {
         val calendar = Calendar.getInstance()
-        val tipoCita = spTipo.selectedItem.toString()
+        val tema = spTema.selectedItem.toString()
         val abogado = spAbogado.selectedItem.toString()
         var nombreCliente = ""
-        println("El abogado seleccionado es: $abogado")
         var correoAbogado = ""
         var correoCliente = ""
 
@@ -169,9 +211,6 @@ class CrearCita : AppCompatActivity() {
                     snapshot.children.forEach { childSnapshot ->
                         // Extraer el correo
                         correoAbogado = childSnapshot.child("correo").value.toString()
-
-                        // Aquí puedes hacer lo que necesites con el correo, por ejemplo:
-                        println("Correo del abogado: $correoAbogado")
                     }
                 } else {
                     // Si no se encontró el nombre en los datos
@@ -234,18 +273,18 @@ class CrearCita : AppCompatActivity() {
                 val hora = String.format("%02d:%02d", hourOfDay, minute) // Formato de hora y minuto con dos dígitos
 
                 // Crear la cita con el ID único obtenido
-                val cita = Cita(appointmentID, descripcion, fecha, hora, correoAbogado, correoCliente, tipoCita, "Pendiente")
+                val cita = Cita(appointmentID, descripcion, fecha, hora, correoAbogado, correoCliente, tema, "Pendiente")
 
                 // Guardar la cita en Firebase
                 saveAppointmentToFirebase(cita)
 
                 // Enviar el correo con la información de la cita
                 val subject = "Cita en Personería - ID: ${cita.id}"
-                var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
 
                 sendEmailInBackground(correoCliente, subject, body)
 
-                body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                 sendEmailInBackground(correoAbogado, subject, body)
 
                 // Mostrar detalles en la pantalla
@@ -268,16 +307,16 @@ class CrearCita : AppCompatActivity() {
             "hora" to cita.hora,
             "correoAbogado" to cita.correoAbogado,
             "correoCliente" to cita.correoCliente,
-            "tipoCita" to cita.tipo,
+            "tema" to cita.tema,
             "estado" to cita.estado
         )
 
         ref.child(cita.id.toString()).setValue(appointmentData)
             .addOnSuccessListener {
-                Toast.makeText(this, "Cita guardada en Firebase", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Cita agendada exitosamente", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Error al guardar la cita", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Error al agendar la cita", Toast.LENGTH_SHORT).show()
             }
     }
 
