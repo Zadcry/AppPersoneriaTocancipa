@@ -48,4 +48,21 @@
         <item>Abogado</item>
         <item>Administrador</item>
     </string-array>
+    <string-array name="opcionesEstado">
+        <item>Activo</item>
+        <item>Inactivo</item>
+    </string-array>
+    <string-array name="opcionesCargoAbogado">
+        <item>Profesional Universitario</item>
+        <item>Contratista</item>
+        <item>Defensor Publico</item>
+    </string-array>
+    <string-array name="opcionesTemaAbogado">
+        <item>Victimas</item>
+        <item>Todo excepto Victimas</item>
+        <item>Servicios Publicos</item>
+        <item>Administrativo</item>
+        <item>Menores y Familia</item>
+        <item>Familia y Civil</item>
+    </string-array>
 </resources>
