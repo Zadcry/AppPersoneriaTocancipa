@@ -43,4 +43,9 @@
         <item>Menores y Familia</item>
         <item>Familia y Civil</item>
     </string-array>
+    <string-array name="opcionesTipoCuenta">
+        <item>Cliente</item>
+        <item>Abogado</item>
+        <item>Administrador</item>
+    </string-array>
 </resources>
