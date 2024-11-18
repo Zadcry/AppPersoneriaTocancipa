@@ -121,6 +121,8 @@ class CrearCita : AppCompatActivity() {
         "Santiago Garzón" to 30
     )
 
+    private val horaAlmuerzo = Pair("12:00", "12:59")
+
 
     private val auth = FirebaseAuth.getInstance()
 
@@ -352,7 +354,7 @@ class CrearCita : AppCompatActivity() {
                             val (horaInicio, horaFin) = horarioAbogado
                             TimePickerDialog(this, { _, hourOfDay, minute ->
                                 val horaSeleccionada = String.format("%02d:%02d", hourOfDay, minute)
-                                if(horaSeleccionada !in horaInicio..horaFin){
+                                if(horaSeleccionada !in horaInicio..horaFin || horaSeleccionada in horaAlmuerzo.first..horaAlmuerzo.second){
                                     Toast.makeText(this, "Hora seleccionada no disponible", Toast.LENGTH_SHORT).show()
                                     return@TimePickerDialog
                                 }else{
