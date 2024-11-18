@@ -362,6 +362,7 @@ class CrearCita : AppCompatActivity() {
 
                                     verificarDisponibilidad(abogado, fecha, horaSeleccionada, horaFinCita) { disponible ->
                                         if (disponible) {
+                                            obtenerUltimoID()
                                             val cita = Cita(
                                                 appointmentID,
                                                 descripcion,
@@ -494,7 +495,7 @@ class CrearCita : AppCompatActivity() {
 
         citasRef.child(cita.id.toString()).setValue(citaData)
             .addOnSuccessListener {
-                horariosRef.push().setValue(horarioData)
+                horariosRef.child(cita.id.toString()).setValue(horarioData)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Cita agendada exitosamente", Toast.LENGTH_SHORT).show()
                     }
