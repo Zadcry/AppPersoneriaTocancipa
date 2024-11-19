@@ -144,7 +144,7 @@ class CrearAdmin : AppCompatActivity() {
                 val correo = campos[4]
                 val estado = campos[5]
 
-                mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+                mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
                 mDbRef.child(uidConsultado).setValue(
                     Admin( documento,nombre,correo,
                         estado, uidConsultado))
@@ -157,7 +157,7 @@ class CrearAdmin : AppCompatActivity() {
         }
 
         btnEliminar.setOnClickListener{
-            mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+            mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
             mDbRef.child(uidConsultado).removeValue()
             Toast.makeText(
                 this@CrearAdmin,
@@ -241,7 +241,7 @@ class CrearAdmin : AppCompatActivity() {
             ).show()
             return
         }
-        mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+        mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
 
         val query = mDbRef.orderByChild("documento").equalTo(cedula)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
