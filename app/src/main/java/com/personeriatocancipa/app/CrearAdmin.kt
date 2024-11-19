@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +26,7 @@ import com.google.firebase.database.ValueEventListener
 
 class CrearAdmin : AppCompatActivity() {
     private lateinit var gridConsultar: LinearLayout
-    private lateinit var txtAnuncio:EditText
+    private lateinit var txtAnuncio:TextView
     private lateinit var txtNombre: EditText
     private lateinit var txtConsultar: EditText
     private lateinit var txtClave: EditText
@@ -72,7 +73,7 @@ class CrearAdmin : AppCompatActivity() {
         btnConsultar=findViewById(R.id.btnConsultar)
         btnModificar=findViewById(R.id.btnModificar)
         btnSignUp=findViewById(R.id.btnSignUp)
-        tarea=intent.getStringExtra("tarea").toString()
+        tarea = intent.getStringExtra("tarea").toString()
 
         if(tarea.equals("crear")){
             txtAnuncio.setText("Crear Administrador")
@@ -116,8 +117,8 @@ class CrearAdmin : AppCompatActivity() {
                 val nombre = campos[0]
                 val clave = campos[1]
                 val documento = campos[2]
-                val correo = campos[4]
-                val estado = campos[5]
+                val correo = campos[3]
+                val estado = campos[4]
 
                 signUp(nombre, clave, documento,
                     correo, estado)
@@ -141,8 +142,8 @@ class CrearAdmin : AppCompatActivity() {
                 val nombre = campos[0]
                 val clave = campos[1]
                 val documento = campos[2]
-                val correo = campos[4]
-                val estado = campos[5]
+                val correo = campos[3]
+                val estado = campos[4]
 
                 mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
                 mDbRef.child(uidConsultado).setValue(
@@ -159,6 +160,7 @@ class CrearAdmin : AppCompatActivity() {
         btnEliminar.setOnClickListener{
             mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
             mDbRef.child(uidConsultado).removeValue()
+            
             Toast.makeText(
                 this@CrearAdmin,
                 "Usuario eliminado exitosamente",
@@ -188,7 +190,7 @@ class CrearAdmin : AppCompatActivity() {
             .addOnCompleteListener(this){
                     task ->
                 if (task.isSuccessful){
-                    addUserToDatabase(nombre, documento, correo, estado, mAuth.currentUser?.uid!!)
+                    addUserToDatabase(documento, nombre, correo, estado, mAuth.currentUser?.uid!!)
 
                     println(mAuth.currentUser?.uid)
                         val intent = Intent(this@CrearAdmin, InterfazAdmin::class.java)
@@ -243,7 +245,7 @@ class CrearAdmin : AppCompatActivity() {
         }
         mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
 
-        val query = mDbRef.orderByChild("documento").equalTo(cedula)
+        val query = mDbRef.orderByChild("cedula").equalTo(cedula)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 println(snapshot)
@@ -254,7 +256,7 @@ class CrearAdmin : AppCompatActivity() {
                         val nombre = it.child("nombreCompleto").value.toString()
                         println(nombre)
                         val clave = it.child("clave").value.toString()
-                        val documento = it.child("documento").value.toString()
+                        val documento = it.child("cedula").value.toString()
                         val estado = it.child("estado").value.toString()
                         val correo = it.child("correo").value.toString()
 
