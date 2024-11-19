@@ -75,13 +75,13 @@ class CrearAdmin : AppCompatActivity() {
         tarea=intent.getStringExtra("tarea").toString()
 
         if(tarea.equals("crear")){
-            txtAnuncio.setText("Crear Abogado")
+            txtAnuncio.setText("Crear Administrador")
             gridConsultar.visibility = GridLayout.GONE
             btnSignUp.visibility = Button.VISIBLE
             btnModificar.visibility = Button.GONE
             btnEliminar.visibility = Button.GONE
         }else {
-            txtAnuncio.setText("Gestión de Abogado")
+            txtAnuncio.setText("Gestión de Administrador")
             gridConsultar.visibility = View.VISIBLE
             if (tarea.equals("consultar")) {
                 btnSignUp.visibility = Button.GONE
