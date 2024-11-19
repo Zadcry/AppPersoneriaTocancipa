@@ -222,7 +222,7 @@ class CrearAdmin : AppCompatActivity() {
 
     private fun addUserToDatabase(nombre: String, documento: String, correo: String, estado: String, uid: String) {
         mDbRef = FirebaseDatabase.getInstance().getReference()
-        mDbRef.child("userData").child(uid).setValue(
+        mDbRef.child("AdminData").child(uid).setValue(
             Admin(nombre, documento, correo, estado,uid))
         Toast.makeText(
             this@CrearAdmin,
