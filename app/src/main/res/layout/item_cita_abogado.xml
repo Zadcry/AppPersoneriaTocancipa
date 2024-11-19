@@ -1,0 +1,83 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/item_background"
+    android:layout_margin="8dp"
+    android:elevation="4dp">
+
+    <!-- Tema -->
+    <TextView
+        android:id="@+id/tvTema"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tema:"
+        android:textSize="18sp"
+        android:textColor="@color/negroSecundario"
+        android:paddingBottom="4dp"/>
+
+    <!-- ID -->
+    <TextView
+        android:id="@+id/tvID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ID:"
+        android:textSize="16sp"
+        android:textColor="@color/negroSecundario"
+        android:paddingBottom="4dp"/>
+
+    <!-- Fecha y hora -->
+    <TextView
+        android:id="@+id/tvFechaHora"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fecha y hora:"
+        android:textSize="14sp"
+        android:textColor="@color/negroSecundario"
+        android:paddingBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/tvCorreoCliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Correo Cliente:"
+        android:textSize="14sp"
+        android:textColor="@color/negroSecundario"
+        android:paddingBottom="4dp"/>
+
+    <!-- Descripción -->
+    <TextView
+        android:id="@+id/tvDescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Descripción:"
+        android:textSize="14sp"
+        android:textColor="@color/negroSecundario"
+        android:paddingBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Estado de la Cita"
+        android:textStyle="bold"
+        android:textSize="14dp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="0dp"
+        />
+
+    <!-- Estado -->
+    <Spinner
+        android:id="@+id/spEstado"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:background="@drawable/spinner_background"
+        android:entries="@array/opcionesEstado"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="3dp" />
+
+
+</LinearLayout>

@@ -24,11 +24,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Citas"
         tools:targetApi="31">
+      
         <activity
             android:name=".CrearAbogado"
             android:exported="false" />
         <activity
             android:name=".CrearAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".ConsultarCitasAbogado"
+            android:exported="false" />
+        <activity
+            android:name=".ConsultarCitasCliente"
             android:exported="false" />
         <activity
             android:name=".CrearCita"

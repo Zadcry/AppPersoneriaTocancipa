@@ -28,7 +28,6 @@ import kotlinx.coroutines.withContext
 import java.util.Calendar
 import java.util.Properties
 import javax.mail.Message
-import javax.mail.PasswordAuthentication
 import javax.mail.Session
 import javax.mail.Transport
 import javax.mail.internet.InternetAddress
@@ -122,8 +121,10 @@ class CrearCita : AppCompatActivity() {
         "Santiago Garzón" to 30
     )
 
+    private val horaAlmuerzo = Pair("12:00", "12:59")
 
-    val auth = FirebaseAuth.getInstance()
+
+    private val auth = FirebaseAuth.getInstance()
 
     @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -260,6 +261,16 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
+    private fun enviarCorreoAdicionales(
+        subject: String,
+        body: String,
+        correosAdicionales: List<String>
+    ) {
+        correosAdicionales.forEach { correo ->
+            sendEmailInBackground(correo, subject, body)
+        }
+    }
+
     @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun scheduleAppointment() {
         val calendar = Calendar.getInstance()
@@ -268,6 +279,7 @@ class CrearCita : AppCompatActivity() {
         var nombreCliente = ""
         var correoAbogado = ""
         var correoCliente = ""
+        val correosAdicionales = listOf("ricardoprovisional45@gmail.com", "ricardocorco@unisabana.edu.co")
         if(spTema.selectedItem.toString() != "Víctimas"){
             abogado = spAbogado.selectedItem.toString()
         }
@@ -336,52 +348,112 @@ class CrearCita : AppCompatActivity() {
             val diaNombre = dias[diaSemana - 1]
             val horarioAbogado = horariosAbogados[abogado]?.get(diaNombre)
 
-            if(horarioAbogado != null){
-                val (horaInicio, horaFin) = horarioAbogado
-                TimePickerDialog(this, { _, hourOfDay, minute ->
-                    val horaSeleccionada = String.format("%02d:%02d", hourOfDay, minute)
-                    if(horaSeleccionada !in horaInicio..horaFin){
-                        Toast.makeText(this, "Hora seleccionada no disponible", Toast.LENGTH_SHORT).show()
-                        return@TimePickerDialog
+            // Validación: Una semana de antelación
+            val fechaActual = Calendar.getInstance()
+            fechaActual.add(Calendar.DAY_OF_YEAR, 7) // Sumar una semana
+            if (fechaSeleccionada.before(fechaActual)) {
+                Toast.makeText(this, "Debe agendarse con al menos una semana de antelación.", Toast.LENGTH_SHORT).show()
+                return@DatePickerDialog
+            }else{
+                // Validación: Una cita por semana
+                verificarCitasPorSemana(correoCliente, fechaSeleccionada) { puedeAgendar ->
+                    if (!puedeAgendar) {
+                        Toast.makeText(this, "Solo puede agendar una cita por semana.", Toast.LENGTH_SHORT).show()
+                        return@verificarCitasPorSemana
                     }else{
-                        val duracion = duracionCitas[abogado] ?: 60 // Duración predeterminada de 60 minutos
-                        val fecha = "$day-${month + 1}-$year"
-                        val horaFinCita = calcularHoraFin(hourOfDay, minute, duracion)
+                        if(horarioAbogado != null){
+                            val (horaInicio, horaFin) = horarioAbogado
+                            TimePickerDialog(this, { _, hourOfDay, minute ->
+                                val horaSeleccionada = String.format("%02d:%02d", hourOfDay, minute)
+                                if(horaSeleccionada !in horaInicio..horaFin || horaSeleccionada in horaAlmuerzo.first..horaAlmuerzo.second){
+                                    Toast.makeText(this, "Hora seleccionada no disponible", Toast.LENGTH_SHORT).show()
+                                    return@TimePickerDialog
+                                }else{
+                                    val duracion = duracionCitas[abogado] ?: 60 // Duración predeterminada de 60 minutos
+                                    val fecha = "$day-${month + 1}-$year"
+                                    val horaFinCita = calcularHoraFin(hourOfDay, minute, duracion)
 
-                        verificarDisponibilidad(abogado, fecha, horaSeleccionada, horaFinCita) { disponible ->
-                            if (disponible) {
-                                val cita = Cita(
-                                    appointmentID,
-                                    descripcion,
-                                    fecha,
-                                    horaSeleccionada,
-                                    correoAbogado,
-                                    correoCliente,
-                                    tema,
-                                    "Pendiente"
-                                )
-                                saveAppointmentToFirebase(cita, abogado, fecha, horaSeleccionada, horaFinCita)
-                                // Enviar el correo con la información de la cita
-                                val subject = "Cita en Personería - ID: ${cita.id}"
-                                var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                    verificarDisponibilidad(abogado, fecha, horaSeleccionada, horaFinCita) { disponible ->
+                                        if (disponible) {
+                                            obtenerUltimoID()
+                                            val cita = Cita(
+                                                appointmentID,
+                                                descripcion,
+                                                fecha,
+                                                horaSeleccionada,
+                                                correoAbogado,
+                                                correoCliente,
+                                                tema,
+                                                "Pendiente"
+                                            )
+                                            saveAppointmentToFirebase(cita, abogado, fecha, horaSeleccionada, horaFinCita)
+                                            // Enviar el correo con la información de la cita
+                                            val subject = "Cita en Personería - ID: ${cita.id}"
+                                            var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
 
-                                sendEmailInBackground(correoCliente, subject, body)
+                                            sendEmailInBackground(correoCliente, subject, body)
 
-                                body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
-                                sendEmailInBackground(correoAbogado, subject, body)
+                                            val bodyAdicionales = """
+                                            Información de la cita:
+                                            
+                                            ID: ${cita.id}
+                                            Fecha: $fecha
+                                            Hora: $horaSeleccionada
+                                            Cliente: $nombreCliente
+                                            Abogado: $abogado
+                                            Descripción: $descripcion
+                                        """.trimIndent()
+                                            enviarCorreoAdicionales(subject, bodyAdicionales, correosAdicionales)
 
-                                // Mostrar detalles en la pantalla
-                                txtFecha.text = "Cita agendada para $fecha, $horaSeleccionada con ID: ${cita.id}"
-                            } else {
-                                Toast.makeText(this, "La hora seleccionada ya está ocupada.", Toast.LENGTH_SHORT).show()
-                            }
+                                            body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                            sendEmailInBackground(correoAbogado, subject, body)
+
+                                            // Mostrar detalles en la pantalla
+                                            txtFecha.text = "Cita agendada para $fecha, $horaSeleccionada con ID: ${cita.id}"
+                                        } else {
+                                            Toast.makeText(this, "La hora seleccionada ya está ocupada.", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                }
+                            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
+                        }else{
+                            Toast.makeText(this, "Día no disponible", Toast.LENGTH_SHORT).show()
                         }
                     }
-                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
-            }else{
-                Toast.makeText(this, "Día no disponible", Toast.LENGTH_SHORT).show()
+                }
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+    }
+
+    private fun verificarCitasPorSemana(correoCliente: String, fechaSeleccionada: Calendar, callback: (Boolean) -> Unit) {
+        val inicioSemana = fechaSeleccionada.clone() as Calendar
+        inicioSemana.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
+
+        val finSemana = fechaSeleccionada.clone() as Calendar
+        finSemana.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
+
+        val citasRef = FirebaseDatabase.getInstance().getReference("citas")
+        citasRef.orderByChild("correoCliente").equalTo(correoCliente)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (citaSnapshot in snapshot.children) {
+                        val fechaCitaStr = citaSnapshot.child("fecha").value.toString()
+                        val fechaCita = Calendar.getInstance().apply {
+                            val parts = fechaCitaStr.split("-")
+                            set(parts[2].toInt(), parts[1].toInt() - 1, parts[0].toInt())
+                        }
+                        if (!fechaCita.before(inicioSemana) && !fechaCita.after(finSemana)) {
+                            callback(false)
+                            return
+                        }
+                    }
+                    callback(true)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    callback(false)
+                }
+            })
     }
 
     @SuppressLint("DefaultLocale")
@@ -448,7 +520,7 @@ class CrearCita : AppCompatActivity() {
 
         citasRef.child(cita.id.toString()).setValue(citaData)
             .addOnSuccessListener {
-                horariosRef.push().setValue(horarioData)
+                horariosRef.child(cita.id.toString()).setValue(horarioData)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Cita agendada exitosamente", Toast.LENGTH_SHORT).show()
                     }
@@ -462,7 +534,7 @@ class CrearCita : AppCompatActivity() {
     }
 
 
-    fun sendEmailInBackground(recipientEmail: String, subject: String, body: String) {
+    private fun sendEmailInBackground(recipientEmail: String, subject: String, body: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 sendEmail(recipientEmail, subject, body)
@@ -472,7 +544,7 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
-    suspend fun sendEmail(recipientEmail: String, subject: String, body: String) {
+    private suspend fun sendEmail(recipientEmail: String, subject: String, body: String) {
         withContext(Dispatchers.IO) {
             val props = Properties()
             props["mail.smtp.auth"] = "true"
