@@ -229,22 +229,57 @@ class CrearAbogado : AppCompatActivity() {
             return
         }
 
+        // Buscar en RealtimeDatabase si ya existe un usuario con el mismo documento
+
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
-        val abogado = Abogado(documento, nombre, cargo, tema, correo, estado)
-        mDbRef.push().setValue(abogado).addOnSuccessListener {
-            Toast.makeText(
-                this@CrearAbogado,
-                "Abogado creado exitosamente",
-                Toast.LENGTH_SHORT,
-            ).show()
-            finish()
-        }.addOnFailureListener {
-            Toast.makeText(
-                this@CrearAbogado,
-                "Error al crear el abogado",
-                Toast.LENGTH_SHORT,
-            ).show()
-        }
+        val query = mDbRef.orderByChild("documento").equalTo(documento)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    Toast.makeText(
+                        this@CrearAbogado,
+                        "Ya existe un abogado con el mismo documento",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                } else {
+                    mAuth.createUserWithEmailAndPassword(correo, clave).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            val user = mAuth.currentUser
+                            val uid = user?.uid
+                            val abogado = Abogado(documento, nombre, cargo, tema, correo, estado)
+                            mDbRef.child(uid!!).setValue(abogado).addOnSuccessListener {
+                                Toast.makeText(
+                                    this@CrearAbogado,
+                                    "Abogado creado exitosamente",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                                finish()
+                            }.addOnFailureListener {
+                                Toast.makeText(
+                                    this@CrearAbogado,
+                                    "Error al crear el abogado",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
+                        } else {
+                            Toast.makeText(
+                                this@CrearAbogado,
+                                "Error al crear el usuario",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(
+                    this@CrearAbogado,
+                    "Error al consultar la base de datos",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        })
     }
 
     private fun modificarAbogado() {

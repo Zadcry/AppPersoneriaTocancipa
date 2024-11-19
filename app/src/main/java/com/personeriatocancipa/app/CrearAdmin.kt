@@ -148,7 +148,7 @@ class CrearAdmin : AppCompatActivity() {
                 mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
                 mDbRef.child(uidConsultado).setValue(
                     Admin( documento,nombre,correo,
-                        estado, uidConsultado))
+                        estado))
                 Toast.makeText(
                     this@CrearAdmin,
                     "Usuario modificado exitosamente",
@@ -186,23 +186,38 @@ class CrearAdmin : AppCompatActivity() {
         estado:String
     )
     {
-        mAuth.createUserWithEmailAndPassword(correo,clave)
-            .addOnCompleteListener(this){
-                    task ->
-                if (task.isSuccessful){
-                    addUserToDatabase(documento, nombre, correo, estado, mAuth.currentUser?.uid!!)
-
-                    println(mAuth.currentUser?.uid)
-                        val intent = Intent(this@CrearAdmin, InterfazAdmin::class.java)
-                        finish()
-                        startActivity(intent)
-                        Toast.makeText(
-                            this@CrearAdmin,
-                            "Cuenta creada exitosamente",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
+        // Buscar en RealtimeDatabase si ya existe un usuario con el mismo documento
+        mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
+        val query = mDbRef.orderByChild("cedula").equalTo(documento)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    Toast.makeText(
+                        this@CrearAdmin,
+                        "Ya existe un usuario con la cédula ingresada",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                } else {
+                    mAuth.createUserWithEmailAndPassword(correo,clave)
+                        .addOnCompleteListener(this@CrearAdmin){
+                                task ->
+                            if (task.isSuccessful){
+                                addUserToDatabase(nombre, documento, correo, estado, mAuth.currentUser?.uid!!)
+                                val intent = Intent(this@CrearAdmin, InterfazAdmin::class.java)
+                                finish()
+                                startActivity(intent)
+                            }
+                        }
+                }
             }
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(
+                    this@CrearAdmin,
+                    "Error al consultar la base de datos",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        })
     }
     private fun conseguirCampos(): Array<String> {
         val nombre = txtNombre.text.toString()
@@ -225,7 +240,7 @@ class CrearAdmin : AppCompatActivity() {
     private fun addUserToDatabase(nombre: String, documento: String, correo: String, estado: String, uid: String) {
         mDbRef = FirebaseDatabase.getInstance().getReference()
         mDbRef.child("AdminData").child(uid).setValue(
-            Admin(nombre, documento, correo, estado,uid))
+            Admin(nombre, documento, correo, estado))
         Toast.makeText(
             this@CrearAdmin,
             "Cuenta creada exitosamente",

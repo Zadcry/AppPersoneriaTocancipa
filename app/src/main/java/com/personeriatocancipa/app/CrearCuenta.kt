@@ -241,7 +241,7 @@ class CrearCuenta : AppCompatActivity() {
                 mDbRef = FirebaseDatabase.getInstance().getReference("userData")
                 mDbRef.child(uidConsultado).setValue(
                     Usuario(nombre, documento, edad, direccion, telefono,
-                        correo, sexo, escolaridad, siGrupo, grupo, comunidad, "0",uidConsultado))
+                        correo, sexo, escolaridad, siGrupo, grupo, comunidad,uidConsultado))
                 Toast.makeText(
                     this@CrearCuenta,
                     "Usuario modificado exitosamente",
@@ -276,35 +276,59 @@ class CrearCuenta : AppCompatActivity() {
         siGrupo: String?,
         comunidad: String
     ) {
-        //Logica para crear usuarios
-        mAuth.createUserWithEmailAndPassword(correo, clave)
-            .addOnCompleteListener(this){
-                    task ->
-                if (task.isSuccessful){
-                    addUserToDatabase(nombre, documento, edad, direccion,
-                        telefono, correo, sexo, escolaridad, grupo,
-                        siGrupo, comunidad, mAuth.currentUser?.uid!!)
 
-                    println(mAuth.currentUser?.uid)
-                    if (usuario.equals("cliente")){
-                        val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
-                        finish()
-                        startActivity(intent)
-                    } else{
-                        Toast.makeText(
-                            this@CrearCuenta,
-                            "Cuenta creada exitosamente",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
-                }else{
+        // Buscar en RealtimeDatabase si ya existe un usuario con el mismo documento
+        mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+        val query = mDbRef.orderByChild("documento").equalTo(documento)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
                     Toast.makeText(
                         this@CrearCuenta,
-                        "Ha ocurrido un error",
+                        "Ya existe un usuario con el documento ingresado",
                         Toast.LENGTH_SHORT,
                     ).show()
+                } else {
+                    mAuth.createUserWithEmailAndPassword(correo, clave)
+                        .addOnCompleteListener(this@CrearCuenta) { task ->
+                            if (task.isSuccessful) {
+                                addUserToDatabase(
+                                    nombre, documento, edad, direccion,
+                                    telefono, correo, sexo, escolaridad, grupo,
+                                    siGrupo, comunidad, mAuth.currentUser?.uid!!
+                                )
+
+                                println(mAuth.currentUser?.uid)
+                                if (usuario.equals("cliente")) {
+                                    val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
+                                    finish()
+                                    startActivity(intent)
+                                } else {
+                                    Toast.makeText(
+                                        this@CrearCuenta,
+                                        "Cuenta creada exitosamente",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
+                                }
+                            } else {
+                                Toast.makeText(
+                                    this@CrearCuenta,
+                                    "Ha ocurrido un error",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
+                        }
                 }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(
+                    this@CrearCuenta,
+                    "Error al consultar la base de datos",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        })
     }
 
     private fun addUserToDatabase(nombre: String,
@@ -322,7 +346,7 @@ class CrearCuenta : AppCompatActivity() {
         mDbRef = FirebaseDatabase.getInstance().getReference()
         mDbRef.child("userData").child(uid).setValue(
             Usuario(nombre, documento, edad, direccion, telefono,
-                correo, sexo, escolaridad, siGrupo, grupo, comunidad, "0",uid))
+                correo, sexo, escolaridad, siGrupo, grupo, comunidad,uid))
         Toast.makeText(
             this@CrearCuenta,
             "Cuenta creada exitosamente",
