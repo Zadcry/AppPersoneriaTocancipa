@@ -32,6 +32,19 @@
             android:textColor="@color/negroSecundario"
             />
 
+        <Spinner
+            android:id="@+id/spTipoCuenta"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            />
+
         <!-- Contenedor con imágenes y botones -->
         <GridLayout
             android:layout_width="match_parent"

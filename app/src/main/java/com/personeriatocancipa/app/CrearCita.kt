@@ -261,6 +261,16 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
+    private fun enviarCorreoAdicionales(
+        subject: String,
+        body: String,
+        correosAdicionales: List<String>
+    ) {
+        correosAdicionales.forEach { correo ->
+            sendEmailInBackground(correo, subject, body)
+        }
+    }
+
     @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun scheduleAppointment() {
         val calendar = Calendar.getInstance()
@@ -269,6 +279,7 @@ class CrearCita : AppCompatActivity() {
         var nombreCliente = ""
         var correoAbogado = ""
         var correoCliente = ""
+        val correosAdicionales = listOf("ricardoprovisional45@gmail.com", "ricardocorco@unisabana.edu.co")
         if(spTema.selectedItem.toString() != "Víctimas"){
             abogado = spAbogado.selectedItem.toString()
         }
@@ -381,6 +392,18 @@ class CrearCita : AppCompatActivity() {
                                             var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
 
                                             sendEmailInBackground(correoCliente, subject, body)
+
+                                            val bodyAdicionales = """
+                                            Información de la cita:
+                                            
+                                            ID: ${cita.id}
+                                            Fecha: $fecha
+                                            Hora: $horaSeleccionada
+                                            Cliente: $nombreCliente
+                                            Abogado: $abogado
+                                            Descripción: $descripcion
+                                        """.trimIndent()
+                                            enviarCorreoAdicionales(subject, bodyAdicionales, correosAdicionales)
 
                                             body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                                             sendEmailInBackground(correoAbogado, subject, body)

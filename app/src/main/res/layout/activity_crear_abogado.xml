@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".CrearAbogado">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/escudo"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/txtAnuncio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crear o Gestionar"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            android:textColor="@color/black"
+            android:paddingBottom="15dp"
+            />
+
+        <LinearLayout
+        android:id="@+id/gridConsultar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:orientation="vertical"
+        >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="1"
+                android:layout_gravity="fill"
+                android:text="Consultar Abogado"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:gravity="bottom"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- EditText para ingresar datos de consulta -->
+                <EditText
+                    android:id="@+id/txtConsultar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/grisClaro"
+                    android:textSize="15dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:hint="Digite la cédula del abogado"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:background="@drawable/edittext_format"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:singleLine="true"/>
+
+                <!-- Botón para la acción de consultar -->
+                <Button
+                    android:id="@+id/btnConsultar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consultar"
+                    android:textSize="15dp"
+                    android:layout_gravity="right"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/negroSecundario"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombres y Apellidos"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <EditText
+            android:id="@+id/txtNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/grisClaro"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:inputType="text"
+            android:padding="10dp"
+            android:background="@drawable/edittext_format"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="15dp"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Contraseña"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <EditText
+            android:id="@+id/txtClave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/grisClaro"
+            android:textSize="15dp"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:background="@drawable/edittext_format"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="15dp"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Documento de Identidad"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <EditText
+            android:id="@+id/txtDocumento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/grisClaro"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:inputType="number"
+            android:hint="Digite sin comas ni puntos"
+            android:background="@drawable/edittext_format"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="15dp"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Correo Electrónico"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <EditText
+            android:id="@+id/txtCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/grisClaro"
+            android:textSize="15dp"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:background="@drawable/edittext_format"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="15dp"
+            android:singleLine="true"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cargo"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <Spinner
+            android:id="@+id/spCargo"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tema"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <Spinner
+            android:id="@+id/spTema"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estado"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <Spinner
+            android:id="@+id/spEstado"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:id="@+id/btnSalir"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Volver"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                />
+            <Button
+                android:id="@+id/btnSignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Crear Cuenta"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                />
+
+            <Button
+                android:id="@+id/btnModificar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Modificar"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                />
+
+            <Button
+                android:id="@+id/btnEliminar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Eliminar"
+                android:layout_margin="10dp"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

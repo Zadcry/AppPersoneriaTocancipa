@@ -80,34 +80,77 @@ class Bienvenida : AppCompatActivity() {
     }
 
     private fun showRoleScreen() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val databaseRef = FirebaseDatabase.getInstance().getReference("userData").child(userId)
-        val userRolRef = databaseRef.child("rol")
+        buscarSiCliente()
+    }
 
-        userRolRef.addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun buscarSiCliente(){
+        println("Buscando Cliente")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val databaseRefCliente = FirebaseDatabase.getInstance().getReference("userData").child(userId)
+
+        databaseRefCliente.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Aquí obtienes el valor del rol
-                val userRol = snapshot.getValue(String::class.java)
-                userRol?.let {
-                    println("El rol del usuario es: $it")
-                    if(userRol == "2") {
-                        val intent = Intent(this@Bienvenida, InterfazAdmin::class.java)
-                        finish()
-                        startActivity(intent)
-                    } else if(userRol == "1") {
-                        val intent = Intent(this@Bienvenida, InterfazAbogado::class.java)
-                        finish()
-                        startActivity(intent)
-                    } else {
-                        val intent = Intent(this@Bienvenida, InterfazCliente::class.java)
-                        finish()
-                        startActivity(intent)
-                    }
+                println(snapshot)
+                if (snapshot.exists()) {
+                    val intent = Intent(this@Bienvenida, InterfazCliente::class.java)
+                    startActivity(intent)
+                } else {
+                    buscarSiAbogado()
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
-                // Maneja cualquier error de lectura de la base de datos
-                Log.w("FirebaseDatabase", "Error al obtener el rol del usuario.", error.toException())
+                Log.e("Error", "Error al leer datos", error.toException())
+            }
+        })
+    }
+
+    private fun buscarSiAbogado(){
+        println("Buscando Abogado")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val databaseRefAbogado = FirebaseDatabase.getInstance().getReference("abogadoData").child(userId)
+
+        databaseRefAbogado.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                println(snapshot)
+                if (snapshot.exists()) {
+                    val intent = Intent(this@Bienvenida, InterfazAbogado::class.java)
+                    startActivity(intent)
+                } else {
+                    buscarSiAdmin()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Error", "Error al leer datos", error.toException())
+            }
+        })
+    }
+
+    private fun buscarSiAdmin(){
+        println("Buscando Admin")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val databaseRefAdmin = FirebaseDatabase.getInstance().getReference("AdminData").child(userId)
+
+
+        println(userId)
+        databaseRefAdmin.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                println(snapshot)
+                if (snapshot.exists()) {
+                    val intent = Intent(this@Bienvenida, InterfazAdmin::class.java)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        this@Bienvenida,
+                        "¡Usuario no encontrado!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("Error", "Error al leer datos", error.toException())
             }
         })
     }
