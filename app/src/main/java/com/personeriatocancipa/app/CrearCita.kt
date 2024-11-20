@@ -2,8 +2,17 @@ package com.personeriatocancipa.app
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,17 +23,24 @@ import android.widget.GridView
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.Calendar
 import java.util.Properties
 import javax.mail.Message
@@ -243,6 +259,120 @@ class CrearCita : AppCompatActivity() {
             finish()
         }
 
+
+        btnHorarios.setOnClickListener(){
+            checkAndRequestManageStoragePermission()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun checkAndRequestManageStoragePermission() {
+        // Verifica si ya se tiene el permiso especial
+        if (Environment.isExternalStorageManager()) {
+            // Permiso ya concedido, procede con la operación
+            descargarHorarios()
+        } else {
+            // Dirige al usuario a las configuraciones para conceder el permiso
+            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+            intent.data = Uri.parse("package:${applicationContext.packageName}")
+            startActivityForResult(intent, 1002)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1002) {
+            // Verifica nuevamente si se otorgó el permiso
+            if (Environment.isExternalStorageManager()) {
+                Toast.makeText(this, "Permiso concedido, iniciando descarga.", Toast.LENGTH_SHORT).show()
+                descargarHorarios()
+            } else {
+                Toast.makeText(this, "Permiso no concedido, no se puede proceder.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun descargarHorarios() {
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channelId = "download_channel"
+
+        // Crear canal de notificación para API 26+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Descargas",
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                description = "Notificación de progreso de descarga"
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        // Crear notificación inicial
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(android.R.drawable.stat_sys_download)
+            .setContentTitle("Descargando archivo...")
+            .setProgress(100, 0, true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+
+        notificationManager.notify(1, notificationBuilder.build())
+
+        // Configurar la ruta de descarga
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        if (!downloadsDir.exists()) downloadsDir.mkdirs()
+
+        val localFile = File(downloadsDir, "Posibles Horarios.pdf")
+
+        // Referencia al archivo en Firebase Storage
+        val storageReference = FirebaseStorage.getInstance().reference.child("Archivos/Posibles Horarios.pdf")
+
+        // Descarga el archivo
+        storageReference.getFile(localFile).addOnSuccessListener {
+            // Crear URI usando FileProvider para compartir el archivo
+            val uri = FileProvider.getUriForFile(this, "$packageName.provider", localFile)
+
+            // Crear Intent para abrir el archivo PDF
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/pdf")
+                flags = Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_GRANT_READ_URI_PERMISSION
+            }
+
+            // Crear PendingIntent para la notificación
+            val pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            // Actualizar la notificación al completar la descarga
+            notificationBuilder
+                .setContentTitle("Descarga completada")
+                .setContentText("Pulsa para abrir el archivo")
+                .setProgress(0, 0, false)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+
+            notificationManager.notify(1, notificationBuilder.build())
+
+            Toast.makeText(this, "Archivo descargado: ${localFile.path}", Toast.LENGTH_LONG).show()
+
+        }.addOnFailureListener { exception ->
+            // Manejar errores en la descarga
+            notificationBuilder
+                .setContentTitle("Error en la descarga")
+                .setContentText(exception.message)
+                .setProgress(0, 0, false)
+                .setSmallIcon(android.R.drawable.stat_notify_error)
+
+            notificationManager.notify(1, notificationBuilder.build())
+
+            Toast.makeText(this, "Error al descargar archivo: ${exception.message}", Toast.LENGTH_LONG)
+                .show()
+        }
     }
 
     private fun obtenerUltimoID() {
