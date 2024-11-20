@@ -71,12 +71,11 @@
     <Spinner
         android:id="@+id/spEstado"
         android:layout_width="match_parent"
-        android:layout_height="33dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/spinner_background"
         android:entries="@array/opcionesEstado"
         android:layout_marginTop="5dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="3dp" />
 
 
