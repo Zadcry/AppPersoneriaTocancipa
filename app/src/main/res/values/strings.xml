@@ -48,7 +48,7 @@
         <item>Abogado</item>
         <item>Administrador</item>
     </string-array>
-    <string-array name="opcionesEstado">
+    <string-array name="opcionesEstadoCargo">
         <item>Activo</item>
         <item>Inactivo</item>
     </string-array>
