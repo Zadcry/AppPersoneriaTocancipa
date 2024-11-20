@@ -16,6 +16,7 @@ class InterfazAbogado : AppCompatActivity() {
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var btnConsultarCitas: Button
+    private lateinit var btnSalir: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,14 +24,18 @@ class InterfazAbogado : AppCompatActivity() {
 
         mAuth = FirebaseAuth.getInstance()
         btnConsultarCitas = findViewById(R.id.btnConsultarCitas)
+        btnSalir = findViewById(R.id.btnSalir)
 
         cargarNombre()
 
         btnConsultarCitas.setOnClickListener{
             // Redirigir a la actividad de consulta de citas
             val intent = Intent(this@InterfazAbogado, ConsultarCitasAbogado::class.java)
-            finish()
             startActivity(intent)
+        }
+
+        btnSalir.setOnClickListener{
+            finish()
         }
     }
 

@@ -18,6 +18,7 @@ class InterfazCliente : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var btnAgendar: Button
     private lateinit var btnVerCitas: Button
+    private lateinit var btnSalir: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,7 @@ class InterfazCliente : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         btnAgendar = findViewById(R.id.btnAgendarCita)
         btnVerCitas = findViewById(R.id.btnVerCitas)
+        btnSalir = findViewById(R.id.btnSalir)
 
         cargarNombre()
 
@@ -33,15 +35,17 @@ class InterfazCliente : AppCompatActivity() {
             // Redirigir a la actividad de creación de cita
             val intent = Intent(this@InterfazCliente, CrearCita::class.java)
             intent.putExtra("tarea", "crear")
-            finish()
             startActivity(intent)
         }
 
         btnVerCitas.setOnClickListener{
             // Redirigir a la actividad de consulta de citas
             val intent = Intent(this@InterfazCliente, ConsultarCitasCliente::class.java)
-            finish()
             startActivity(intent)
+        }
+
+        btnSalir.setOnClickListener{
+            finish()
         }
 
     }

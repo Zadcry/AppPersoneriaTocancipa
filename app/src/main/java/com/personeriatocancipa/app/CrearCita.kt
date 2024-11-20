@@ -55,56 +55,56 @@ class CrearCita : AppCompatActivity() {
 
     private val horariosAbogados = mapOf(
         "Edwin Yovanni Franco Bahamón" to mapOf(
-            "Lunes" to Pair("07:00", "16:00"),
-            "Martes" to Pair("07:00", "16:00"),
-            "Miércoles" to Pair("07:00", "16:00"),
-            "Jueves" to Pair("07:00", "16:00"),
-            "Viernes" to Pair("07:00", "15:00")
+            "Lunes" to Pair("07:00", "15:00"),
+            "Martes" to Pair("07:00", "15:00"),
+            "Miércoles" to Pair("07:00", "15:00"),
+            "Jueves" to Pair("07:00", "15:00"),
+            "Viernes" to Pair("07:00", "14:00")
         ),
         "Emilio Alexander Mejía Ángulo" to mapOf(
-            "Jueves" to Pair("09:00", "16:00")
+            "Jueves" to Pair("09:00", "15:00")
         ),
         "Fransy Yanet Mambuscay López" to mapOf(
-            "Lunes" to Pair("07:00", "16:00"),
-            "Martes" to Pair("13:00", "16:00"),
-            "Miércoles" to Pair("07:00", "16:00"),
-            "Jueves" to Pair("13:00", "16:00"),
-            "Viernes" to Pair("07:00", "15:00")
+            "Lunes" to Pair("07:00", "15:00"),
+            "Martes" to Pair("13:00", "15:00"),
+            "Miércoles" to Pair("07:00", "15:00"),
+            "Jueves" to Pair("13:00", "15:00"),
+            "Viernes" to Pair("07:00", "14:00")
         ),
         "José Francisco Alfonso Rojas" to mapOf(
-            "Jueves" to Pair("09:00", "16:00")
+            "Jueves" to Pair("09:00", "15:00")
         ),
         "Jose Omar Chaves Bautista" to mapOf(
-            "Lunes" to Pair("09:00", "16:00"),
-            "Martes" to Pair("09:00", "16:00"),
-            "Miércoles" to Pair("09:00", "16:00")
+            "Lunes" to Pair("09:00", "15:00"),
+            "Martes" to Pair("09:00", "15:00"),
+            "Miércoles" to Pair("09:00", "15:00")
         ),
         "Kewin Paul Pardo Cortés" to mapOf(
-            "Lunes" to Pair("07:00", "13:00"),
-            "Martes" to Pair("07:00", "13:00"),
-            "Miércoles" to Pair("07:00", "11:00"),
-            "Jueves" to Pair("07:00", "13:00"),
-            "Viernes" to Pair("07:00", "11:00")
+            "Lunes" to Pair("07:00", "12:00"),
+            "Martes" to Pair("07:00", "12:00"),
+            "Miércoles" to Pair("07:00", "10:00"),
+            "Jueves" to Pair("07:00", "12:00"),
+            "Viernes" to Pair("07:00", "10:00")
         ),
         "Liliana Zambrano" to mapOf(
-            "Miércoles" to Pair("08:00", "11:00")
+            "Miércoles" to Pair("08:00", "10:00")
         ),
         "Nydia Yurani Suárez Moscoso" to mapOf(
-            "Lunes" to Pair("07:00", "16:00"),
-            "Martes" to Pair("07:00", "16:00"),
-            "Miércoles" to Pair("07:00", "16:00"),
-            "Jueves" to Pair("07:00", "16:00"),
-            "Viernes" to Pair("07:00", "13:00")
+            "Lunes" to Pair("07:00", "15:00"),
+            "Martes" to Pair("07:00", "15:00"),
+            "Miércoles" to Pair("07:00", "15:00"),
+            "Jueves" to Pair("07:00", "15:00"),
+            "Viernes" to Pair("07:00", "14:00")
         ),
         "Oscar Mauricio Díaz Muñoz" to mapOf(
-            "Lunes" to Pair("07:00", "16:00"),
-            "Martes" to Pair("13:00", "16:00"),
-            "Miércoles" to Pair("07:00", "16:00"),
-            "Jueves" to Pair("13:00", "16:00"),
-            "Viernes" to Pair("07:00", "11:00")
+            "Lunes" to Pair("07:00", "15:00"),
+            "Martes" to Pair("13:00", "15:00"),
+            "Miércoles" to Pair("07:00", "15:00"),
+            "Jueves" to Pair("13:00", "15:00"),
+            "Viernes" to Pair("07:00", "10:00")
         ),
         "Santiago Garzón" to mapOf(
-            "Miércoles" to Pair("08:00", "11:30")
+            "Miércoles" to Pair("08:00", "11:00")
         )
     )
 

@@ -1,5 +1,6 @@
 package com.personeriatocancipa.app
 
+import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.Spanned
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -33,6 +35,7 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
         return CitaViewHolder(view)
     }
 
+    @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
         val cita = citas[position]
 
@@ -42,8 +45,17 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
         holder.tvCorreoCliente.text = applyBoldStyle("Correo Cliente: ", cita.correoCliente.toString())
         holder.tvDescripcion.text = applyBoldStyle("Descripción: ", cita.descripcion.toString())
 
-        // Configurar el Spinner con el estado actual
+        // Configura el adaptador del Spinner con estilo
         val estados = holder.itemView.context.resources.getStringArray(R.array.opcionesEstado)
+        val adapter = ArrayAdapter.createFromResource(
+            holder.itemView.context,
+            R.array.opcionesEstado,
+            R.drawable.spinner_item
+        )
+        adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+        holder.spEstado.adapter = adapter
+
+        // Selecciona el estado actual
         val estadoIndex = estados.indexOf(cita.estado)
         if (estadoIndex >= 0) {
             holder.spEstado.setSelection(estadoIndex)
