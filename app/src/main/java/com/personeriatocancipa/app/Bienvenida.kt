@@ -69,7 +69,7 @@ class Bienvenida : AppCompatActivity() {
                     if(task.isSuccessful){
                         showRoleScreen()
                         txtCorreo.text.clear()
-                        txtContraseña.text.clear()
+                        txtContraseña.text.clear(
                     }else{
                         Toast.makeText(
                             this@Bienvenida,
