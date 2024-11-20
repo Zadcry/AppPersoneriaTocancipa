@@ -16,7 +16,7 @@ class InterfazCliente : AppCompatActivity() {
 
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var btnAgendar: Button
+    private lateinit var btnAgendarCita: Button
     private lateinit var btnVerCitas: Button
     private lateinit var btnSalir: Button
 
@@ -25,16 +25,17 @@ class InterfazCliente : AppCompatActivity() {
         setContentView(R.layout.activity_cliente)
 
         mAuth = FirebaseAuth.getInstance()
-        btnAgendar = findViewById(R.id.btnAgendarCita)
+        btnAgendarCita = findViewById(R.id.btnAgendarCita)
         btnVerCitas = findViewById(R.id.btnVerCitas)
         btnSalir = findViewById(R.id.btnSalir)
 
         cargarNombre()
 
-        btnAgendar.setOnClickListener{
+        btnAgendarCita.setOnClickListener{
             // Redirigir a la actividad de creación de cita
             val intent = Intent(this@InterfazCliente, CrearCita::class.java)
             intent.putExtra("tarea", "crear")
+            intent.putExtra("sujeto", "cliente")
             startActivity(intent)
         }
 
