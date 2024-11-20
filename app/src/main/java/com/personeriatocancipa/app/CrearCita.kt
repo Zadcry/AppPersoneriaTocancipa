@@ -40,6 +40,9 @@ class CrearCita : AppCompatActivity() {
     private lateinit var gridSeleccionarAbogado: GridLayout
     private lateinit var txtConsultar: EditText
     private lateinit var txtDescripcion: EditText
+    private lateinit var txtFecha: TextView
+    private lateinit var txtDocumento: TextView
+    private lateinit var txtAnuncio: TextView
     private lateinit var spAbogado: Spinner
     private lateinit var spTema: Spinner
     private lateinit var btnHorarios: Button
@@ -47,11 +50,22 @@ class CrearCita : AppCompatActivity() {
     private lateinit var btnSalir: Button
     private lateinit var btnModificar: Button
     private lateinit var btnEliminar: Button
-    private lateinit var txtFecha: TextView
+    private lateinit var btnConsultarCedula: Button
+    private lateinit var btnConsultarID: Button
     private lateinit var gridConsultar: GridLayout
     private lateinit var mDbRef: DatabaseReference
+    private lateinit var tvDocumento: TextView
     private lateinit var tarea: String
     private lateinit var abogado: String
+    private lateinit var sujeto: String
+    private lateinit var nombreCliente: String
+    private lateinit var correoAbogado: String
+    private lateinit var correoCliente: String
+    private lateinit var cedulaCliente: String
+    private lateinit var tema: String
+    private lateinit var descripcion: String
+    private lateinit var calendar: Calendar
+    private lateinit var correosAdicionales: List<String>
 
     private val horariosAbogados = mapOf(
         "Edwin Yovanni Franco Bahamón" to mapOf(
@@ -132,16 +146,22 @@ class CrearCita : AppCompatActivity() {
         setContentView(R.layout.activity_crear_cita)
 
         // Buscar elementos de layout
+        txtAnuncio = findViewById(R.id.txtAnuncio)
         txtConsultar = findViewById(R.id.txtConsultar)
         txtDescripcion = findViewById(R.id.txtDescripcion)
+        txtFecha = findViewById(R.id.txtFecha)
+        txtDocumento = findViewById(R.id.txtDocumento)
+        tvDocumento = findViewById(R.id.tvDocumento)
         btnHorarios = findViewById(R.id.btnHorarios)
         btnSeleccionar = findViewById(R.id.btnSeleccionar)
         btnSalir = findViewById(R.id.btnSalir)
         btnModificar = findViewById(R.id.btnModificar)
         btnEliminar = findViewById(R.id.btnEliminar)
-        txtFecha = findViewById(R.id.txtFecha)
+        btnConsultarCedula = findViewById(R.id.btnConsultarCedula)
+        btnConsultarID = findViewById(R.id.btnConsultarID)
         gridConsultar = findViewById(R.id.gridConsultar)
         gridSeleccionarAbogado = findViewById(R.id.gridSeleccionarAbogado)
+        nombreCliente = ""
 
         // Obtener el ID más alto de citas en Firebase al iniciar
         obtenerUltimoID()
@@ -210,32 +230,61 @@ class CrearCita : AppCompatActivity() {
 
         // Obtener el valor de la tarea desde el Intent
         tarea = intent.getStringExtra("tarea").toString()
-
-        btnSeleccionar.setOnClickListener(){
-            scheduleAppointment()
-        }
+        sujeto = intent.getStringExtra("sujeto").toString()
 
         // Configurar acciones en función de la tarea
         when (tarea) {
             "crear" -> {
-                btnSeleccionar.setOnClickListener{
-                    scheduleAppointment()
+                txtAnuncio.text = "Agendar Cita"
+                if(sujeto.equals("cliente")){
+                    // Un cliente la crea para sí mismo
+                    btnSeleccionar.setOnClickListener{
+                        scheduleAppointment(sujeto)
+                    }
+                    txtDocumento.visibility = EditText.GONE
+                    tvDocumento.visibility = TextView.GONE
+                }
+                else{
+                    // Un admin. la crea para un cliente
+                    btnSeleccionar.setOnClickListener{
+                        scheduleAppointment(sujeto)
+                    }
                 }
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.GONE
                 gridConsultar.visibility = GridView.GONE
             }
+            "consultar" -> {
+                txtAnuncio.text = "Consultar Cita"
+                btnConsultarCedula.setOnClickListener {
+                    consultarPorCedula()
+                }
+                btnConsultarID.setOnClickListener {
+                    consultarPorID()
+                }
+                btnModificar.visibility = Button.GONE
+                btnEliminar.visibility = Button.GONE
+                btnSeleccionar.visibility = Button.GONE
+            }
             "modificar" -> {
+                txtAnuncio.text = "Modificar Cita"
                 btnModificar.setOnClickListener {
                     // Lógica para modificar cita
                 }
                 btnEliminar.visibility = Button.GONE
+                btnSeleccionar.visibility = Button.GONE
+                btnConsultarID.visibility = Button.GONE
+                btnConsultarCedula.visibility = Button.GONE
             }
             "eliminar" -> {
+                txtAnuncio.text = "Eliminar Cita"
                 btnEliminar.setOnClickListener {
                     // Lógica para eliminar cita
                 }
                 btnModificar.visibility = Button.GONE
+                btnSeleccionar.visibility = Button.GONE
+                btnConsultarID.visibility = Button.GONE
+                btnConsultarCedula.visibility = Button.GONE
             }
         }
 
@@ -243,6 +292,14 @@ class CrearCita : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    private fun consultarPorID() {
+        TODO("Not yet implemented")
+    }
+
+    private fun consultarPorCedula() {
+        TODO("Not yet implemented")
     }
 
     private fun obtenerUltimoID() {
@@ -272,14 +329,11 @@ class CrearCita : AppCompatActivity() {
     }
 
     @SuppressLint("DefaultLocale", "SetTextI18n")
-    private fun scheduleAppointment() {
-        val calendar = Calendar.getInstance()
-        val tema = spTema.selectedItem.toString()
-        val descripcion = txtDescripcion.text.toString()
-        var nombreCliente = ""
-        var correoAbogado = ""
-        var correoCliente = ""
-        val correosAdicionales = listOf("ricardoprovisional45@gmail.com", "ricardocorco@unisabana.edu.co")
+    private fun scheduleAppointment(sujeto: String) {
+        calendar = Calendar.getInstance()
+        tema = spTema.selectedItem.toString()
+        descripcion = txtDescripcion.text.toString()
+        correosAdicionales = listOf("ricardoprovisional45@gmail.com", "ricardocorco@unisabana.edu.co")
         if(spTema.selectedItem.toString() != "Víctimas"){
             abogado = spAbogado.selectedItem.toString()
         }
@@ -299,7 +353,7 @@ class CrearCita : AppCompatActivity() {
                     }
                 } else {
                     // Si no se encontró el nombre en los datos
-                    println("No se encontró ningún abogado con el nombre: $abogado")
+                    Toast.makeText(this@CrearCita, "No se encontró el abogado $abogado", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -308,38 +362,72 @@ class CrearCita : AppCompatActivity() {
             }
         })
 
-        // Obtener el correo del cliente (Asumiendo que es el usuario actual)
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            correoCliente = currentUser.email.toString()
-        } else {
-            println("No hay un usuario autenticado.")
-        }
+        if(sujeto == "cliente"){
+            // Obtener el correo del cliente (Asumiendo que es el usuario actual)
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                correoCliente = currentUser.email.toString()
 
-        // Obtener nombre del usuario teniendo su correo
-        mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+                // Obtener nombre del usuario teniendo su correo
+                mDbRef = FirebaseDatabase.getInstance().getReference("userData")
 
-        query = mDbRef.orderByChild("correo").equalTo(correoCliente)
+                query = mDbRef.orderByChild("correo").equalTo(correoCliente)
 
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                // Verificar si existe algún dato que coincida con el nombre
-                if (snapshot.exists()) {
-                    snapshot.children.forEach { childSnapshot ->
-                        // Extraer el correo
-                        nombreCliente = childSnapshot.child("nombreCompleto").value.toString()
+                query.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        // Verificar si existe algún dato que coincida con el nombre
+                        if (snapshot.exists()) {
+                            snapshot.children.forEach { childSnapshot ->
+                                // Extraer el correo
+                                nombreCliente = childSnapshot.child("nombreCompleto").value.toString()
+                                finalizarCreacion()
+                            }
+                        } else {
+                            // Si no se encontró el nombre en los datos
+                            Toast.makeText(this@CrearCita, "No se encontró el correo  $correoCliente", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                } else {
-                    // Si no se encontró el nombre en los datos
-                    println("No se encontró ningún usuario con el correo: $correoCliente")
+
+                    override fun onCancelled(error: DatabaseError) {
+                        println("Error en la consulta: ${error.message}")
+                    }
+                })
+            } else {
+                println("No hay un usuario autenticado.")
+                Toast.makeText(this, "No hay un usuario autenticado", Toast.LENGTH_SHORT).show()
+            }
+        }else{
+            // Si el sujeto es un administrador
+            cedulaCliente = txtDocumento.text.toString()
+
+            // Obtener correo del usuario teniendo su cédula
+            mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+
+            query = mDbRef.orderByChild("documento").equalTo(cedulaCliente)
+
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    // Verificar si existe algún dato que coincida con el nombre
+                    if (snapshot.exists()) {
+                        snapshot.children.forEach { childSnapshot ->
+                            // Extraer el correo
+                            correoCliente = childSnapshot.child("correo").value.toString()
+                            finalizarCreacion()
+                        }
+                    } else {
+                        // Si no se encontró el nombre en los datos
+                        Toast.makeText(this@CrearCita, "No se encontró la cédula $cedulaCliente", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                println("Error en la consulta: ${error.message}")
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    println("Error en la consulta: ${error.message}")
+                }
+            })
+        }
+    }
 
+    private fun finalizarCreacion() {
         DatePickerDialog(this, { _, year, month, day ->
 
             val fechaSeleccionada = Calendar.getInstance().apply { set(year, month, day) }

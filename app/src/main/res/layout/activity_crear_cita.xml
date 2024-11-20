@@ -33,35 +33,45 @@
             />
 
         <!-- Consulta -->
-
-        <!-- Consulta -->
         <GridLayout
             android:id="@+id/gridConsultar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
+            android:columnCount="3"
+            android:rowCount="2"
             android:padding="5dp">
 
             <!-- Texto "Consultar Cita" -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_columnSpan="1"
-                android:layout_gravity="fill"
                 android:text="Consultar Cita"
                 android:textSize="15dp"
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
 
-            <!-- Botón para la acción de consultar -->
+            <!-- Botón para Cédula -->
             <Button
-                android:id="@+id/btnConsultar"
+                android:id="@+id/btnConsultarCedula"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="Consultar"
+                android:text="Consultar Cédula"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/negroSecundario"
+                android:layout_marginLeft="15dp"
+                />
+
+            <!-- Botón para ID -->
+            <Button
+                android:id="@+id/btnConsultarID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Consultar ID"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/negroSecundario"
+                android:layout_marginRight="5dp"
                 />
 
             <!-- EditText para ingresar datos de consulta -->
@@ -69,14 +79,14 @@
                 android:id="@+id/txtConsultar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_columnSpan="2"
+                android:layout_columnSpan="3"
                 android:layout_gravity="fill_horizontal"
                 android:textColorHint="@color/grisClaro"
                 android:textSize="15dp"
                 android:textColor="@color/black"
                 android:inputType="text"
                 android:padding="10dp"
-                android:hint="Digite el número de cita"
+                android:hint="Digite el número de consulta"
                 android:background="@drawable/edittext_format"
                 android:layout_marginTop="5dp"
                 android:singleLine="true"/>
@@ -84,6 +94,34 @@
 
 
         <!-- Inputs -->
+
+        <!-- Documento del Usuario-->
+        <TextView
+            android:id="@+id/tvDocumento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Documento del Usuario"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <EditText
+            android:id="@+id/txtDocumento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/grisClaro"
+            android:textSize="15dp"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:background="@drawable/edittext_format"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:hint="Digite sin puntos ni comas"
+            android:singleLine="true"
+            />
 
         <!-- Tema -->
 
