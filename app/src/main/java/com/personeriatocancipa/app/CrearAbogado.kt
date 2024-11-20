@@ -90,7 +90,7 @@ class CrearAbogado : AppCompatActivity() {
         spEstado = findViewById(R.id.spEstado)
         ArrayAdapter.createFromResource(
             this,
-            R.array.opcionesEstado,
+            R.array.opcionesEstadoCargo,
             R.drawable.spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)

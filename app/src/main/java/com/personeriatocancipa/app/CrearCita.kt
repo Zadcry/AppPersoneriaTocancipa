@@ -285,7 +285,7 @@ class CrearCita : AppCompatActivity() {
         }
 
         // Obtener correo del abogado teniendo su nombre
-        mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+        mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
 
         var query = mDbRef.orderByChild("nombreCompleto").equalTo(abogado)
 
