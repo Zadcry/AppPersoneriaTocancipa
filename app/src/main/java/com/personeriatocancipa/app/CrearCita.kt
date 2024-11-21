@@ -279,31 +279,29 @@ class CrearCita : AppCompatActivity() {
             }
             "consultar" -> {
                 txtAnuncio.text = "Consultar Cita"
-                btnConsultarID.setOnClickListener {
-                    consultarPorID()
-                }
+                gridConsultar.visibility = GridView.VISIBLE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
             }
             "modificar" -> {
                 txtAnuncio.text = "Modificar Cita"
-                btnModificar.setOnClickListener {
-                    // Lógica para modificar cita
-                }
+                gridConsultar.visibility = GridView.VISIBLE
                 btnEliminar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
-                btnConsultarID.visibility = Button.GONE
+                btnConsultarID.visibility = Button.VISIBLE
             }
             "eliminar" -> {
                 txtAnuncio.text = "Eliminar Cita"
-                btnEliminar.setOnClickListener {
-                    // Lógica para eliminar cita
-                }
+                gridConsultar.visibility = GridView.VISIBLE
                 btnModificar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
-                btnConsultarID.visibility = Button.GONE
+                btnConsultarID.visibility = Button.VISIBLE
             }
+        }
+
+        btnConsultarID.setOnClickListener {
+            consultarPorID()
         }
 
         btnSalir.setOnClickListener{
@@ -313,6 +311,36 @@ class CrearCita : AppCompatActivity() {
         btnHorarios.setOnClickListener(){
             checkAndRequestManageStoragePermission()
         }
+
+        btnEliminar.setOnClickListener(){
+            eliminarCita()
+        }
+    }
+
+    private fun eliminarCita(){
+        val idCita = txtConsultar.text.toString().toIntOrNull()
+        if (idCita == null) {
+            Toast.makeText(this, "ID de cita inválido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val ref = FirebaseDatabase.getInstance().getReference("citas")
+        // Buscar cita y si existe, eliminarla
+        ref.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.ref.removeValue()
+                    Toast.makeText(this@CrearCita, "Cita eliminada con éxito", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CrearCita, "Error al eliminar la cita", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
