@@ -54,6 +54,7 @@ class CrearCita : AppCompatActivity() {
     private lateinit var btnConsultarID: Button
     private lateinit var gridConsultar: GridLayout
     private lateinit var mDbRef: DatabaseReference
+    private lateinit var mAuth: FirebaseAuth
     private lateinit var tvDocumento: TextView
     private lateinit var tarea: String
     private lateinit var abogado: String
@@ -140,12 +141,13 @@ class CrearCita : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
 
-    @SuppressLint("ResourceType", "MissingInflatedId")
+    @SuppressLint("ResourceType", "MissingInflatedId", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_cita)
 
         nombreCliente = ""
+        mAuth = FirebaseAuth.getInstance()
 
         // Buscar elementos de layout
         txtAnuncio = findViewById(R.id.txtAnuncio)
@@ -292,6 +294,307 @@ class CrearCita : AppCompatActivity() {
         btnSalir.setOnClickListener{
             finish()
         }
+        btnHorarios.setOnClickListener{
+            checkAndRequestManageStoragePermission()
+        }
+
+        btnEliminar.setOnClickListener{
+            eliminarCita()
+        }
+
+        btnModificar.setOnClickListener{
+            modificarCita()
+        }
+    }
+
+    @SuppressLint("DefaultLocale", "SetTextI18n")
+    private fun modificarCita() {
+
+        // Obtener variables de la interfaz
+        mDbRef = FirebaseDatabase.getInstance().getReference("citas")
+        var idCita = txtConsultar.text.toString().toInt()
+        var cedulaUsuario = txtDocumento.text.toString()
+        var tema = spTema.selectedItem.toString()
+        var abogado = spAbogado.selectedItem.toString()
+        var descripcion = txtDescripcion.text.toString()
+        var nuevoCorreoAbogado = ""
+
+        // Obtener correo del abogado teniendo su nombre
+        mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
+
+        var query = mDbRef.orderByChild("nombreCompleto").equalTo(abogado)
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Verificar si existe algún dato que coincida con el nombre
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { childSnapshot ->
+                        // Extraer el correo
+                        nuevoCorreoAbogado = childSnapshot.child("correo").value.toString()
+                    }
+                } else {
+                    // Si no se encontró el nombre en los datos
+                    Toast.makeText(this@CrearCita, "No se encontró el abogado $abogado", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("Error en la consulta: ${error.message}")
+            }
+        })
+
+        // Verificar si la cita existe
+        mDbRef.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    // Verificar si el usuario es administrador
+                    mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
+                    query = mDbRef.orderByChild("correo").equalTo(mAuth.currentUser?.email)
+                    query.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                nombreCliente = snapshot.child("nombreCompleto").value.toString()
+                                // Modificar la cita
+                                DatePickerDialog(this@CrearCita, { _, year, month, day ->
+
+                                    val fechaSeleccionada = Calendar.getInstance().apply { set(year, month, day) }
+                                    val diaSemana = fechaSeleccionada.get(Calendar.DAY_OF_WEEK)
+                                    val dias = arrayOf("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
+                                    val diaNombre = dias[diaSemana - 1]
+                                    val horarioAbogado = horariosAbogados[abogado]?.get(diaNombre)
+
+                                    // Validación: Una semana de antelación
+                                    val fechaActual = Calendar.getInstance()
+                                    fechaActual.add(Calendar.DAY_OF_YEAR, 7) // Sumar una semana
+                                    if (fechaSeleccionada.before(fechaActual)) {
+                                        Toast.makeText(this@CrearCita, "Debe agendarse con al menos una semana de antelación.", Toast.LENGTH_SHORT).show()
+                                        return@DatePickerDialog
+                                    }else{
+                                        // Validación: Una cita por semana
+                                        verificarCitasPorSemana(correoCliente, fechaSeleccionada) { puedeAgendar ->
+                                            if (!puedeAgendar) {
+                                                Toast.makeText(this@CrearCita, "Solo puede agendar una cita por semana.", Toast.LENGTH_SHORT).show()
+                                                return@verificarCitasPorSemana
+                                            }else{
+                                                if(horarioAbogado != null){
+                                                    val (horaInicio, horaFin) = horarioAbogado
+                                                    TimePickerDialog(this@CrearCita, { _, hourOfDay, minute ->
+                                                        val horaSeleccionada = String.format("%02d:%02d", hourOfDay, minute)
+                                                        if(horaSeleccionada !in horaInicio..horaFin || horaSeleccionada in horaAlmuerzo.first..horaAlmuerzo.second){
+                                                            Toast.makeText(this@CrearCita, "Hora seleccionada no disponible", Toast.LENGTH_SHORT).show()
+                                                            return@TimePickerDialog
+                                                        }else{
+                                                            val duracion = duracionCitas[abogado] ?: 60 // Duración predeterminada de 60 minutos
+                                                            val fecha = "$day-${month + 1}-$year"
+                                                            val horaFinCita = calcularHoraFin(hourOfDay, minute, duracion)
+
+                                                            verificarDisponibilidad(abogado, fecha, horaSeleccionada, horaFinCita) { disponible ->
+                                                                if (disponible) {
+                                                                    val cita = Cita(
+                                                                        idCita,
+                                                                        descripcion,
+                                                                        fecha,
+                                                                        horaSeleccionada,
+                                                                        nuevoCorreoAbogado,
+                                                                        correoCliente,
+                                                                        tema,
+                                                                        "Pendiente"
+                                                                    )
+                                                                    saveAppointmentToFirebase(cita, abogado, fecha, horaSeleccionada, horaFinCita)
+                                                                    // Enviar el correo con la información de la cita
+                                                                    val subject = "Cita en Personería - ID: ${cita.id}"
+                                                                    var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+
+                                                                    sendEmailInBackground(correoCliente, subject, body)
+
+                                                                    val bodyAdicionales = """
+                                                                        Información de la cita:
+                                                                        
+                                                                        ID: ${cita.id}
+                                                                        Fecha: $fecha
+                                                                        Hora: $horaSeleccionada
+                                                                        Cliente: $nombreCliente
+                                                                        Abogado: $abogado
+                                                                        Descripción: $descripcion
+                                                                    """.trimIndent()
+                                                                    enviarCorreoAdicionales(subject, bodyAdicionales, correosAdicionales)
+
+                                                                    body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                                                    sendEmailInBackground(nuevoCorreoAbogado, subject, body)
+
+                                                                    // Mostrar detalles en la pantalla
+                                                                    txtFecha.text = "Cita agendada para $fecha, $horaSeleccionada con ID: ${cita.id}"
+                                                                } else {
+                                                                    Toast.makeText(this@CrearCita, "La hora seleccionada ya está ocupada.", Toast.LENGTH_SHORT).show()
+                                                                }
+                                                            }
+                                                        }
+                                                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show()
+                                                }else{
+                                                    Toast.makeText(this@CrearCita, "Día no disponible", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        }
+                                    }
+                                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+                                Toast.makeText(this@CrearCita, "Cita modificada con éxito", Toast.LENGTH_SHORT).show()
+                            } else {
+                                // El usuario no tiene permisos para modificar la cita
+                                Toast.makeText(this@CrearCita, "No tiene permisos para modificar esta cita", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            println("Error en la consulta: ${error.message}")
+                        }
+                    })
+
+                } else {
+                    Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CrearCita, "Error al consultar la cita", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun eliminarCita(){
+        val idCita = txtConsultar.text.toString().toIntOrNull()
+        if (idCita == null) {
+            Toast.makeText(this, "ID de cita inválido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val ref = FirebaseDatabase.getInstance().getReference("citas")
+        // Buscar cita y si existe, eliminarla
+        ref.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.ref.removeValue()
+                    Toast.makeText(this@CrearCita, "Cita eliminada con éxito", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CrearCita, "Error al eliminar la cita", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun checkAndRequestManageStoragePermission() {
+        // Verifica si ya se tiene el permiso especial
+        if (Environment.isExternalStorageManager()) {
+            // Permiso ya concedido, procede con la operación
+            descargarHorarios()
+        } else {
+            // Dirige al usuario a las configuraciones para conceder el permiso
+            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+            intent.data = Uri.parse("package:${applicationContext.packageName}")
+            startActivityForResult(intent, 1002)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1002) {
+            // Verifica nuevamente si se otorgó el permiso
+            if (Environment.isExternalStorageManager()) {
+                Toast.makeText(this, "Permiso concedido, iniciando descarga.", Toast.LENGTH_SHORT).show()
+                descargarHorarios()
+            } else {
+                Toast.makeText(this, "Permiso no concedido, no se puede proceder.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun descargarHorarios() {
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val channelId = "download_channel"
+
+        // Crear canal de notificación para API 26+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Descargas",
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                description = "Notificación de progreso de descarga"
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        // Crear notificación inicial
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(android.R.drawable.stat_sys_download)
+            .setContentTitle("Descargando archivo...")
+            .setProgress(100, 0, true)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+
+        notificationManager.notify(1, notificationBuilder.build())
+
+        // Configurar la ruta de descarga
+        val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        if (!downloadsDir.exists()) downloadsDir.mkdirs()
+
+        val localFile = File(downloadsDir, "Posibles Horarios.pdf")
+
+        // Referencia al archivo en Firebase Storage
+        val storageReference = FirebaseStorage.getInstance().reference.child("Archivos/Posibles Horarios.pdf")
+
+        // Descarga el archivo
+        storageReference.getFile(localFile).addOnSuccessListener {
+            // Crear URI usando FileProvider para compartir el archivo
+            val uri = FileProvider.getUriForFile(this, "$packageName.provider", localFile)
+
+            // Crear Intent para abrir el archivo PDF
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(uri, "application/pdf")
+                flags = Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_GRANT_READ_URI_PERMISSION
+            }
+
+            // Crear PendingIntent para la notificación
+            val pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            // Actualizar la notificación al completar la descarga
+            notificationBuilder
+                .setContentTitle("Descarga completada")
+                .setContentText("Pulsa para abrir el archivo")
+                .setProgress(0, 0, false)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setSmallIcon(android.R.drawable.stat_sys_download_done)
+
+            notificationManager.notify(1, notificationBuilder.build())
+
+            Toast.makeText(this, "Archivo descargado: ${localFile.path}", Toast.LENGTH_LONG).show()
+
+        }.addOnFailureListener { exception ->
+            // Manejar errores en la descarga
+            notificationBuilder
+                .setContentTitle("Error en la descarga")
+                .setContentText(exception.message)
+                .setProgress(0, 0, false)
+                .setSmallIcon(android.R.drawable.stat_notify_error)
+
+            notificationManager.notify(1, notificationBuilder.build())
+
+            Toast.makeText(this, "Error al descargar archivo: ${exception.message}", Toast.LENGTH_LONG)
+                .show()
+        }
 
     }
 
@@ -302,7 +605,7 @@ class CrearCita : AppCompatActivity() {
     private fun consultarPorCedula() {
         TODO("Not yet implemented")
     }
-
+    
     private fun obtenerUltimoID() {
         val ref = FirebaseDatabase.getInstance().getReference("citas")
         ref.orderByKey().limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
