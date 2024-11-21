@@ -319,6 +319,46 @@ class CrearCita : AppCompatActivity() {
         btnHorarios.setOnClickListener(){
             checkAndRequestManageStoragePermission()
         }
+
+        btnEliminar.setOnClickListener(){
+            eliminarCita()
+        }
+    }
+
+    private fun eliminarCita(){
+        val idCita = txtConsultar.text.toString().toIntOrNull()
+        if (idCita == null) {
+            Toast.makeText(this, "ID de cita inválido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val ref = FirebaseDatabase.getInstance().getReference("citas")
+        // Buscar cita y si existe, eliminarla
+        ref.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    //  Tambien quitar horario de la cita
+                    println(snapshot)
+                    conseguirNombreAbogado(snapshot.child("correoAbogado").value.toString(), "eliminar")
+                    eliminarHorarioOcupado(idCita.toString(),abogado, snapshot.child("fecha").value.toString())
+
+                    snapshot.ref.removeValue()
+                    Toast.makeText(this@CrearCita, "Cita eliminada con éxito", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CrearCita, "Error al eliminar la cita", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun eliminarHorarioOcupado(idCita: String, abogado: String, fecha: String){
+        val ref = FirebaseDatabase.getInstance().getReference("horariosOcupados/$abogado/$fecha/$idCita")
+        ref.removeValue()
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -457,7 +497,7 @@ class CrearCita : AppCompatActivity() {
                     spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(temaC))
                     println(spTema.selectedItem.toString())
 
-                    conseguirNombreAbogado(abogadoC)
+                    conseguirNombreAbogado(abogadoC, "modificar")
                     conseguirCedulaCliente(clienteC)
                 } else {
                     Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
@@ -470,7 +510,7 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
-    private fun conseguirNombreAbogado(correoAbogado: String){
+    private fun conseguirNombreAbogado(correoAbogado: String, modo:String){
         val ref = FirebaseDatabase.getInstance().getReference("abogadoData")
         ref.orderByChild("correo").equalTo(correoAbogado).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -480,8 +520,12 @@ class CrearCita : AppCompatActivity() {
                         println(snapshot)
                         var nombreAbogado = childSnapshot.child("nombreCompleto").value.toString()
                         //
-
+                        if (modo=="modificar"){
                         spAbogado.setSelection((spAbogado.adapter as ArrayAdapter<String>).getPosition(nombreAbogado))
+                        }
+                        else if (modo=="eliminar"){
+                            abogado=nombreAbogado
+                        }
                     }
                 } else {
                     // Si no se encontró el nombre en los datos
@@ -516,8 +560,6 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
-    private fun consultarPorCedula() {
-    }
 
     private fun obtenerUltimoID() {
         val ref = FirebaseDatabase.getInstance().getReference("citas")
