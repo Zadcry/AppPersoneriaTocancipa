@@ -66,7 +66,6 @@ class CrearCita : AppCompatActivity() {
     private lateinit var btnSalir: Button
     private lateinit var btnModificar: Button
     private lateinit var btnEliminar: Button
-    private lateinit var btnConsultarCedula: Button
     private lateinit var btnConsultarID: Button
     private lateinit var gridConsultar: GridLayout
     private lateinit var mDbRef: DatabaseReference
@@ -161,6 +160,8 @@ class CrearCita : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_cita)
 
+        nombreCliente = ""
+
         // Buscar elementos de layout
         txtAnuncio = findViewById(R.id.txtAnuncio)
         txtConsultar = findViewById(R.id.txtConsultar)
@@ -173,11 +174,9 @@ class CrearCita : AppCompatActivity() {
         btnSalir = findViewById(R.id.btnSalir)
         btnModificar = findViewById(R.id.btnModificar)
         btnEliminar = findViewById(R.id.btnEliminar)
-        btnConsultarCedula = findViewById(R.id.btnConsultarCedula)
         btnConsultarID = findViewById(R.id.btnConsultarID)
         gridConsultar = findViewById(R.id.gridConsultar)
         gridSeleccionarAbogado = findViewById(R.id.gridSeleccionarAbogado)
-        nombreCliente = ""
 
         // Obtener el ID más alto de citas en Firebase al iniciar
         obtenerUltimoID()
@@ -260,7 +259,7 @@ class CrearCita : AppCompatActivity() {
         when (tarea) {
             "crear" -> {
                 txtAnuncio.text = "Agendar Cita"
-                if(sujeto.equals("cliente")){
+                if(sujeto == "cliente"){
                     // Un cliente la crea para sí mismo
                     btnSeleccionar.setOnClickListener{
                         scheduleAppointment(sujeto)
@@ -280,36 +279,29 @@ class CrearCita : AppCompatActivity() {
             }
             "consultar" -> {
                 txtAnuncio.text = "Consultar Cita"
-                btnConsultarCedula.setOnClickListener {
-                    consultarPorCedula()
-                }
-                btnConsultarID.setOnClickListener {
-                    consultarPorID()
-                }
+                gridConsultar.visibility = GridView.VISIBLE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
             }
             "modificar" -> {
                 txtAnuncio.text = "Modificar Cita"
-                btnModificar.setOnClickListener {
-                    // Lógica para modificar cita
-                }
+                gridConsultar.visibility = GridView.VISIBLE
                 btnEliminar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
-                btnConsultarID.visibility = Button.GONE
-                btnConsultarCedula.visibility = Button.GONE
+                btnConsultarID.visibility = Button.VISIBLE
             }
             "eliminar" -> {
                 txtAnuncio.text = "Eliminar Cita"
-                btnEliminar.setOnClickListener {
-                    // Lógica para eliminar cita
-                }
+                gridConsultar.visibility = GridView.VISIBLE
                 btnModificar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
-                btnConsultarID.visibility = Button.GONE
-                btnConsultarCedula.visibility = Button.GONE
+                btnConsultarID.visibility = Button.VISIBLE
             }
+        }
+
+        btnConsultarID.setOnClickListener {
+            consultarPorID()
         }
 
         btnSalir.setOnClickListener{
@@ -639,7 +631,13 @@ class CrearCita : AppCompatActivity() {
                             snapshot.children.forEach { childSnapshot ->
                                 // Extraer el correo
                                 nombreCliente = childSnapshot.child("nombreCompleto").value.toString()
-                                finalizarCreacion()
+                                println(nombreCliente)
+                                if (nombreCliente.isNotEmpty()) {
+                                    println("Nombre Cliente asignado: $nombreCliente")
+                                    finalizarCreacion()
+                                }else{
+                                    println("El nombre del cliente está vacío.")
+                                }
                             }
                         } else {
                             // Si no se encontró el nombre en los datos
@@ -666,16 +664,19 @@ class CrearCita : AppCompatActivity() {
 
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    // Verificar si existe algún dato que coincida con el nombre
                     if (snapshot.exists()) {
                         snapshot.children.forEach { childSnapshot ->
-                            // Extraer el correo
                             correoCliente = childSnapshot.child("correo").value.toString()
-                            finalizarCreacion()
+                            nombreCliente = childSnapshot.child("nombreCompleto").value.toString()
+                            if (correoCliente.isNotEmpty()) {
+                                println("Correo Cliente asignado: $correoCliente")
+                                finalizarCreacion()
+                            } else {
+                                Toast.makeText(this@CrearCita, "El correo del cliente no está disponible.", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     } else {
-                        // Si no se encontró el nombre en los datos
-                        Toast.makeText(this@CrearCita, "No se encontró la cédula $cedulaCliente", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CrearCita, "No se encontró información del cliente.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -686,6 +687,7 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun finalizarCreacion() {
         DatePickerDialog(this, { _, year, month, day ->
 

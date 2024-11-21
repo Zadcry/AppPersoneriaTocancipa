@@ -41,7 +41,7 @@ class InterfazAbogado : AppCompatActivity() {
 
     private fun cargarNombre() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val databaseRef = FirebaseDatabase.getInstance().getReference("userData").child(userId)
+        val databaseRef = FirebaseDatabase.getInstance().getReference("abogadoData").child(userId)
         val userNombreRef = databaseRef.child("nombreCompleto")
 
         userNombreRef.addListenerForSingleValueEvent(object : ValueEventListener {
