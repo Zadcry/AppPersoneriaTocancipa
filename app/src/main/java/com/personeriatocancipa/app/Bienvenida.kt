@@ -116,8 +116,17 @@ class Bienvenida : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 println(snapshot)
                 if (snapshot.exists()) {
-                    val intent = Intent(this@Bienvenida, InterfazAbogado::class.java)
-                    startActivity(intent)
+                    val estado = snapshot.child("estado").value.toString()
+                    if(estado == "Activo") {
+                        val intent = Intent(this@Bienvenida, InterfazAbogado::class.java)
+                        startActivity(intent)
+                    }else{
+                        Toast.makeText(
+                            this@Bienvenida,
+                            "¡Esta cuenta ha sido desactivada!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
                     buscarSiAdmin()
                 }
@@ -140,8 +149,17 @@ class Bienvenida : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 println(snapshot)
                 if (snapshot.exists()) {
-                    val intent = Intent(this@Bienvenida, InterfazAdmin::class.java)
-                    startActivity(intent)
+                    val estado = snapshot.child("estado").value.toString()
+                    if(estado == "Activo") {
+                        val intent = Intent(this@Bienvenida, InterfazAdmin::class.java)
+                        startActivity(intent)
+                    }else{
+                        Toast.makeText(
+                            this@Bienvenida,
+                            "¡Esta cuenta ha sido desactivada!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 } else {
                     Toast.makeText(
                         this@Bienvenida,
