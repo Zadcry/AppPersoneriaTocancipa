@@ -161,6 +161,8 @@ class CrearCita : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_cita)
 
+        nombreCliente = ""
+
         // Buscar elementos de layout
         txtAnuncio = findViewById(R.id.txtAnuncio)
         txtConsultar = findViewById(R.id.txtConsultar)
@@ -177,7 +179,6 @@ class CrearCita : AppCompatActivity() {
         btnConsultarID = findViewById(R.id.btnConsultarID)
         gridConsultar = findViewById(R.id.gridConsultar)
         gridSeleccionarAbogado = findViewById(R.id.gridSeleccionarAbogado)
-        nombreCliente = ""
 
         // Obtener el ID más alto de citas en Firebase al iniciar
         obtenerUltimoID()
@@ -252,7 +253,7 @@ class CrearCita : AppCompatActivity() {
         when (tarea) {
             "crear" -> {
                 txtAnuncio.text = "Agendar Cita"
-                if(sujeto.equals("cliente")){
+                if(sujeto == "cliente"){
                     // Un cliente la crea para sí mismo
                     btnSeleccionar.setOnClickListener{
                         scheduleAppointment(sujeto)
@@ -510,7 +511,13 @@ class CrearCita : AppCompatActivity() {
                             snapshot.children.forEach { childSnapshot ->
                                 // Extraer el correo
                                 nombreCliente = childSnapshot.child("nombreCompleto").value.toString()
-                                finalizarCreacion()
+                                println(nombreCliente)
+                                if (nombreCliente.isNotEmpty()) {
+                                    println("Nombre Cliente asignado: $nombreCliente")
+                                    finalizarCreacion()
+                                }else{
+                                    println("El nombre del cliente está vacío.")
+                                }
                             }
                         } else {
                             // Si no se encontró el nombre en los datos
@@ -537,16 +544,19 @@ class CrearCita : AppCompatActivity() {
 
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    // Verificar si existe algún dato que coincida con el nombre
                     if (snapshot.exists()) {
                         snapshot.children.forEach { childSnapshot ->
-                            // Extraer el correo
                             correoCliente = childSnapshot.child("correo").value.toString()
-                            finalizarCreacion()
+                            nombreCliente = childSnapshot.child("nombreCompleto").value.toString()
+                            if (correoCliente.isNotEmpty()) {
+                                println("Correo Cliente asignado: $correoCliente")
+                                finalizarCreacion()
+                            } else {
+                                Toast.makeText(this@CrearCita, "El correo del cliente no está disponible.", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     } else {
-                        // Si no se encontró el nombre en los datos
-                        Toast.makeText(this@CrearCita, "No se encontró la cédula $cedulaCliente", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CrearCita, "No se encontró información del cliente.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -557,6 +567,7 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun finalizarCreacion() {
         DatePickerDialog(this, { _, year, month, day ->
 
