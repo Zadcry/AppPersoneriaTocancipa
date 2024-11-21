@@ -7,7 +7,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
 
         <!-- Imagen -->
         <ImageView
@@ -50,31 +53,21 @@
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
 
-            <!-- Botón para Cédula -->
-            <Button
-                android:id="@+id/btnConsultarCedula"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Consultar Cédula"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/negroSecundario"
-                android:layout_marginLeft="15dp"
-                />
-
             <!-- Botón para ID -->
+
+            <!-- EditText para ingresar datos de consulta -->
             <Button
                 android:id="@+id/btnConsultarID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Consultar ID"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/negroSecundario"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_gravity="end"
                 android:layout_marginRight="5dp"
-                />
+                android:backgroundTint="@color/negroSecundario"
+                android:text="Consultar ID"
+                android:textColor="@color/white" />
 
-            <!-- EditText para ingresar datos de consulta -->
             <EditText
                 android:id="@+id/txtConsultar"
                 android:layout_width="0dp"
@@ -235,10 +228,10 @@
 
         </LinearLayout>
 
-
         <Button
             android:id="@+id/btnSeleccionar"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:text="Crear Cita"
             android:textColor="@color/white"

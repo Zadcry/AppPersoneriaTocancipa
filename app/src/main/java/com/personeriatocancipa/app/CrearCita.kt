@@ -223,8 +223,16 @@ class CrearCita : AppCompatActivity() {
 
                 // Mostrar u ocultar la grilla de selección de abogado
                 if (selectedTema == "Víctimas") {
-                    gridSeleccionarAbogado.visibility = View.GONE
+                    gridSeleccionarAbogado.visibility = View.VISIBLE
+
+                    val abogadoAdapter = ArrayAdapter(
+                        this@CrearCita,
+                        R.drawable.spinner_item, // Usa el estilo definido
+                        listOf("Edwin Yovanni Franco Bahamón")
+                    )
                     abogado = "Edwin Yovanni Franco Bahamón"
+                    abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+                    spAbogado.adapter = abogadoAdapter
                 } else {
                     gridSeleccionarAbogado.visibility = View.VISIBLE
 
@@ -307,7 +315,6 @@ class CrearCita : AppCompatActivity() {
         btnSalir.setOnClickListener{
             finish()
         }
-
 
         btnHorarios.setOnClickListener(){
             checkAndRequestManageStoragePermission()
@@ -425,11 +432,91 @@ class CrearCita : AppCompatActivity() {
     }
 
     private fun consultarPorID() {
-        TODO("Not yet implemented")
+        // Consultar datos de la cita por el ID de la misma
+        val idCita = txtConsultar.text.toString().toIntOrNull()
+        if (idCita == null) {
+            Toast.makeText(this, "ID de cita inválido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val ref = FirebaseDatabase.getInstance().getReference("citas")
+        ref.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val descripcionC = snapshot.child("descripcion").value.toString()
+                    val fechaC = snapshot.child("fecha").value.toString()
+                    val horaC = snapshot.child("hora").value.toString()
+                    val abogadoC = snapshot.child("correoAbogado").value.toString()
+                    val clienteC = snapshot.child("correoCliente").value.toString()
+                    val temaC = snapshot.child("tema").value.toString()
+                    val estadoC = snapshot.child("estado").value.toString()
+
+                    txtConsultar.setText(snapshot.key.toString())
+                    txtDescripcion.setText(descripcionC)
+                    txtFecha.text = "Fecha: $fechaC, Hora: $horaC"
+                    spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(temaC))
+                    println(spTema.selectedItem.toString())
+
+                    conseguirNombreAbogado(abogadoC)
+                    conseguirCedulaCliente(clienteC)
+                } else {
+                    Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CrearCita, "Error al consultar la cita", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun conseguirNombreAbogado(correoAbogado: String){
+        val ref = FirebaseDatabase.getInstance().getReference("abogadoData")
+        ref.orderByChild("correo").equalTo(correoAbogado).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { childSnapshot ->
+                        // Extraer el correo
+                        println(snapshot)
+                        var nombreAbogado = childSnapshot.child("nombreCompleto").value.toString()
+                        //
+
+                        spAbogado.setSelection((spAbogado.adapter as ArrayAdapter<String>).getPosition(nombreAbogado))
+                    }
+                } else {
+                    // Si no se encontró el nombre en los datos
+                    Toast.makeText(this@CrearCita, "No se encontró el abogado $abogado", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                println("Error en la consulta: ${error.message}")
+            }
+        })
+    }
+
+    private fun conseguirCedulaCliente(correoCliente: String){
+        val ref = FirebaseDatabase.getInstance().getReference("userData")
+        ref.orderByChild("correo").equalTo(correoCliente).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    println(snapshot)
+                    snapshot.children.forEach { childSnapshot ->
+                        // Extraer el correo
+                        var cedulaCliente = childSnapshot.child("documento").value.toString()
+                        txtDocumento.setText(cedulaCliente)
+                    }
+                } else {
+                    // Si no se encontró el nombre en los datos
+                    Toast.makeText(this@CrearCita, "No se encontró la cédula $cedulaCliente", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {
+                println("Error en la consulta: ${error.message}")
+            }
+        })
     }
 
     private fun consultarPorCedula() {
-        TODO("Not yet implemented")
     }
 
     private fun obtenerUltimoID() {
