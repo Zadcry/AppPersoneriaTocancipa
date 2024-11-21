@@ -66,7 +66,6 @@ class CrearCita : AppCompatActivity() {
     private lateinit var btnSalir: Button
     private lateinit var btnModificar: Button
     private lateinit var btnEliminar: Button
-    private lateinit var btnConsultarCedula: Button
     private lateinit var btnConsultarID: Button
     private lateinit var gridConsultar: GridLayout
     private lateinit var mDbRef: DatabaseReference
@@ -175,7 +174,6 @@ class CrearCita : AppCompatActivity() {
         btnSalir = findViewById(R.id.btnSalir)
         btnModificar = findViewById(R.id.btnModificar)
         btnEliminar = findViewById(R.id.btnEliminar)
-        btnConsultarCedula = findViewById(R.id.btnConsultarCedula)
         btnConsultarID = findViewById(R.id.btnConsultarID)
         gridConsultar = findViewById(R.id.gridConsultar)
         gridSeleccionarAbogado = findViewById(R.id.gridSeleccionarAbogado)
@@ -273,9 +271,6 @@ class CrearCita : AppCompatActivity() {
             }
             "consultar" -> {
                 txtAnuncio.text = "Consultar Cita"
-                btnConsultarCedula.setOnClickListener {
-                    consultarPorCedula()
-                }
                 btnConsultarID.setOnClickListener {
                     consultarPorID()
                 }
@@ -291,7 +286,6 @@ class CrearCita : AppCompatActivity() {
                 btnEliminar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
                 btnConsultarID.visibility = Button.GONE
-                btnConsultarCedula.visibility = Button.GONE
             }
             "eliminar" -> {
                 txtAnuncio.text = "Eliminar Cita"
@@ -301,7 +295,6 @@ class CrearCita : AppCompatActivity() {
                 btnModificar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
                 btnConsultarID.visibility = Button.GONE
-                btnConsultarCedula.visibility = Button.GONE
             }
         }
 
