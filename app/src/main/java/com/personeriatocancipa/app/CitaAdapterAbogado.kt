@@ -67,9 +67,17 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
                 parent: AdapterView<*>, view: View?, position: Int, id: Long
             ) {
                 val nuevoEstado = estados[position]
+
+                // Cambiar dinámicamente el color del texto seleccionado
+                val textView = holder.spEstado.selectedView as? TextView
+                textView?.setTextColor(getColorForEstado(nuevoEstado, holder.itemView.context))
+
+                // Verificar si el estado realmente ha cambiado
                 if (cita.estado != nuevoEstado) {
                     cita.estado = nuevoEstado
                     actualizarEstadoEnFirebase(cita)
+
+                    // Mostrar el mensaje de estado actualizado
                     Toast.makeText(
                         holder.itemView.context,
                         "Estado actualizado a: $nuevoEstado",
@@ -80,6 +88,7 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+
     }
 
     override fun getItemCount(): Int = citas.size
@@ -97,5 +106,15 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
         val databaseReference: DatabaseReference =
             FirebaseDatabase.getInstance().getReference("citas")
         databaseReference.child(cita.id.toString()).child("estado").setValue(cita.estado)
+    }
+
+    private fun getColorForEstado(estado: String, context: android.content.Context): Int {
+        return when (estado.toLowerCase()) {
+            "cancelada" -> context.getColor(R.color.Rojo)
+            "asistió" -> context.getColor(R.color.verde)
+            "no asistió" -> context.getColor(R.color.grisClaro)
+            "pendiente" -> context.getColor(R.color.azul)
+            else -> context.getColor(android.R.color.black) // Color por defecto
+        }
     }
 }
