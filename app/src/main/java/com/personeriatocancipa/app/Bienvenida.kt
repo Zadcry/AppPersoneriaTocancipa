@@ -19,6 +19,7 @@ class Bienvenida : AppCompatActivity() {
     private lateinit var txtContraseña: EditText
     private lateinit var btnLogin: Button
     private lateinit var btnSignUp: Button
+    private lateinit var btnRecuperarPassword: Button
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,7 @@ class Bienvenida : AppCompatActivity() {
         txtContraseña = findViewById(R.id.txtContraseña)
         btnLogin = findViewById(R.id.btnLogin)
         btnSignUp = findViewById(R.id.btnSignUp)
+        btnRecuperarPassword = findViewById(R.id.btnRecuperarPassword)
 
 
         //Crea eventListener para clicks en "Log In"
@@ -44,6 +46,11 @@ class Bienvenida : AppCompatActivity() {
         //Crea eventListener para clicks en "Sign Up"
         btnSignUp.setOnClickListener(){
             signup()
+        }
+
+        //Crea eventListener para clicks en "Recuperar Contraseña"
+        btnRecuperarPassword.setOnClickListener(){
+            recuperarPassword()
         }
     }
 
@@ -173,6 +180,11 @@ class Bienvenida : AppCompatActivity() {
                 Log.e("Error", "Error al leer datos", error.toException())
             }
         })
+    }
+
+    private fun recuperarPassword(){
+        val intent = Intent(this@Bienvenida, RecuperarPassword::class.java)
+        startActivity(intent)
     }
 
 }
