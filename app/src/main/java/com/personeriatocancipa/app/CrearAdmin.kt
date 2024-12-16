@@ -293,7 +293,7 @@ class CrearAdmin : AppCompatActivity() {
                     Toast.makeText(
                         this@CrearAdmin,
                         "No se encontró un usuario con la cédula ingresada",
-                        Toast.LENGTH_SHORT,
+                        Toast.LENGTH_LONG,
                     ).show()
                 }
             }
