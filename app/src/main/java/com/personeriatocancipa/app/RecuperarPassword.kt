@@ -118,7 +118,7 @@ class RecuperarPassword : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Email sent
-                    Toast.makeText(this, "Correo enviado. Revisa su bandeja de entrada o su carpeta de 'No Deseados'", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Correo enviado. Revise su bandeja de entrada o su carpeta de 'No Deseados'", Toast.LENGTH_LONG).show()
                 } else {
                     // Email not sent
                     Toast.makeText(this, "Error al enviar correo", Toast.LENGTH_SHORT).show()
