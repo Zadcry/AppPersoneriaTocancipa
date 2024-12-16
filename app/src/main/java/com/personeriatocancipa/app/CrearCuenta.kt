@@ -45,6 +45,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var btnSignUp: Button
     private lateinit var btnModificar: Button
     private lateinit var btnEliminar: Button
+    private lateinit var tvClave: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
@@ -151,6 +152,7 @@ class CrearCuenta : AppCompatActivity() {
         btnSignUp = findViewById(R.id.btnSignUp)
         btnModificar = findViewById(R.id.btnModificar)
         btnEliminar = findViewById(R.id.btnEliminar)
+        tvClave = findViewById(R.id.tvClave)
 
         if(tarea.equals("crear")){
             txtAnuncio.setText("Crear Cuenta")
@@ -165,15 +167,21 @@ class CrearCuenta : AppCompatActivity() {
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.GONE
+                txtClave.visibility = EditText.GONE
+                tvClave.visibility = TextView.GONE
                 disableFields()
             }else if(tarea.equals("modificar")){
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.VISIBLE
                 btnEliminar.visibility = Button.GONE
+                txtClave.visibility = EditText.GONE
+                tvClave.visibility = TextView.GONE
             }else{
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.VISIBLE
+                txtClave.visibility = EditText.GONE
+                tvClave.visibility = TextView.GONE
                 disableFields()
             }
         }

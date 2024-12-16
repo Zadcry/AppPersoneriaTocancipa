@@ -38,6 +38,7 @@ class CrearAdmin : AppCompatActivity() {
     private lateinit var btnSignUp: Button
     private lateinit var btnModificar: Button
     private lateinit var btnEliminar: Button
+    private lateinit var tvClave: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
@@ -73,6 +74,7 @@ class CrearAdmin : AppCompatActivity() {
         btnConsultar=findViewById(R.id.btnConsultar)
         btnModificar=findViewById(R.id.btnModificar)
         btnSignUp=findViewById(R.id.btnSignUp)
+        tvClave=findViewById(R.id.tvClave)
         tarea = intent.getStringExtra("tarea").toString()
 
         if(tarea.equals("crear")){
@@ -88,15 +90,21 @@ class CrearAdmin : AppCompatActivity() {
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.GONE
+                txtClave.visibility = TextView.GONE
+                tvClave.visibility = TextView.GONE
                 disableFields()
             } else if (tarea.equals("modificar")) {
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.VISIBLE
                 btnEliminar.visibility = Button.GONE
+                txtClave.visibility = TextView.GONE
+                tvClave.visibility = TextView.GONE
             } else {
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.VISIBLE
+                txtClave.visibility = TextView.GONE
+                tvClave.visibility = TextView.GONE
                 disableFields()
             }
         }
