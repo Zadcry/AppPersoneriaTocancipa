@@ -363,7 +363,7 @@ class CrearAbogado : AppCompatActivity() {
         if (nombre.isEmpty() || clave.isEmpty() || documento.isEmpty() || correo.isEmpty()) {
             Toast.makeText(
                 this@CrearAbogado,
-                "Diligencie todos los datos",
+                "Ingrese cédula para modificar",
                 Toast.LENGTH_SHORT,
             ).show()
             return
@@ -388,6 +388,14 @@ class CrearAbogado : AppCompatActivity() {
     }
 
     private fun eliminarAbogado() {
+        if(uidConsultado.isEmpty()){
+            Toast.makeText(
+                this@CrearAbogado,
+                "Ingrese cédula para eliminar",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
         mDbRef.child(uidConsultado).removeValue().addOnSuccessListener {
             Toast.makeText(
