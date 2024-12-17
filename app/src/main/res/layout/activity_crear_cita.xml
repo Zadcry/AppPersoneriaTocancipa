@@ -200,6 +200,85 @@
             android:singleLine="true"
             />
 
+        <LinearLayout
+            android:id="@+id/gridFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="vertical"
+            >
+
+            <!-- Texto "Fecha" -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill"
+                android:text="Fecha"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:gravity="bottom"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- EditText para la fecha -->
+                <EditText
+                    android:id="@+id/txtDia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/grisClaro"
+                    android:textSize="15dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:hint="Seleccione una fecha"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:background="@drawable/edittext_format"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:singleLine="true"
+                    android:enabled="false" /> <!-- Inicialmente deshabilitado -->
+
+                <!-- Botón para seleccionar fecha -->
+                <Button
+                    android:id="@+id/btnFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seleccionar Fecha"
+                    android:textSize="15dp"
+                    android:layout_gravity="end"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/negroSecundario"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Hora -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Hora"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <Spinner
+            android:id="@+id/spHora"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
         <!-- Fecha y Hora -->
         <LinearLayout
             android:layout_width="match_parent"

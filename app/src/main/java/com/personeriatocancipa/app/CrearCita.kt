@@ -59,14 +59,17 @@ class CrearCita : AppCompatActivity() {
     private lateinit var txtFecha: TextView
     private lateinit var txtDocumento: TextView
     private lateinit var txtAnuncio: TextView
+    private lateinit var txtDia: TextView
     private lateinit var spAbogado: Spinner
     private lateinit var spTema: Spinner
+    private lateinit var spHora: Spinner
     private lateinit var btnHorarios: Button
     private lateinit var btnSeleccionar: Button
     private lateinit var btnSalir: Button
     private lateinit var btnModificar: Button
     private lateinit var btnEliminar: Button
     private lateinit var btnConsultarID: Button
+    private lateinit var btnFecha: Button
     private lateinit var gridConsultar: GridLayout
     private lateinit var mDbRef: DatabaseReference
     private lateinit var tvDocumento: TextView
@@ -152,6 +155,8 @@ class CrearCita : AppCompatActivity() {
 
     private val horaAlmuerzo = Pair("12:00", "12:59")
 
+    private var seleccionFecha=""
+    private var seleccionHora=""
 
     private val auth = FirebaseAuth.getInstance()
 
@@ -168,6 +173,7 @@ class CrearCita : AppCompatActivity() {
         txtDescripcion = findViewById(R.id.txtDescripcion)
         txtFecha = findViewById(R.id.txtFecha)
         txtDocumento = findViewById(R.id.txtDocumento)
+        txtDia = findViewById(R.id.txtDia)
         tvDocumento = findViewById(R.id.tvDocumento)
         btnHorarios = findViewById(R.id.btnHorarios)
         btnSeleccionar = findViewById(R.id.btnSeleccionar)
@@ -175,6 +181,7 @@ class CrearCita : AppCompatActivity() {
         btnModificar = findViewById(R.id.btnModificar)
         btnEliminar = findViewById(R.id.btnEliminar)
         btnConsultarID = findViewById(R.id.btnConsultarID)
+        btnFecha = findViewById(R.id.btnFecha)
         gridConsultar = findViewById(R.id.gridConsultar)
         gridSeleccionarAbogado = findViewById(R.id.gridSeleccionarAbogado)
 
@@ -213,6 +220,16 @@ class CrearCita : AppCompatActivity() {
             spTema.adapter = adapter
         }
 
+        spHora = findViewById(R.id.spHora)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.horas,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spHora.adapter = adapter
+        }
+
         // Configurar abogado según el tema seleccionado
         spAbogado = findViewById(R.id.spAbogado)
         spTema.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -244,6 +261,17 @@ class CrearCita : AppCompatActivity() {
                     abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
                     spAbogado.adapter = abogadoAdapter
                 }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // No se necesita acción
+            }
+        }
+
+        spHora.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                seleccionHora = spHora.selectedItem.toString()
+                println("Hora seleccionada: $seleccionHora")
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -304,6 +332,11 @@ class CrearCita : AppCompatActivity() {
             consultarPorID()
         }
 
+        btnFecha.setOnClickListener {
+            calendar = Calendar.getInstance()
+            seleccionarFecha()
+        }
+
         btnSalir.setOnClickListener{
             finish()
         }
@@ -315,6 +348,18 @@ class CrearCita : AppCompatActivity() {
         btnEliminar.setOnClickListener(){
             eliminarCita()
         }
+    }
+
+    private fun seleccionarFecha(){
+        DatePickerDialog(this, { _, year, month, day ->
+
+            val fechaSeleccionada = Calendar.getInstance().apply { set(year, month, day) }
+            val diaSemana = fechaSeleccionada.get(Calendar.DAY_OF_WEEK)
+            val dias = arrayOf("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
+            val diaNombre = dias[diaSemana - 1]
+            seleccionFecha = "$day-${month + 1}-$year"
+            txtDia.text = "$diaNombre, $day/${month + 1}/$year"
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
     }
 
     private fun eliminarCita(){
