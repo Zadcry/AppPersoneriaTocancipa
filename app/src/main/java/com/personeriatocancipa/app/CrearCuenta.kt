@@ -50,6 +50,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var btnTogglePassword: Button
     private lateinit var btnToggleCheckPassword: Button
     private lateinit var tvClave: TextView
+    private lateinit var tvConfirmarClave: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
@@ -66,8 +67,6 @@ class CrearCuenta : AppCompatActivity() {
 
         tarea = intent.getStringExtra("tarea").toString()
         usuario = intent.getStringExtra("usuario").toString()
-        println(tarea)
-        println(usuario)
         // Manejo valores de Combo Box
 
         // Sexo
@@ -104,7 +103,7 @@ class CrearCuenta : AppCompatActivity() {
         }
 
         // Muestra pregunta si hace parte de Grupo Étnico
-        spGrupo.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+        spGrupo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View?,
@@ -124,7 +123,7 @@ class CrearCuenta : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {
 
             }
-        })
+        }
 
         // Comunidad Vulnerable
         spComunidad = findViewById(R.id.spComunidad)
@@ -185,44 +184,57 @@ class CrearCuenta : AppCompatActivity() {
         btnModificar = findViewById(R.id.btnModificar)
         btnEliminar = findViewById(R.id.btnEliminar)
         tvClave = findViewById(R.id.tvClave)
+        tvConfirmarClave = findViewById(R.id.tvConfirmarClave)
 
-        if(tarea.equals("crear")){
-            txtAnuncio.setText("Crear Cuenta")
+        if(tarea == "crear"){
+            txtAnuncio.text = "Crear Cuenta"
             gridConsultar.visibility = GridLayout.GONE
             btnSignUp.visibility = Button.VISIBLE
             btnModificar.visibility = Button.GONE
             btnEliminar.visibility = Button.GONE
         }else{
-            txtAnuncio.setText("Gestión de Cuenta")
+            txtAnuncio.text = "Gestión de Cuenta"
             gridConsultar.visibility = View.VISIBLE
-            if (tarea.equals("consultar")){
+            if (tarea == "consultar"){
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.GONE
                 txtClave.visibility = EditText.GONE
+                btnTogglePassword.visibility = Button.GONE
+                txtConfirmarClave.visibility = EditText.GONE
+                btnToggleCheckPassword.visibility = Button.GONE
                 tvClave.visibility = TextView.GONE
+                tvConfirmarClave.visibility = TextView.GONE
                 disableFields()
             }else if(tarea.equals("modificar")){
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.VISIBLE
                 btnEliminar.visibility = Button.GONE
                 txtClave.visibility = EditText.GONE
+                btnTogglePassword.visibility = Button.GONE
+                txtConfirmarClave.visibility = EditText.GONE
+                btnToggleCheckPassword.visibility = Button.GONE
                 tvClave.visibility = TextView.GONE
+                tvConfirmarClave.visibility = TextView.GONE
             }else{
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.VISIBLE
                 txtClave.visibility = EditText.GONE
+                btnTogglePassword.visibility = Button.GONE
+                txtConfirmarClave.visibility = EditText.GONE
+                btnToggleCheckPassword.visibility = Button.GONE
                 tvClave.visibility = TextView.GONE
+                tvConfirmarClave.visibility = TextView.GONE
                 disableFields()
             }
         }
 
-        btnSalir.setOnClickListener(){
+        btnSalir.setOnClickListener {
             finish()
         }
 
-        btnSignUp.setOnClickListener(){
+        btnSignUp.setOnClickListener {
             val campos = conseguirCampos()
             if (!verificarCampos(campos)) {
                 Toast.makeText(
@@ -435,6 +447,9 @@ class CrearCuenta : AppCompatActivity() {
     private fun disableFields(){
         txtNombre.isEnabled = false
         txtClave.isEnabled = false
+        txtConfirmarClave.isEnabled = false
+        btnTogglePassword.isEnabled = false
+        btnToggleCheckPassword.isEnabled = false
         txtDocumento.isEnabled = false
         txtEdad.isEnabled = false
         txtDireccion.isEnabled = false

@@ -151,6 +151,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="@color/grisClaro"
+            android:hint="Mínimo 6 caracteres"
             android:textSize="15dp"
             android:inputType="textPassword"
             android:textColor="@color/black"
