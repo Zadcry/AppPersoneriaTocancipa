@@ -1,5 +1,6 @@
 package com.personeriatocancipa.app
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.AdapterView
@@ -34,6 +35,7 @@ class ConsultarCitasAbogado : AppCompatActivity() {
     private var mesSeleccionado: String = ""
     private var anioSeleccionado: String = ""
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_consultar_citas_abogado)
@@ -54,14 +56,16 @@ class ConsultarCitasAbogado : AppCompatActivity() {
 
         cargarCitas()
 
-        // Configuración de los Spinners
-        val mesAdapter = ArrayAdapter(this, R.layout.spinner_item_mesyear, mesesList)
-        mesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Configuración del Spinner de Mes
+        val mesAdapter = ArrayAdapter(this, R.drawable.spinner_item, mesesList)
+        mesAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
         spinnerMesFiltro.adapter = mesAdapter
 
-        val anioAdapter = ArrayAdapter(this, R.layout.spinner_item_mesyear, aniosList)
-        anioAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Configuración del Spinner de Año
+        val anioAdapter = ArrayAdapter(this, R.drawable.spinner_item, aniosList)
+        anioAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
         spinnerAnioFiltro.adapter = anioAdapter
+
 
         // Listener para el filtro de año
         spinnerAnioFiltro.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
