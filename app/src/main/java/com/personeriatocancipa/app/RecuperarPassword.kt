@@ -71,7 +71,7 @@ class RecuperarPassword : AppCompatActivity() {
                                                 } else {
                                                     Toast.makeText(
                                                         this@RecuperarPassword,
-                                                        "No se encontró ese correo",
+                                                        "Correo no registrado",
                                                         Toast.LENGTH_SHORT,
                                                     ).show()
                                                 }

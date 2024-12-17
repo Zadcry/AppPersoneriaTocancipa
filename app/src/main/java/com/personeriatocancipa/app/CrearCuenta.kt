@@ -3,33 +3,35 @@ package com.personeriatocancipa.app
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.LinearLayout
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlin.math.log
+
 
 class CrearCuenta : AppCompatActivity() {
-    //Crea variables de Layout
 
+    //Crea variables de Layout
     private lateinit var gridConsultar: LinearLayout
     private lateinit var txtConsultar: EditText
     private lateinit var txtAnuncio: TextView
     private lateinit var txtNombre: EditText
     private lateinit var txtClave: EditText
+    private lateinit var txtConfirmarClave: EditText
     private lateinit var txtDocumento: EditText
     private lateinit var txtEdad: EditText
     private lateinit var txtDireccion: EditText
@@ -45,6 +47,8 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var btnSignUp: Button
     private lateinit var btnModificar: Button
     private lateinit var btnEliminar: Button
+    private lateinit var btnTogglePassword: Button
+    private lateinit var btnToggleCheckPassword: Button
     private lateinit var tvClave: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
@@ -64,9 +68,9 @@ class CrearCuenta : AppCompatActivity() {
         usuario = intent.getStringExtra("usuario").toString()
         println(tarea)
         println(usuario)
-        //Manejo valores de Combo Box
+        // Manejo valores de Combo Box
 
-        //Sexo
+        // Sexo
         spSexo = findViewById(R.id.spSexo)
         ArrayAdapter.createFromResource(
             this,
@@ -77,7 +81,7 @@ class CrearCuenta : AppCompatActivity() {
             spSexo.adapter = adapter
         }
 
-        //Escolaridad
+        // Escolaridad
         spEscolaridad = findViewById(R.id.spEscolaridad)
         ArrayAdapter.createFromResource(
             this,
@@ -122,7 +126,7 @@ class CrearCuenta : AppCompatActivity() {
             }
         })
 
-        //Comunidad Vulnerable
+        // Comunidad Vulnerable
         spComunidad = findViewById(R.id.spComunidad)
         ArrayAdapter.createFromResource(
             this,
@@ -134,13 +138,41 @@ class CrearCuenta : AppCompatActivity() {
         }
 
 
+        txtClave = findViewById(R.id.txtClave)
+        txtConfirmarClave = findViewById(R.id.txtConfirmarClave)
+
+        // Botón Ver Contraseña
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
+        btnTogglePassword.setOnClickListener { v: View? ->
+            if (txtClave.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                txtClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                txtClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            txtClave.setSelection(txtClave.text.length) // Mantener cursor al final
+        }
+
+        // Botón Ver Confirmar Contraseña
+        btnToggleCheckPassword = findViewById(R.id.btnToggleCheckPassword)
+        btnToggleCheckPassword.setOnClickListener { v: View? ->
+            if (txtConfirmarClave.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                txtConfirmarClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                txtConfirmarClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            txtConfirmarClave.setSelection(txtConfirmarClave.text.length) // Mantener cursor al final
+        }
+
 
         //Obtiene demás elementos de Layout
         gridConsultar = findViewById(R.id.gridConsultar)
         txtConsultar = findViewById(R.id.txtConsultar)
         txtAnuncio = findViewById(R.id.txtAnuncio)
         txtNombre = findViewById(R.id.txtNombre)
-        txtClave = findViewById(R.id.txtClave)
         txtDocumento = findViewById(R.id.txtDocumento)
         txtEdad = findViewById(R.id.txtEdad)
         txtDireccion = findViewById(R.id.txtDireccion)
@@ -202,20 +234,30 @@ class CrearCuenta : AppCompatActivity() {
             } else{
                 val nombre = campos[0]
                 val clave = campos[1]
-                val documento = campos[2]
-                val edad = campos[3].toInt()
-                val direccion = campos[4]
-                val telefono = campos[5]
-                val correo = campos[6]
-                val sexo = campos[7]
-                val escolaridad = campos[8]
-                val grupo = campos[9]
-                val siGrupo = campos[10]
-                val comunidad = campos[11]
+                val confirmarClave = campos[2]
+                val documento = campos[3]
+                val edad = campos[4].toInt()
+                val direccion = campos[5]
+                val telefono = campos[6]
+                val correo = campos[7]
+                val sexo = campos[8]
+                val escolaridad = campos[9]
+                val grupo = campos[10]
+                val siGrupo = campos[11]
+                val comunidad = campos[12]
 
-                signUp(nombre, clave, documento, edad,
-                    direccion, telefono, correo, sexo, escolaridad,
-                    grupo, siGrupo, comunidad)
+                if(clave != confirmarClave){
+                    Toast.makeText(
+                        this@CrearCuenta,
+                        "Las contraseñas no coinciden",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    return@setOnClickListener
+                }else{
+                    signUp(nombre, clave, documento, edad,
+                        direccion, telefono, correo, sexo, escolaridad,
+                        grupo, siGrupo, comunidad)
+                }
             }
         }
 
@@ -234,7 +276,6 @@ class CrearCuenta : AppCompatActivity() {
                 return@setOnClickListener
             } else{
                 val nombre = campos[0]
-                val clave = campos[1]
                 val documento = campos[2]
                 val edad = campos[3].toInt()
                 val direccion = campos[4]
@@ -365,6 +406,7 @@ class CrearCuenta : AppCompatActivity() {
     private fun conseguirCampos(): Array<String> {
         val nombre = txtNombre.text.toString()
         val clave = txtClave.text.toString()
+        val confirmarClave = txtConfirmarClave.text.toString()
         val documento = txtDocumento.text.toString()
         val edad = txtEdad.text.toString()
         val direccion = txtDireccion.text.toString()
@@ -376,7 +418,7 @@ class CrearCuenta : AppCompatActivity() {
         val comunidad = spComunidad.selectedItem.toString()
         val grupoEtnico = txtGrupoEtnico.text.toString()
 
-        return arrayOf(nombre, clave, documento, edad, direccion, telefono, correo, sexo, escolaridad, grupo, comunidad, grupoEtnico)
+        return arrayOf(nombre, clave, confirmarClave, documento, edad, direccion, telefono, correo, sexo, escolaridad, grupo, comunidad, grupoEtnico)
     }
 
     private fun verificarCampos(campos: Array<String>): Boolean {
