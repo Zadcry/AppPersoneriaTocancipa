@@ -389,7 +389,7 @@ class CrearCuenta : AppCompatActivity() {
                                 } else {
                                     Toast.makeText(
                                         this@CrearCuenta,
-                                        "Cuenta creada exitosamente",
+                                        "Usuario creado exitosamente",
                                         Toast.LENGTH_SHORT,
                                     ).show()
                                 }
