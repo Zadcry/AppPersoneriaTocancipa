@@ -70,7 +70,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/black"
                     android:hint="Digite la cédula del abogado"
-                    android:inputType="text"
+                    android:inputType="number"
                     android:padding="10dp"
                     android:background="@drawable/edittext_format"
                     android:layout_marginTop="5dp"

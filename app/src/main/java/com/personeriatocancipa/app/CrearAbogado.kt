@@ -144,38 +144,42 @@ class CrearAbogado : AppCompatActivity() {
         }else {
             txtAnuncio.text = "Gestión de Abogado"
             gridConsultar.visibility = View.VISIBLE
-            if (tarea == "consultar") {
-                btnSignUp.visibility = Button.GONE
-                btnModificar.visibility = Button.GONE
-                btnEliminar.visibility = Button.GONE
-                txtClave.visibility = EditText.GONE
-                btnTogglePassword.visibility = Button.GONE
-                txtConfirmarClave.visibility = EditText.GONE
-                btnToggleCheckPassword.visibility = Button.GONE
-                tvClave.visibility = TextView.GONE
-                tvConfirmarClave.visibility = TextView.GONE
-                disableFields()
-            } else if (tarea == "modificar") {
-                btnSignUp.visibility = Button.GONE
-                btnModificar.visibility = Button.VISIBLE
-                btnEliminar.visibility = Button.GONE
-                txtClave.visibility = EditText.GONE
-                btnTogglePassword.visibility = Button.GONE
-                txtConfirmarClave.visibility = EditText.GONE
-                btnToggleCheckPassword.visibility = Button.GONE
-                tvClave.visibility = TextView.GONE
-                tvConfirmarClave.visibility = TextView.GONE
-            } else {
-                btnSignUp.visibility = Button.GONE
-                btnModificar.visibility = Button.GONE
-                btnEliminar.visibility = Button.VISIBLE
-                txtClave.visibility = EditText.GONE
-                btnTogglePassword.visibility = Button.GONE
-                txtConfirmarClave.visibility = EditText.GONE
-                btnToggleCheckPassword.visibility = Button.GONE
-                tvClave.visibility = TextView.GONE
-                tvConfirmarClave.visibility = TextView.GONE
-                disableFields()
+            when (tarea) {
+                "consultar" -> {
+                    btnSignUp.visibility = Button.GONE
+                    btnModificar.visibility = Button.GONE
+                    btnEliminar.visibility = Button.GONE
+                    txtClave.visibility = EditText.GONE
+                    btnTogglePassword.visibility = Button.GONE
+                    txtConfirmarClave.visibility = EditText.GONE
+                    btnToggleCheckPassword.visibility = Button.GONE
+                    tvClave.visibility = TextView.GONE
+                    tvConfirmarClave.visibility = TextView.GONE
+                    disableFields()
+                }
+                "modificar" -> {
+                    btnSignUp.visibility = Button.GONE
+                    btnModificar.visibility = Button.GONE
+                    btnEliminar.visibility = Button.GONE
+                    txtClave.visibility = EditText.GONE
+                    btnTogglePassword.visibility = Button.GONE
+                    txtConfirmarClave.visibility = EditText.GONE
+                    btnToggleCheckPassword.visibility = Button.GONE
+                    tvClave.visibility = TextView.GONE
+                    tvConfirmarClave.visibility = TextView.GONE
+                }
+                else -> {
+                    btnSignUp.visibility = Button.GONE
+                    btnModificar.visibility = Button.GONE
+                    btnEliminar.visibility = Button.GONE
+                    txtClave.visibility = EditText.GONE
+                    btnTogglePassword.visibility = Button.GONE
+                    txtConfirmarClave.visibility = EditText.GONE
+                    btnToggleCheckPassword.visibility = Button.GONE
+                    tvClave.visibility = TextView.GONE
+                    tvConfirmarClave.visibility = TextView.GONE
+                    disableFields()
+                }
             }
         }
 
@@ -249,6 +253,11 @@ class CrearAbogado : AppCompatActivity() {
                         spCargo.setSelection((spCargo.adapter as ArrayAdapter<String>).getPosition(cargo))
                         spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(tema))
                         spEstado.setSelection((spEstado.adapter as ArrayAdapter<String>).getPosition(estado))
+                    }
+                    if(tarea == "modificar"){
+                        btnModificar.visibility = Button.VISIBLE
+                    }else if(tarea == "eliminar"){
+                        btnEliminar.visibility = Button.VISIBLE
                     }
                 } else {
                     Toast.makeText(

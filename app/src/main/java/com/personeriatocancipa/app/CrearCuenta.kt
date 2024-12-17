@@ -195,38 +195,42 @@ class CrearCuenta : AppCompatActivity() {
         }else{
             txtAnuncio.text = "Gestión de Cuenta"
             gridConsultar.visibility = View.VISIBLE
-            if (tarea == "consultar"){
-                btnSignUp.visibility = Button.GONE
-                btnModificar.visibility = Button.GONE
-                btnEliminar.visibility = Button.GONE
-                txtClave.visibility = EditText.GONE
-                btnTogglePassword.visibility = Button.GONE
-                txtConfirmarClave.visibility = EditText.GONE
-                btnToggleCheckPassword.visibility = Button.GONE
-                tvClave.visibility = TextView.GONE
-                tvConfirmarClave.visibility = TextView.GONE
-                disableFields()
-            }else if(tarea == "modificar"){
-                btnSignUp.visibility = Button.GONE
-                btnModificar.visibility = Button.VISIBLE
-                btnEliminar.visibility = Button.GONE
-                txtClave.visibility = EditText.GONE
-                btnTogglePassword.visibility = Button.GONE
-                txtConfirmarClave.visibility = EditText.GONE
-                btnToggleCheckPassword.visibility = Button.GONE
-                tvClave.visibility = TextView.GONE
-                tvConfirmarClave.visibility = TextView.GONE
-            }else{
-                btnSignUp.visibility = Button.GONE
-                btnModificar.visibility = Button.GONE
-                btnEliminar.visibility = Button.VISIBLE
-                txtClave.visibility = EditText.GONE
-                btnTogglePassword.visibility = Button.GONE
-                txtConfirmarClave.visibility = EditText.GONE
-                btnToggleCheckPassword.visibility = Button.GONE
-                tvClave.visibility = TextView.GONE
-                tvConfirmarClave.visibility = TextView.GONE
-                disableFields()
+            when (tarea) {
+                "consultar" -> {
+                    btnSignUp.visibility = Button.GONE
+                    btnModificar.visibility = Button.GONE
+                    btnEliminar.visibility = Button.GONE
+                    txtClave.visibility = EditText.GONE
+                    btnTogglePassword.visibility = Button.GONE
+                    txtConfirmarClave.visibility = EditText.GONE
+                    btnToggleCheckPassword.visibility = Button.GONE
+                    tvClave.visibility = TextView.GONE
+                    tvConfirmarClave.visibility = TextView.GONE
+                    disableFields()
+                }
+                "modificar" -> {
+                    btnSignUp.visibility = Button.GONE
+                    btnModificar.visibility = Button.GONE
+                    btnEliminar.visibility = Button.GONE
+                    txtClave.visibility = EditText.GONE
+                    btnTogglePassword.visibility = Button.GONE
+                    txtConfirmarClave.visibility = EditText.GONE
+                    btnToggleCheckPassword.visibility = Button.GONE
+                    tvClave.visibility = TextView.GONE
+                    tvConfirmarClave.visibility = TextView.GONE
+                }
+                else -> {
+                    btnSignUp.visibility = Button.GONE
+                    btnModificar.visibility = Button.GONE
+                    btnEliminar.visibility = Button.GONE
+                    txtClave.visibility = EditText.GONE
+                    btnTogglePassword.visibility = Button.GONE
+                    txtConfirmarClave.visibility = EditText.GONE
+                    btnToggleCheckPassword.visibility = Button.GONE
+                    tvClave.visibility = TextView.GONE
+                    tvConfirmarClave.visibility = TextView.GONE
+                    disableFields()
+                }
             }
         }
 
@@ -439,7 +443,7 @@ class CrearCuenta : AppCompatActivity() {
         val comunidad = spComunidad.selectedItem.toString()
         val grupoEtnico = txtGrupoEtnico.text.toString()
 
-        return arrayOf(nombre, clave, confirmarClave, documento, edad, direccion, telefono, correo, sexo, escolaridad, grupo, comunidad, grupoEtnico)
+        return arrayOf(nombre, clave, confirmarClave, documento, edad, direccion, telefono, correo, sexo, escolaridad, grupo, grupoEtnico, comunidad)
     }
 
     private fun verificarCampos(campos: Array<String>): Boolean {
@@ -516,6 +520,11 @@ class CrearCuenta : AppCompatActivity() {
                         spComunidad.setSelection((spComunidad.adapter as ArrayAdapter<String>).getPosition(comunidad))
                         txtGrupoEtnico.setText(grupoSi)
                     }
+                    if(tarea == "modificar"){
+                        btnModificar.visibility = Button.VISIBLE
+                    }else if(tarea == "eliminar"){
+                        btnEliminar.visibility = Button.VISIBLE
+                    }
                 } else {
                     Toast.makeText(
                         this@CrearCuenta,
@@ -533,5 +542,6 @@ class CrearCuenta : AppCompatActivity() {
                 ).show()
             }
         })
+
     }
 }
