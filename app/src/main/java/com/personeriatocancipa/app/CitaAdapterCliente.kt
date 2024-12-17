@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import android.graphics.drawable.GradientDrawable
 
 class CitaAdapterCliente(private val citas: List<Cita>) :
     RecyclerView.Adapter<CitaAdapterCliente.CitaViewHolder>() {
@@ -20,6 +21,7 @@ class CitaAdapterCliente(private val citas: List<Cita>) :
         val tvCorreoAbogado: TextView = view.findViewById(R.id.tvCorreoAbogado)
         val tvDescripcion: TextView = view.findViewById(R.id.tvDescripcion)
         val tvEstado: TextView = view.findViewById(R.id.tvEstado)
+        val itemContainer: View = view.findViewById(R.id.itemContainer)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitaViewHolder {
@@ -47,6 +49,11 @@ class CitaAdapterCliente(private val citas: List<Cita>) :
             else -> holder.itemView.context.getColor(android.R.color.black) // Color por defecto
         }
         holder.tvEstado.text = applyBoldStyleWithColor("Estado: ", cita.estado.toString(), estadoColor)
+        // Cambiar el color del contorno del drawable
+        val background = holder.itemContainer.background
+        if (background is GradientDrawable) {
+            background.setStroke(7, estadoColor) // Cambia el color y el grosor del contorno
+        }
     }
 
     override fun getItemCount(): Int = citas.size

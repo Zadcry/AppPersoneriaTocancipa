@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import android.graphics.drawable.GradientDrawable
 
 class CitaAdapterAbogado(private val citas: List<Cita>) :
     RecyclerView.Adapter<CitaAdapterAbogado.CitaViewHolder>() {
@@ -27,6 +28,7 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
         val tvCorreoCliente: TextView = view.findViewById(R.id.tvCorreoCliente)
         val tvDescripcion: TextView = view.findViewById(R.id.tvDescripcion)
         val spEstado: Spinner = view.findViewById(R.id.spEstado)
+        val itemContainer: View = view.findViewById(R.id.itemContainer)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitaViewHolder {
@@ -50,7 +52,7 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
         val adapter = ArrayAdapter.createFromResource(
             holder.itemView.context,
             R.array.opcionesEstado,
-            R.drawable.spinner_item
+            R.drawable.spinner_itemestadocita
         )
         adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
         holder.spEstado.adapter = adapter
@@ -60,6 +62,10 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
         if (estadoIndex >= 0) {
             holder.spEstado.setSelection(estadoIndex)
         }
+
+        // **Actualizar el contorno inicial según el estado**
+        actualizarContorno(holder.itemContainer, cita.estado, holder)
+        actualizarContornoSpinner(holder.spEstado, cita.estado, holder)
 
         // Listener para el cambio de estado
         holder.spEstado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -76,6 +82,9 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
                 if (cita.estado != nuevoEstado) {
                     cita.estado = nuevoEstado
                     actualizarEstadoEnFirebase(cita)
+
+                    // Actualizar el contorno del ítem
+                    actualizarContorno(holder.itemContainer, nuevoEstado, holder)
 
                     // Mostrar el mensaje de estado actualizado
                     Toast.makeText(
@@ -117,4 +126,21 @@ class CitaAdapterAbogado(private val citas: List<Cita>) :
             else -> context.getColor(android.R.color.black) // Color por defecto
         }
     }
+
+    private fun actualizarContorno(itemContainer: View, estado: String?, holder: CitaViewHolder) {
+        val color = getColorForEstado(estado ?: "", holder.itemView.context)
+        val background = itemContainer.background
+        if (background is GradientDrawable) {
+            background.setStroke(7, color) // Cambiar grosor y color del contorno
+        }
+    }
+
+    private fun actualizarContornoSpinner(spinner: Spinner, estado: String?, holder: CitaViewHolder) {
+        val color = getColorForEstado(estado ?: "", holder.itemView.context)
+        val background = spinner.background
+        if (background is GradientDrawable) {
+            background.setStroke(5, color) // Cambiar grosor y color del contorno del Spinner
+        }
+    }
+
 }
