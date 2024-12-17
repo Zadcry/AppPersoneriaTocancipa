@@ -206,7 +206,7 @@ class CrearCuenta : AppCompatActivity() {
                 tvClave.visibility = TextView.GONE
                 tvConfirmarClave.visibility = TextView.GONE
                 disableFields()
-            }else if(tarea.equals("modificar")){
+            }else if(tarea == "modificar"){
                 btnSignUp.visibility = Button.GONE
                 btnModificar.visibility = Button.VISIBLE
                 btnEliminar.visibility = Button.GONE
@@ -282,7 +282,7 @@ class CrearCuenta : AppCompatActivity() {
             if (!verificarCampos(campos)) {
                 Toast.makeText(
                     this@CrearCuenta,
-                    "Diligencie todos los datos",
+                    "Ingrese cédula para modificar",
                     Toast.LENGTH_SHORT,
                 ).show()
                 return@setOnClickListener
@@ -312,13 +312,22 @@ class CrearCuenta : AppCompatActivity() {
         }
 
         btnEliminar.setOnClickListener{
-            mDbRef = FirebaseDatabase.getInstance().getReference("userData")
-            mDbRef.child(uidConsultado).removeValue()
-            Toast.makeText(
-                this@CrearCuenta,
-                "Usuario eliminado exitosamente",
-                Toast.LENGTH_SHORT,
-            ).show()
+            if(uidConsultado.isEmpty()){
+                Toast.makeText(
+                    this@CrearCuenta,
+                    "Ingrese cédula para eliminar",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return@setOnClickListener
+            }else{
+                mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+                mDbRef.child(uidConsultado).removeValue()
+                Toast.makeText(
+                    this@CrearCuenta,
+                    "Usuario eliminado exitosamente",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
         }
 
     }
@@ -360,7 +369,7 @@ class CrearCuenta : AppCompatActivity() {
                                 )
 
                                 println(mAuth.currentUser?.uid)
-                                if (usuario.equals("cliente")) {
+                                if (usuario == "cliente") {
                                     val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
                                     finish()
                                     startActivity(intent)
@@ -467,7 +476,7 @@ class CrearCuenta : AppCompatActivity() {
         if (cedula.isEmpty()) {
             Toast.makeText(
                 this@CrearCuenta,
-                "Ingrese un número de cédula",
+                "Ingrese cédula para consultar",
                 Toast.LENGTH_SHORT,
             ).show()
             return
@@ -483,8 +492,6 @@ class CrearCuenta : AppCompatActivity() {
                         uidConsultado = it.key.toString()
                         println(it)
                         val nombre = it.child("nombreCompleto").value.toString()
-                        println(nombre)
-                        val clave = it.child("clave").value.toString()
                         val documento = it.child("documento").value.toString()
                         val edad = it.child("edad").value.toString()
                         val direccion = it.child("direccion").value.toString()
@@ -513,7 +520,7 @@ class CrearCuenta : AppCompatActivity() {
                     Toast.makeText(
                         this@CrearCuenta,
                         "No se encontró un usuario con la cédula ingresada",
-                        Toast.LENGTH_SHORT,
+                        Toast.LENGTH_LONG,
                     ).show()
                 }
             }
