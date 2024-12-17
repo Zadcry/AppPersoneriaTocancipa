@@ -11,8 +11,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import android.graphics.drawable.GradientDrawable
 
-class CitaAdapterCliente(private val citas: List<Cita>) :
+class CitaAdapterCliente(private var citas: List<Cita>) :
     RecyclerView.Adapter<CitaAdapterCliente.CitaViewHolder>() {
+
+    // Método para actualizar las citas
+    fun actualizarCitas(citasActualizadas: List<Cita>) {
+        citas = citasActualizadas
+        notifyDataSetChanged()  // Notifica que los datos han cambiado para actualizar el RecyclerView
+    }
 
     inner class CitaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvTema: TextView = view.findViewById(R.id.tvTema)
@@ -33,6 +39,7 @@ class CitaAdapterCliente(private val citas: List<Cita>) :
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
         val cita = citas[position]
 
+        // Aplica estilo negrita a las etiquetas
         holder.tvTema.text = applyBoldStyle("Tema: ", cita.tema.toString())
         holder.tvId.text = applyBoldStyle("ID: ", cita.id.toString())
         holder.tvFechaHora.text = applyBoldStyle("Fecha y hora: ", "${cita.fecha} a las ${cita.hora}")
@@ -67,7 +74,6 @@ class CitaAdapterCliente(private val citas: List<Cita>) :
         return spannable
     }
 
-    // Función para aplicar estilo negrita al label y color al valor
     private fun applyBoldStyleWithColor(label: String, value: String, color: Int): SpannableString {
         val fullText = "$label$value"
         val spannable = SpannableString(fullText)
@@ -79,7 +85,7 @@ class CitaAdapterCliente(private val citas: List<Cita>) :
         // Cambiar el color del valor
         spannable.setSpan(
             android.text.style.ForegroundColorSpan(color),
-            label.length, fullText.length, // Desde el final del label hasta el final del texto
+            label.length, fullText.length,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         return spannable

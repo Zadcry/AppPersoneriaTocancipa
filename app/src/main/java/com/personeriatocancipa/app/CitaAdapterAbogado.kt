@@ -18,8 +18,14 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import android.graphics.drawable.GradientDrawable
 
-class CitaAdapterAbogado(private val citas: List<Cita>) :
+class CitaAdapterAbogado(private var citas: List<Cita>) :
     RecyclerView.Adapter<CitaAdapterAbogado.CitaViewHolder>() {
+
+    // Método para actualizar las citas
+    fun actualizarCitas(citasActualizadas: List<Cita>) {
+        citas = citasActualizadas
+        notifyDataSetChanged()  // Notifica que los datos han cambiado para actualizar el RecyclerView
+    }
 
     inner class CitaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvTema: TextView = view.findViewById(R.id.tvTema)
