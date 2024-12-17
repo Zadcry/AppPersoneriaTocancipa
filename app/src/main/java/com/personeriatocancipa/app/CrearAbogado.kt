@@ -369,13 +369,22 @@ class CrearAbogado : AppCompatActivity() {
         val tema = spTema.selectedItem.toString()
         val estado = spEstado.selectedItem.toString()
 
-        if (nombre.isEmpty() || clave.isEmpty() || documento.isEmpty() || correo.isEmpty()) {
+        if(documento.isEmpty()){
             Toast.makeText(
                 this@CrearAbogado,
                 "Ingrese cédula para modificar",
                 Toast.LENGTH_SHORT,
             ).show()
             return
+        }else{
+            if (nombre.isEmpty() || clave.isEmpty() || correo.isEmpty()) {
+                Toast.makeText(
+                    this@CrearAbogado,
+                    "Diligencie todos los datos",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return
+            }
         }
 
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")

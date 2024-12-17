@@ -283,35 +283,44 @@ class CrearCuenta : AppCompatActivity() {
 
         btnModificar.setOnClickListener{
             val campos = conseguirCampos()
-            if (!verificarCampos(campos)) {
+            if(campos[3].isEmpty()){
                 Toast.makeText(
                     this@CrearCuenta,
                     "Ingrese cédula para modificar",
                     Toast.LENGTH_SHORT,
                 ).show()
                 return@setOnClickListener
-            } else{
-                val nombre = campos[0]
-                val documento = campos[2]
-                val edad = campos[3].toInt()
-                val direccion = campos[4]
-                val telefono = campos[5]
-                val correo = campos[6]
-                val sexo = campos[7]
-                val escolaridad = campos[8]
-                val grupo = campos[9]
-                val siGrupo = campos[10]
-                val comunidad = campos[11]
+            }else{
+                if (!verificarCampos(campos)) {
+                    Toast.makeText(
+                        this@CrearCuenta,
+                        "Diligencie todos los datos",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    return@setOnClickListener
+                }else{
+                    val nombre = campos[0]
+                    val documento = campos[2]
+                    val edad = campos[3].toInt()
+                    val direccion = campos[4]
+                    val telefono = campos[5]
+                    val correo = campos[6]
+                    val sexo = campos[7]
+                    val escolaridad = campos[8]
+                    val grupo = campos[9]
+                    val siGrupo = campos[10]
+                    val comunidad = campos[11]
 
-                mDbRef = FirebaseDatabase.getInstance().getReference("userData")
-                mDbRef.child(uidConsultado).setValue(
-                    Usuario(nombre, documento, edad, direccion, telefono,
-                        correo, sexo, escolaridad, siGrupo, grupo, comunidad,uidConsultado))
-                Toast.makeText(
-                    this@CrearCuenta,
-                    "Usuario modificado exitosamente",
-                    Toast.LENGTH_SHORT,
-                ).show()
+                    mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+                    mDbRef.child(uidConsultado).setValue(
+                        Usuario(nombre, documento, edad, direccion, telefono,
+                            correo, sexo, escolaridad, siGrupo, grupo, comunidad,uidConsultado))
+                    Toast.makeText(
+                        this@CrearCuenta,
+                        "Usuario modificado exitosamente",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
             }
         }
 
