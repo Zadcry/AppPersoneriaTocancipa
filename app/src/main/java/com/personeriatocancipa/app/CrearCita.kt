@@ -20,6 +20,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.GridView
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -70,7 +71,7 @@ class CrearCita : AppCompatActivity() {
     private lateinit var btnEliminar: Button
     private lateinit var btnConsultarID: Button
     private lateinit var btnFecha: Button
-    private lateinit var gridConsultar: GridLayout
+    private lateinit var gridConsultar: LinearLayout
     private lateinit var mDbRef: DatabaseReference
     private lateinit var tvDocumento: TextView
     private lateinit var tarea: String
@@ -734,6 +735,11 @@ class CrearCita : AppCompatActivity() {
 
     @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun finalizarCreacion() {
+        // Validar campos
+        if (txtDia.text.isEmpty()) {
+            Toast.makeText(this, "Debe seleccionar una fecha", Toast.LENGTH_SHORT).show()
+            return
+        }
         val year = seleccionFecha.get(Calendar.YEAR)
         val month = seleccionFecha.get(Calendar.MONTH)
         val day = seleccionFecha.get(Calendar.DAY_OF_MONTH)
@@ -743,12 +749,23 @@ class CrearCita : AppCompatActivity() {
         val diaNombre = dias[diaSemana - 1]
         val horarioAbogado = horariosAbogados[abogado]?.get(diaNombre)
 
-        // Validación: Una semana de antelación
+
         val fechaActual = Calendar.getInstance()
+        // Validación: Fecha Pasada
+        if (fechaSeleccionada.before(fechaActual)) {
+            Toast.makeText(this, "No se puede agendar una cita en una fecha pasada.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Validación: Una semana de antelación
         fechaActual.add(Calendar.DAY_OF_YEAR, 7) // Sumar una semana
         if (fechaSeleccionada.before(fechaActual)) {
             Toast.makeText(this, "Debe agendarse con al menos una semana de antelación.", Toast.LENGTH_SHORT).show()
         }else{
+            if (descripcion.isEmpty()) {
+                Toast.makeText(this, "Debe ingresar una descripción", Toast.LENGTH_SHORT).show()
+                return
+            }
             // Validación: Una cita por semana
             verificarCitasPorSemana(correoCliente, fechaSeleccionada) { puedeAgendar ->
                 if (!puedeAgendar) {
