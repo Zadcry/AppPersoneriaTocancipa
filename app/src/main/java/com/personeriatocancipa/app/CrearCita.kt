@@ -380,6 +380,7 @@ class CrearCita : AppCompatActivity() {
 
     private fun habilitarCampos(habilitar:Boolean){
         txtDescripcion.isEnabled = habilitar
+        txtDocumento.isEnabled = habilitar
         spTema.isEnabled = habilitar
         spAbogado.isEnabled = habilitar
         spHora.isEnabled = habilitar

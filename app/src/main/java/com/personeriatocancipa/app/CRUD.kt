@@ -55,11 +55,11 @@ class CRUD : AppCompatActivity() {
 
         btnCrear.setOnClickListener{
             if(tipo.equals("usuario")){
-                if (spTipoCuenta.selectedItem.toString().equals("Administrador")){
+                if (spTipoCuenta.selectedItem.toString() == "Administrador"){
                     intent = Intent(this@CRUD, CrearAdmin::class.java)
-                }else if (spTipoCuenta.selectedItem.toString().equals("Abogado")){
+                }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
                     intent = Intent(this@CRUD, CrearAbogado::class.java)
-                }else if (spTipoCuenta.selectedItem.toString().equals("Cliente")){
+                }else if (spTipoCuenta.selectedItem.toString() == "Cliente"){
                     intent = Intent(this@CRUD, CrearCuenta::class.java)
                     intent.putExtra("usuario", "admin")
                 } else {
@@ -74,12 +74,12 @@ class CRUD : AppCompatActivity() {
         }
 
         btnConsultar.setOnClickListener{
-            if(tipo.equals("usuario")){
-                if (spTipoCuenta.selectedItem.toString().equals("Administrador")){
+            if(tipo == "usuario"){
+                if (spTipoCuenta.selectedItem.toString() == "Administrador"){
                     intent = Intent(this@CRUD, CrearAdmin::class.java)
-                }else if (spTipoCuenta.selectedItem.toString().equals("Abogado")){
+                }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
                     intent = Intent(this@CRUD, CrearAbogado::class.java)
-                }else if (spTipoCuenta.selectedItem.toString().equals("Cliente")){
+                }else if (spTipoCuenta.selectedItem.toString() == "Cliente"){
                     intent = Intent(this@CRUD, CrearCuenta::class.java)
                     intent.putExtra("usuario", "admin")
                 } else {
@@ -95,11 +95,11 @@ class CRUD : AppCompatActivity() {
 
         btnModificar.setOnClickListener{
             if(tipo == "usuario"){
-                if (spTipoCuenta.selectedItem.toString().equals("Administrador")){
+                if (spTipoCuenta.selectedItem.toString() == "Administrador"){
                     intent = Intent(this@CRUD, CrearAdmin::class.java)
-                }else if (spTipoCuenta.selectedItem.toString().equals("Abogado")){
+                }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
                     intent = Intent(this@CRUD, CrearAbogado::class.java)
-                }else if (spTipoCuenta.selectedItem.toString().equals("Cliente")){
+                }else if (spTipoCuenta.selectedItem.toString() == "Cliente"){
                     intent = Intent(this@CRUD, CrearCuenta::class.java)
                     intent.putExtra("usuario", "admin")
                 } else {
