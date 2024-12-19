@@ -71,4 +71,7 @@
         <item>No Asistió</item>
         <item>Cancelada</item>
     </string-array>
+    <string-array name="horas">
+        <item>Seleccionar hora</item>
+    </string-array>
 </resources>

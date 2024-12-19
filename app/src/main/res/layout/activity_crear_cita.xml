@@ -36,13 +36,12 @@
             />
 
         <!-- Consulta -->
-        <GridLayout
+        <LinearLayout
             android:id="@+id/gridConsultar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:rowCount="2"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:orientation="vertical">
 
             <!-- Texto "Consultar Cita" -->
             <TextView
@@ -51,40 +50,44 @@
                 android:text="Consultar Cita"
                 android:textSize="15dp"
                 android:textColor="@color/black"
-                android:gravity="bottom"/>
+                android:gravity="bottom" />
 
-            <!-- Botón para ID -->
-
-            <!-- EditText para ingresar datos de consulta -->
-            <Button
-                android:id="@+id/btnConsultarID"
-                android:layout_width="wrap_content"
+            <!-- Contenedor horizontal para EditText y botón -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_row="0"
-                android:layout_column="2"
-                android:layout_gravity="end"
-                android:layout_marginRight="5dp"
-                android:backgroundTint="@color/negroSecundario"
-                android:text="Consultar ID"
-                android:textColor="@color/white" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/txtConsultar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnSpan="3"
-                android:layout_gravity="fill_horizontal"
-                android:textColorHint="@color/grisClaro"
-                android:textSize="15dp"
-                android:textColor="@color/black"
-                android:inputType="text"
-                android:padding="10dp"
-                android:hint="Digite el número de consulta"
-                android:background="@drawable/edittext_format"
-                android:layout_marginTop="5dp"
-                android:singleLine="true"/>
-        </GridLayout>
+                <!-- EditText para ingresar datos de consulta -->
+                <EditText
+                    android:id="@+id/txtConsultar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColorHint="@color/grisClaro"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:hint="Digite el número de consulta"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:background="@drawable/edittext_format"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:singleLine="true" />
 
+                <!-- Botón para consultar -->
+                <Button
+                    android:id="@+id/btnConsultarID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consultar ID"
+                    android:textSize="15dp"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/negroSecundario"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+        </LinearLayout>
 
         <!-- Inputs -->
 
@@ -104,7 +107,7 @@
             android:layout_height="wrap_content"
             android:textColorHint="@color/grisClaro"
             android:textSize="15dp"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
             android:textColor="@color/black"
             android:padding="10dp"
             android:background="@drawable/edittext_format"
@@ -198,6 +201,85 @@
             android:layout_marginBottom="5dp"
             android:hint="Describa su necesidad aquí"
             android:singleLine="true"
+            />
+
+        <LinearLayout
+            android:id="@+id/gridFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="vertical"
+            >
+
+            <!-- Texto "Fecha" -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill"
+                android:text="Fecha"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:gravity="bottom"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- EditText para la fecha -->
+                <EditText
+                    android:id="@+id/txtDia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/grisClaro"
+                    android:textSize="15dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:hint="Seleccione una fecha"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:background="@drawable/edittext_format"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:singleLine="true"
+                    android:enabled="false" /> <!-- Inicialmente deshabilitado -->
+
+                <!-- Botón para seleccionar fecha -->
+                <Button
+                    android:id="@+id/btnFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seleccionar Fecha"
+                    android:textSize="15dp"
+                    android:layout_gravity="end"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/negroSecundario"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Hora -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Hora"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <Spinner
+            android:id="@+id/spHora"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
             />
 
         <!-- Fecha y Hora -->
