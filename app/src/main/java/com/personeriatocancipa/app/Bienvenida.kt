@@ -46,6 +46,8 @@ class Bienvenida : AppCompatActivity() {
         //Crea eventListener para clicks en "Sign Up"
         btnSignUp.setOnClickListener(){
             signup()
+            txtCorreo.text.clear()
+            txtContraseña.text.clear()
         }
 
         //Crea eventListener para clicks en "Recuperar Contraseña"

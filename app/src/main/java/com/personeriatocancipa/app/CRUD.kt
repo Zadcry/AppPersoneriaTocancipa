@@ -21,7 +21,7 @@ class CRUD : AppCompatActivity() {
     private lateinit var txtTitulo: TextView
     private lateinit var spTipoCuenta: Spinner
 
-    @SuppressLint("ResourceType")
+    @SuppressLint("ResourceType", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crud)
@@ -45,7 +45,7 @@ class CRUD : AppCompatActivity() {
 
         tipo = intent.getStringExtra("tipo").toString()
 
-        if (tipo.equals("usuario")){
+        if (tipo == "usuario"){
             txtTitulo.text = "Gestión de Usuarios"
             spTipoCuenta.visibility = Spinner.VISIBLE
         }else{
@@ -94,7 +94,7 @@ class CRUD : AppCompatActivity() {
         }
 
         btnModificar.setOnClickListener{
-            if(tipo.equals("usuario")){
+            if(tipo == "usuario"){
                 if (spTipoCuenta.selectedItem.toString().equals("Administrador")){
                     intent = Intent(this@CRUD, CrearAdmin::class.java)
                 }else if (spTipoCuenta.selectedItem.toString().equals("Abogado")){
@@ -114,12 +114,12 @@ class CRUD : AppCompatActivity() {
         }
 
         btnEliminar.setOnClickListener{
-            if(tipo.equals("usuario")){
-                if (spTipoCuenta.selectedItem.toString().equals("Administrador")){
+            if(tipo == "usuario"){
+                if (spTipoCuenta.selectedItem.toString() == "Administrador"){
                     intent = Intent(this@CRUD, CrearAdmin::class.java)
-                }else if (spTipoCuenta.selectedItem.toString().equals("Abogado")){
+                }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
                     intent = Intent(this@CRUD, CrearAbogado::class.java)
-                }else if (spTipoCuenta.selectedItem.toString().equals("Cliente")){
+                }else if (spTipoCuenta.selectedItem.toString() == "Cliente"){
                     intent = Intent(this@CRUD, CrearCuenta::class.java)
                     intent.putExtra("usuario", "admin")
                 } else {

@@ -48,8 +48,32 @@
                 android:backgroundTint="@color/negroSecundario"
                 />
 
-
         </LinearLayout>
+
+        <!-- Filtros de Mes y Año -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="16dp">
+
+            <!-- Spinner de Año -->
+            <Spinner
+                android:id="@+id/spinnerAnioFiltro"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/spinner_background"/>
+
+            <!-- Spinner de Mes -->
+            <Spinner
+                android:id="@+id/spinnerMesFiltro"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/spinner_background"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 

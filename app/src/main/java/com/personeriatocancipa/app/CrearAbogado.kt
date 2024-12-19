@@ -2,6 +2,7 @@ package com.personeriatocancipa.app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -29,6 +30,7 @@ class CrearAbogado : AppCompatActivity() {
     private lateinit var txtAnuncio: TextView
     private lateinit var txtNombre: EditText
     private lateinit var txtClave: EditText
+    private lateinit var txtConfirmarClave: EditText
     private lateinit var txtDocumento: EditText
     private lateinit var txtCorreo: EditText
     private lateinit var spCargo: Spinner
@@ -37,8 +39,12 @@ class CrearAbogado : AppCompatActivity() {
     private lateinit var btnConsultar: Button
     private lateinit var btnSalir: Button
     private lateinit var btnSignUp: Button
+    private lateinit var btnTogglePassword: Button
+    private lateinit var btnToggleCheckPassword: Button
     private lateinit var btnModificar: Button
     private lateinit var btnEliminar: Button
+    private lateinit var tvClave: TextView
+    private lateinit var tvConfirmarClave: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
@@ -59,6 +65,7 @@ class CrearAbogado : AppCompatActivity() {
         txtAnuncio = findViewById(R.id.txtAnuncio)
         txtNombre = findViewById(R.id.txtNombre)
         txtClave = findViewById(R.id.txtClave)
+        txtConfirmarClave = findViewById(R.id.txtConfirmarClave)
         txtDocumento = findViewById(R.id.txtDocumento)
         txtCorreo = findViewById(R.id.txtCorreo)
         btnConsultar = findViewById(R.id.btnConsultar)
@@ -66,6 +73,10 @@ class CrearAbogado : AppCompatActivity() {
         btnSignUp = findViewById(R.id.btnSignUp)
         btnModificar = findViewById(R.id.btnModificar)
         btnEliminar = findViewById(R.id.btnEliminar)
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
+        btnToggleCheckPassword = findViewById(R.id.btnToggleCheckPassword)
+        tvClave = findViewById(R.id.tvClave)
+        tvConfirmarClave = findViewById(R.id.tvConfirmarClave)
 
         spCargo = findViewById(R.id.spCargo)
         ArrayAdapter.createFromResource(
@@ -97,29 +108,78 @@ class CrearAbogado : AppCompatActivity() {
             spEstado.adapter = adapter
         }
 
-        if(tarea.equals("crear")){
-            txtAnuncio.setText("Crear Abogado")
+
+        // Botón Ver Contraseña
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
+        btnTogglePassword.setOnClickListener { v: View? ->
+            if (txtClave.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                txtClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                txtClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            txtClave.setSelection(txtClave.text.length) // Mantener cursor al final
+        }
+
+        // Botón Ver Confirmar Contraseña
+        btnToggleCheckPassword = findViewById(R.id.btnToggleCheckPassword)
+        btnToggleCheckPassword.setOnClickListener { v: View? ->
+            if (txtConfirmarClave.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                txtConfirmarClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                txtConfirmarClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            txtConfirmarClave.setSelection(txtConfirmarClave.text.length) // Mantener cursor al final
+        }
+
+        if(tarea == "crear"){
+            txtAnuncio.text = "Crear Abogado"
             gridConsultar.visibility = GridLayout.GONE
             btnSignUp.visibility = Button.VISIBLE
             btnModificar.visibility = Button.GONE
             btnEliminar.visibility = Button.GONE
         }else {
-            txtAnuncio.setText("Gestión de Abogado")
+            txtAnuncio.text = "Gestión de Abogado"
             gridConsultar.visibility = View.VISIBLE
-            if (tarea.equals("consultar")) {
-                btnSignUp.visibility = Button.GONE
-                btnModificar.visibility = Button.GONE
-                btnEliminar.visibility = Button.GONE
-                disableFields()
-            } else if (tarea.equals("modificar")) {
-                btnSignUp.visibility = Button.GONE
-                btnModificar.visibility = Button.VISIBLE
-                btnEliminar.visibility = Button.GONE
-            } else {
-                btnSignUp.visibility = Button.GONE
-                btnModificar.visibility = Button.GONE
-                btnEliminar.visibility = Button.VISIBLE
-                disableFields()
+            when (tarea) {
+                "consultar" -> {
+                    btnSignUp.visibility = Button.GONE
+                    btnModificar.visibility = Button.GONE
+                    btnEliminar.visibility = Button.GONE
+                    txtClave.visibility = EditText.GONE
+                    btnTogglePassword.visibility = Button.GONE
+                    txtConfirmarClave.visibility = EditText.GONE
+                    btnToggleCheckPassword.visibility = Button.GONE
+                    tvClave.visibility = TextView.GONE
+                    tvConfirmarClave.visibility = TextView.GONE
+                    disableFields()
+                }
+                "modificar" -> {
+                    btnSignUp.visibility = Button.GONE
+                    btnModificar.visibility = Button.GONE
+                    btnEliminar.visibility = Button.GONE
+                    txtClave.visibility = EditText.GONE
+                    btnTogglePassword.visibility = Button.GONE
+                    txtConfirmarClave.visibility = EditText.GONE
+                    btnToggleCheckPassword.visibility = Button.GONE
+                    tvClave.visibility = TextView.GONE
+                    tvConfirmarClave.visibility = TextView.GONE
+                }
+                else -> {
+                    btnSignUp.visibility = Button.GONE
+                    btnModificar.visibility = Button.GONE
+                    btnEliminar.visibility = Button.GONE
+                    txtClave.visibility = EditText.GONE
+                    btnTogglePassword.visibility = Button.GONE
+                    txtConfirmarClave.visibility = EditText.GONE
+                    btnToggleCheckPassword.visibility = Button.GONE
+                    tvClave.visibility = TextView.GONE
+                    tvConfirmarClave.visibility = TextView.GONE
+                    disableFields()
+                }
             }
         }
 
@@ -148,6 +208,9 @@ class CrearAbogado : AppCompatActivity() {
     private fun disableFields(){
         txtNombre.isEnabled = false
         txtClave.isEnabled = false
+        txtConfirmarClave.isEnabled = false
+        btnTogglePassword.isEnabled = false
+        btnToggleCheckPassword.isEnabled = false
         txtDocumento.isEnabled = false
         txtCorreo.isEnabled = false
         spCargo.isEnabled = false
@@ -160,7 +223,7 @@ class CrearAbogado : AppCompatActivity() {
         if (cedula.isEmpty()) {
             Toast.makeText(
                 this@CrearAbogado,
-                "Ingrese un número de cédula",
+                "Ingrese cédula para consultar",
                 Toast.LENGTH_SHORT,
             ).show()
             return
@@ -177,7 +240,6 @@ class CrearAbogado : AppCompatActivity() {
                         println(it)
                         val nombre = it.child("nombreCompleto").value.toString()
                         println(nombre)
-                        val clave = it.child("clave").value.toString()
                         val documento = it.child("documento").value.toString()
                         val correo = it.child("correo").value.toString()
                         val cargo = it.child("cargo").value.toString()
@@ -192,11 +254,16 @@ class CrearAbogado : AppCompatActivity() {
                         spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(tema))
                         spEstado.setSelection((spEstado.adapter as ArrayAdapter<String>).getPosition(estado))
                     }
+                    if(tarea == "modificar"){
+                        btnModificar.visibility = Button.VISIBLE
+                    }else if(tarea == "eliminar"){
+                        btnEliminar.visibility = Button.VISIBLE
+                    }
                 } else {
                     Toast.makeText(
                         this@CrearAbogado,
                         "No se encontró un usuario con la cédula ingresada",
-                        Toast.LENGTH_SHORT,
+                        Toast.LENGTH_LONG,
                     ).show()
                 }
             }
@@ -214,6 +281,7 @@ class CrearAbogado : AppCompatActivity() {
     private fun crearAbogado() {
         val nombre = txtNombre.text.toString()
         val clave = txtClave.text.toString()
+        val confirmarClave = txtConfirmarClave.text.toString()
         val documento = txtDocumento.text.toString()
         val correo = txtCorreo.text.toString()
         val cargo = spCargo.selectedItem.toString()
@@ -223,7 +291,17 @@ class CrearAbogado : AppCompatActivity() {
         if (nombre.isEmpty() || clave.isEmpty() || documento.isEmpty() || correo.isEmpty()) {
             Toast.makeText(
                 this@CrearAbogado,
-                "Por favor complete todos los campos",
+                "Diligencie todos los datos",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
+
+        // Verificar contraseñas iguales
+        if (clave != confirmarClave) {
+            Toast.makeText(
+                this@CrearAbogado,
+                "Las contraseñas no coinciden",
                 Toast.LENGTH_SHORT,
             ).show()
             return
@@ -264,7 +342,7 @@ class CrearAbogado : AppCompatActivity() {
                         } else {
                             Toast.makeText(
                                 this@CrearAbogado,
-                                "Error al crear el usuario",
+                                "Error al crear el abogado",
                                 Toast.LENGTH_SHORT,
                             ).show()
                         }
@@ -291,13 +369,22 @@ class CrearAbogado : AppCompatActivity() {
         val tema = spTema.selectedItem.toString()
         val estado = spEstado.selectedItem.toString()
 
-        if (nombre.isEmpty() || clave.isEmpty() || documento.isEmpty() || correo.isEmpty()) {
+        if(documento.isEmpty()){
             Toast.makeText(
                 this@CrearAbogado,
-                "Por favor complete todos los campos",
+                "Ingrese cédula para modificar",
                 Toast.LENGTH_SHORT,
             ).show()
             return
+        }else{
+            if (nombre.isEmpty() || clave.isEmpty() || correo.isEmpty()) {
+                Toast.makeText(
+                    this@CrearAbogado,
+                    "Diligencie todos los datos",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return
+            }
         }
 
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
@@ -319,6 +406,14 @@ class CrearAbogado : AppCompatActivity() {
     }
 
     private fun eliminarAbogado() {
+        if(uidConsultado.isEmpty()){
+            Toast.makeText(
+                this@CrearAbogado,
+                "Ingrese cédula para eliminar",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
         mDbRef.child(uidConsultado).removeValue().addOnSuccessListener {
             Toast.makeText(
