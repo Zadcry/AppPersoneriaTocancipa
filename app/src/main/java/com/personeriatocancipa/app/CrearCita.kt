@@ -303,6 +303,7 @@ class CrearCita : AppCompatActivity() {
         // Configurar acciones en función de la tarea
         when (tarea) {
             "crear" -> {
+                habilitarCampos(true)
                 txtAnuncio.text = "Agendar Cita"
                 if(sujeto == "cliente"){
                     // Un cliente la crea para sí mismo
@@ -318,29 +319,39 @@ class CrearCita : AppCompatActivity() {
                         scheduleAppointment(sujeto)
                     }
                 }
+                btnFecha.visibility = Button.VISIBLE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.GONE
                 gridConsultar.visibility = GridView.GONE
             }
             "consultar" -> {
+                habilitarCampos(false)
                 txtAnuncio.text = "Consultar Cita"
+                btnFecha.visibility = Button.GONE
                 gridConsultar.visibility = GridView.VISIBLE
                 btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
+                btnConsultarID.visibility = Button.VISIBLE
             }
             "modificar" -> {
+                habilitarCampos(true)
                 txtAnuncio.text = "Modificar Cita"
+                btnFecha.visibility = Button.VISIBLE
                 gridConsultar.visibility = GridView.VISIBLE
+                btnModificar.visibility = Button.GONE
                 btnEliminar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
                 btnConsultarID.visibility = Button.VISIBLE
             }
             "eliminar" -> {
+                habilitarCampos(false)
                 txtAnuncio.text = "Eliminar Cita"
+                btnFecha.visibility = Button.GONE
                 gridConsultar.visibility = GridView.VISIBLE
                 btnModificar.visibility = Button.GONE
                 btnSeleccionar.visibility = Button.GONE
+                btnEliminar.visibility = Button.GONE
                 btnConsultarID.visibility = Button.VISIBLE
             }
         }
@@ -365,6 +376,15 @@ class CrearCita : AppCompatActivity() {
         btnEliminar.setOnClickListener(){
             eliminarCita()
         }
+    }
+
+    private fun habilitarCampos(habilitar:Boolean){
+        txtDescripcion.isEnabled = habilitar
+        spTema.isEnabled = habilitar
+        spAbogado.isEnabled = habilitar
+        spHora.isEnabled = habilitar
+        btnFecha.isEnabled = habilitar
+        btnSeleccionar.isEnabled = habilitar
     }
 
     private fun seleccionarFecha(){
@@ -564,12 +584,13 @@ class CrearCita : AppCompatActivity() {
         // Consultar datos de la cita por el ID de la misma
         val idCita = txtConsultar.text.toString().toIntOrNull()
         if (idCita == null) {
-            Toast.makeText(this, "ID de cita inválido", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Ingrese ID a consultar", Toast.LENGTH_SHORT).show()
             return
         }
 
         val ref = FirebaseDatabase.getInstance().getReference("citas")
         ref.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            @SuppressLint("SetTextI18n")
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     val descripcionC = snapshot.child("descripcion").value.toString()
@@ -585,12 +606,34 @@ class CrearCita : AppCompatActivity() {
                     txtFecha.text = "Fecha: $fechaC, Hora: $horaC"
                     spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(temaC))
                     println(spTema.selectedItem.toString())
+                    // Change the format of the day and make it like the one in the calendar
+                    val fecha = fechaC.split("-")
+                    val year = fecha[2].toInt()
+                    val month = fecha[1].toInt()
+                    val day = fecha[0].toInt()
+                    val fechaSeleccionada = Calendar.getInstance().apply { set(year, month - 1, day) }
+                    val diaSemana = fechaSeleccionada.get(Calendar.DAY_OF_WEEK)
+                    val dias = arrayOf("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
+                    val diaNombre = dias[diaSemana - 1]
+                    txtDia.text = "$diaNombre, $day/$month/$year"
+
+                    // Put the hour in the spinner
+                    cambiarHorarioSegunAbogado()
+                    spHora.setSelection((spHora.adapter as ArrayAdapter<String>).getPosition(horaC))
 
                     conseguirNombreAbogado(abogadoC, "modificar")
                     conseguirCedulaCliente(clienteC)
+
+                    if (tarea == "modificar") {
+                        btnModificar.visibility = Button.VISIBLE
+                    } else if (tarea == "eliminar") {
+                        btnEliminar.visibility = Button.VISIBLE
+                    }
+
                 } else {
                     Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
                 }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
