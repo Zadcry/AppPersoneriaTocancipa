@@ -238,6 +238,10 @@ class CrearCita : AppCompatActivity() {
                 val selectedTema = spTema.selectedItem.toString()
                 val abogados = temaAbogadoMap[selectedTema] ?: emptyList()
 
+                if (txtDia.text.isNotEmpty()) {
+                    cambiarHorarioSegunAbogado()
+                }
+
                 // Mostrar u ocultar la grilla de selección de abogado
                 if (selectedTema == "Víctimas") {
                     gridSeleccionarAbogado.visibility = View.VISIBLE
@@ -261,6 +265,18 @@ class CrearCita : AppCompatActivity() {
                     )
                     abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
                     spAbogado.adapter = abogadoAdapter
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // No se necesita acción
+            }
+        }
+
+        spAbogado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (txtDia.text.isNotEmpty()) {
+                    cambiarHorarioSegunAbogado()
                 }
             }
 
@@ -360,7 +376,42 @@ class CrearCita : AppCompatActivity() {
             val diaNombre = dias[diaSemana - 1]
             seleccionFecha = fechaSeleccionada
             txtDia.text = "$diaNombre, $day/${month + 1}/$year"
+
+            cambiarHorarioSegunAbogado()
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+    }
+
+    @SuppressLint("ResourceType")
+    private fun cambiarHorarioSegunAbogado(){
+        val abogadoSeleccionado = spAbogado.selectedItem.toString()
+        val diaSeleccionado = txtDia.text.split(",")[0]
+        val horarioAbogado = horariosAbogados[abogadoSeleccionado]?.get(diaSeleccionado)
+        if (horarioAbogado != null) {
+            val (horaInicio, horaFin) = horarioAbogado
+            val horas = mutableListOf<String>()
+            horas.add("Seleccionar hora")
+            var hora = horaInicio
+            val duracionCita = duracionCitas[abogadoSeleccionado] ?: 60
+            while (hora <= horaFin) {
+                horas.add(hora)
+                hora = calcularHoraFin(hora.split(":")[0].toInt(), hora.split(":")[1].toInt(), duracionCita)
+                // Filtrar Hora Almuerzo
+                if (hora in horaAlmuerzo.first..horaAlmuerzo.second) {
+                    hora = calcularHoraFin(hora.split(":")[0].toInt(), hora.split(":")[1].toInt(), duracionCita)
+                }
+            }
+            val horaAdapter = ArrayAdapter(this, R.drawable.spinner_item, horas)
+            horaAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spHora.adapter = horaAdapter
+        } else {
+            val horaAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.horas,
+                R.drawable.spinner_item
+            )
+            horaAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spHora.adapter = horaAdapter
+        }
     }
 
     private fun eliminarCita(){
@@ -735,11 +786,18 @@ class CrearCita : AppCompatActivity() {
 
     @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun finalizarCreacion() {
-        // Validar campos
+        // Validación: Seleccionar Fecha
         if (txtDia.text.isEmpty()) {
             Toast.makeText(this, "Debe seleccionar una fecha", Toast.LENGTH_SHORT).show()
             return
         }
+
+        // Validación: Seleccionar Hora
+        if (seleccionHora.equals("Seleccionar hora")) {
+            Toast.makeText(this, "Debe seleccionar una hora", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val year = seleccionFecha.get(Calendar.YEAR)
         val month = seleccionFecha.get(Calendar.MONTH)
         val day = seleccionFecha.get(Calendar.DAY_OF_MONTH)
