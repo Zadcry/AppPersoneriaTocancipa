@@ -308,7 +308,7 @@ class CrearCita : AppCompatActivity() {
                 if(sujeto == "cliente"){
                     // Un cliente la crea para sí mismo
                     btnSeleccionar.setOnClickListener{
-                        scheduleAppointment(sujeto)
+                        scheduleAppointment(sujeto,"crear")
                     }
                     txtDocumento.visibility = EditText.GONE
                     tvDocumento.visibility = TextView.GONE
@@ -316,7 +316,7 @@ class CrearCita : AppCompatActivity() {
                 else{
                     // Un admin. la crea para un cliente
                     btnSeleccionar.setOnClickListener{
-                        scheduleAppointment(sujeto)
+                        scheduleAppointment(sujeto,"crear")
                     }
                 }
                 btnFecha.visibility = Button.VISIBLE
@@ -376,6 +376,10 @@ class CrearCita : AppCompatActivity() {
         btnEliminar.setOnClickListener(){
             eliminarCita()
         }
+
+        btnModificar.setOnClickListener(){
+            modificarCita()
+        }
     }
 
     private fun habilitarCampos(habilitar:Boolean){
@@ -386,6 +390,32 @@ class CrearCita : AppCompatActivity() {
         spHora.isEnabled = habilitar
         btnFecha.isEnabled = habilitar
         btnSeleccionar.isEnabled = habilitar
+    }
+
+    private fun modificarCita(){
+        val idCita = txtConsultar.text.toString().toIntOrNull()
+
+        val ref = FirebaseDatabase.getInstance().getReference("citas")
+        // Buscar cita y si existe, modificarla
+        ref.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    //  Tambien quitar horario de la cita
+                    println(snapshot)
+                    conseguirNombreAbogado(snapshot.child("correoAbogado").value.toString(), "modificar")
+                    eliminarHorarioOcupado(idCita.toString(),abogado, snapshot.child("fecha").value.toString())
+
+                    // Modificar la cita
+                    scheduleAppointment("admin","modificar")
+                } else {
+                    Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CrearCita, "Error al modificar la cita", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun seleccionarFecha(){
@@ -721,7 +751,7 @@ class CrearCita : AppCompatActivity() {
     }
 
     @SuppressLint("DefaultLocale", "SetTextI18n")
-    private fun scheduleAppointment(sujeto: String) {
+    private fun scheduleAppointment(sujeto: String, modo:String) {
         calendar = Calendar.getInstance()
         tema = spTema.selectedItem.toString()
         descripcion = txtDescripcion.text.toString()
@@ -775,7 +805,7 @@ class CrearCita : AppCompatActivity() {
                                 println(nombreCliente)
                                 if (nombreCliente.isNotEmpty()) {
                                     println("Nombre Cliente asignado: $nombreCliente")
-                                    finalizarCreacion()
+                                    finalizarCreacion(modo)
                                 }else{
                                     println("El nombre del cliente está vacío.")
                                 }
@@ -811,7 +841,7 @@ class CrearCita : AppCompatActivity() {
                             nombreCliente = childSnapshot.child("nombreCompleto").value.toString()
                             if (correoCliente.isNotEmpty()) {
                                 println("Correo Cliente asignado: $correoCliente")
-                                finalizarCreacion()
+                                finalizarCreacion(modo)
                             } else {
                                 Toast.makeText(this@CrearCita, "El correo del cliente no está disponible.", Toast.LENGTH_SHORT).show()
                             }
@@ -829,7 +859,7 @@ class CrearCita : AppCompatActivity() {
     }
 
     @SuppressLint("DefaultLocale", "SetTextI18n")
-    private fun finalizarCreacion() {
+    private fun finalizarCreacion(modo: String) {
         // Validación: Seleccionar Fecha
         if (txtDia.text.isEmpty()) {
             Toast.makeText(this, "Debe seleccionar una fecha", Toast.LENGTH_SHORT).show()
@@ -888,7 +918,12 @@ class CrearCita : AppCompatActivity() {
 
                             verificarDisponibilidad(abogado, fecha, horaSeleccionada, horaFinCita) { disponible ->
                                 if (disponible) {
-                                    obtenerUltimoID()
+                                    if(modo == "crear"){
+                                        obtenerUltimoID()
+                                    }
+                                    else{
+                                        appointmentID = txtConsultar.text.toString().toInt()
+                                    }
                                     val cita = Cita(
                                         appointmentID,
                                         descripcion,
@@ -902,7 +937,13 @@ class CrearCita : AppCompatActivity() {
                                     saveAppointmentToFirebase(cita, abogado, fecha, horaSeleccionada, horaFinCita)
                                     // Enviar el correo con la información de la cita
                                     val subject = "Cita en Personería - ID: ${cita.id}"
-                                    var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                    var body=""
+                                    //var body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                    if (modo == "crear"){
+                                        body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                    }else if (modo == "modificar"){
+                                        body = "Estimado Usuario:\n\nSu cita ha sido modificada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                    }
 
                                     sendEmailInBackground(correoCliente, subject, body)
 
@@ -918,7 +959,12 @@ class CrearCita : AppCompatActivity() {
                                 """.trimIndent()
                                     enviarCorreoAdicionales(subject, bodyAdicionales, correosAdicionales)
 
-                                    body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                    //body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                    if (modo == "crear"){
+                                        body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                    }else if (modo == "modificar"){
+                                        body = "Estimado Abogado:\n\nSe ha modificado una de sus citas.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                    }
                                     sendEmailInBackground(correoAbogado, subject, body)
 
                                     // Mostrar detalles en la pantalla
