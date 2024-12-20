@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -239,42 +240,29 @@ class CrearCuenta : AppCompatActivity() {
         }
 
         btnSignUp.setOnClickListener {
-            val campos = conseguirCampos()
-            if (!verificarCampos(campos)) {
+            // Crear y configurar el diálogo inicial
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Permiso de Habeas Data")
+            builder.setMessage("Al crear una cuenta, autorizas el tratamiento de tus datos personales conforme a nuestra política de privacidad. ¿Aceptas continuar?")
+
+            // Agregar botones de acción
+            builder.setPositiveButton("Acepto") { dialog, which ->
+                // Continuar con la creación de la cuenta
+                procesarCreacionCuenta()
+            }
+
+            builder.setNegativeButton("No acepto") { dialog, which ->
+                // Cancelar el flujo
+                dialog.dismiss()
                 Toast.makeText(
                     this@CrearCuenta,
-                    "Diligencie todos los datos",
+                    "No se puede continuar sin aceptar el permiso de habeas data",
                     Toast.LENGTH_SHORT,
                 ).show()
-                return@setOnClickListener
-            } else{
-                val nombre = campos[0]
-                val clave = campos[1]
-                val confirmarClave = campos[2]
-                val documento = campos[3]
-                val edad = campos[4].toInt()
-                val direccion = campos[5]
-                val telefono = campos[6]
-                val correo = campos[7]
-                val sexo = campos[8]
-                val escolaridad = campos[9]
-                val grupo = campos[10]
-                val siGrupo = campos[11]
-                val comunidad = campos[12]
-
-                if(clave != confirmarClave){
-                    Toast.makeText(
-                        this@CrearCuenta,
-                        "Las contraseñas no coinciden",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                    return@setOnClickListener
-                }else{
-                    signUp(nombre, clave, documento, edad,
-                        direccion, telefono, correo, sexo, escolaridad,
-                        grupo, siGrupo, comunidad)
-                }
             }
+
+            // Mostrar el diálogo de permiso de habeas data
+            builder.create().show()
         }
 
         btnConsultar.setOnClickListener{
@@ -343,6 +331,47 @@ class CrearCuenta : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun procesarCreacionCuenta() {
+        val campos = conseguirCampos()
+        if (!verificarCampos(campos)) {
+            Toast.makeText(
+                this@CrearCuenta,
+                "Diligencie todos los datos",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        } else {
+            val nombre = campos[0]
+            val clave = campos[1]
+            val confirmarClave = campos[2]
+            val documento = campos[3]
+            val edad = campos[4].toInt()
+            val direccion = campos[5]
+            val telefono = campos[6]
+            val correo = campos[7]
+            val sexo = campos[8]
+            val escolaridad = campos[9]
+            val grupo = campos[10]
+            val siGrupo = campos[11]
+            val comunidad = campos[12]
+
+            if (clave != confirmarClave) {
+                Toast.makeText(
+                    this@CrearCuenta,
+                    "Las contraseñas no coinciden",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return
+            } else {
+                signUp(
+                    nombre, clave, documento, edad,
+                    direccion, telefono, correo, sexo, escolaridad,
+                    grupo, siGrupo, comunidad
+                )
+            }
+        }
     }
 
     private fun signUp(
