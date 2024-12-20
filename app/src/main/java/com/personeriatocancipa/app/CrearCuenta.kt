@@ -318,17 +318,17 @@ class CrearCuenta : AppCompatActivity() {
                     return@setOnClickListener
                 }else{
                     val nombre = campos[0]
-                    val documento = campos[2]
-                    val edad = campos[3].toInt()
-                    val direccion = campos[4]
-                    val telefono = campos[5]
-                    val correo = campos[6]
-                    val sexo = campos[7]
-                    val escolaridad = campos[8]
-                    val grupo = campos[9]
-                    val siGrupo = campos[10]
-                    val comunidad = campos[11]
-                    val estado = campos[12]
+                    val documento = campos[3]
+                    val edad = campos[4].toInt()
+                    val direccion = campos[5]
+                    val telefono = campos[6]
+                    val correo = campos[7]
+                    val sexo = campos[8]
+                    val escolaridad = campos[9]
+                    val grupo = campos[10]
+                    val siGrupo = campos[11]
+                    val comunidad = campos[12]
+                    val estado = campos[13]
 
                     mDbRef = FirebaseDatabase.getInstance().getReference("userData")
                     mDbRef.child(uidConsultado).setValue(
@@ -480,9 +480,12 @@ class CrearCuenta : AppCompatActivity() {
     private fun verificarCampos(campos: Array<String>): Boolean {
        //Verifica que todos los campos estén diligenciados
         // Si el grupo étnico es "Sí", se debe diligenciar el campo de grupo étnico
-        if (campos[0].isEmpty() || campos[1].isEmpty() || campos[2].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty() || campos[5].isEmpty() || campos[6].isEmpty()) {
+        if((tarea == "modificar") && (campos[0].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty() || campos[5].isEmpty() || campos[6].isEmpty())){
             return false
-        } else if (campos[9] == "Sí" && campos[11].isEmpty()) {
+        }else if (tarea == "crear" && (campos[0].isEmpty() || campos[1].isEmpty() || campos[2].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty() || campos[5].isEmpty() || campos[6].isEmpty() || campos[7].isEmpty() || campos[10].isEmpty() || campos[12].isEmpty())) {
+            return false
+        }
+        if (campos[9] == "Sí" && campos[11].isEmpty()) {
             return false
         }
         return true
@@ -541,7 +544,8 @@ class CrearCuenta : AppCompatActivity() {
                         val estado = it.child("estado").value.toString()
 
                         txtNombre.setText(nombre)
-                        txtClave.setText("********")
+                        //txtClave.setText("********")
+                        //txtConfirmarClave.setText("********")
                         txtDocumento.setText(documento)
                         txtEdad.setText(edad)
                         txtDireccion.setText(direccion)
