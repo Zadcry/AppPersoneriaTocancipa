@@ -481,6 +481,30 @@
             android:layout_marginBottom="5dp"
             />
 
+        <!-- Estado -->
+        <TextView
+            android:id="@+id/tvEstado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estado"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <Spinner
+            android:id="@+id/spEstado"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
