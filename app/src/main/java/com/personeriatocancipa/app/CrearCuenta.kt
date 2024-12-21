@@ -374,6 +374,7 @@ class CrearCuenta : AppCompatActivity() {
             val grupo = campos[10]
             val siGrupo = campos[11]
             val comunidad = campos[12]
+            val estado = campos[13]
 
             if (clave != confirmarClave) {
                 Toast.makeText(
@@ -386,8 +387,7 @@ class CrearCuenta : AppCompatActivity() {
                 signUp(
                     nombre, clave, documento, edad,
                     direccion, telefono, correo, sexo, escolaridad,
-                    grupo, siGrupo, comunidad
-                )
+                    grupo, siGrupo, comunidad, estado)
             }
         }
     }
