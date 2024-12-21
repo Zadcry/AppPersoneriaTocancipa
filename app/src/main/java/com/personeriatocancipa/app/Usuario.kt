@@ -13,6 +13,7 @@ class Usuario {
     var grupoSi: String? = null
     var grupo: String? = null
     var comunidad: String? = null
+    var estado: String? = null // Activo, inactivo
     var uid: String? = null
 
     constructor(
@@ -27,6 +28,7 @@ class Usuario {
         grupoSi: String?,
         grupo: String?,
         comunidad: String?,
+        estado: String?,
         uid: String?
     ) {
         this.nombreCompleto = nombreCompleto
@@ -40,6 +42,7 @@ class Usuario {
         this.grupoSi = grupoSi
         this.grupo = grupo
         this.comunidad = comunidad
+        this.estado = estado
         this.uid = uid
     }
 
