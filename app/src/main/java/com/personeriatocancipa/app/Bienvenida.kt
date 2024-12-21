@@ -20,6 +20,7 @@ class Bienvenida : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var btnSignUp: Button
     private lateinit var btnRecuperarPassword: Button
+    private lateinit var btnRecuperarCorreo: Button
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +35,7 @@ class Bienvenida : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         btnSignUp = findViewById(R.id.btnSignUp)
         btnRecuperarPassword = findViewById(R.id.btnRecuperarPassword)
+        btnRecuperarCorreo = findViewById(R.id.btnRecuperarCorreo)
 
 
         //Crea eventListener para clicks en "Log In"
@@ -53,6 +55,11 @@ class Bienvenida : AppCompatActivity() {
         //Crea eventListener para clicks en "Recuperar Contraseña"
         btnRecuperarPassword.setOnClickListener(){
             recuperarPassword()
+        }
+
+        //Crea eventListener para clicks en "Recuperar Correo"
+        btnRecuperarCorreo.setOnClickListener{
+            recuperarCorreo()
         }
     }
 
@@ -195,6 +202,11 @@ class Bienvenida : AppCompatActivity() {
 
     private fun recuperarPassword(){
         val intent = Intent(this@Bienvenida, RecuperarPassword::class.java)
+        startActivity(intent)
+    }
+
+    private fun recuperarCorreo(){
+        val intent = Intent(this@Bienvenida, RecuperarCorreo::class.java)
         startActivity(intent)
     }
 

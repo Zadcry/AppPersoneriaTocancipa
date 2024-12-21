@@ -47,6 +47,9 @@
         <activity
             android:name=".CRUD"
             android:exported="false" />
+        <activity
+            android:name=".RecuperarCorreo"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"

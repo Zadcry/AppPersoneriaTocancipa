@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     tools:context=".Bienvenida"
     android:orientation="vertical">
-    
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/h05"
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent=".95" />
-    
+
 
     <!-- Imagen -->
     <ImageView
@@ -53,7 +53,7 @@
         android:id="@+id/tvTemp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Personería de Tocancipá"
+        android:text="Restablecer Correo"
         android:textAlignment="center"
         android:textSize="30sp"
         android:textColor="@color/black"
@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@id/img"
         app:layout_constraintEnd_toEndOf="@+id/v95"
         app:layout_constraintStart_toStartOf="@+id/v05"
-    />
+        />
 
     <!-- Inputs -->
     <GridLayout
@@ -74,7 +74,6 @@
         android:rowCount="3"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
         app:layout_constraintTop_toBottomOf="@id/tvTemp"
         app:layout_constraintEnd_toEndOf="@+id/v95"
         app:layout_constraintStart_toStartOf="@+id/v05"
@@ -83,19 +82,20 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bienvenido"
+            android:text="Digite su cédula"
             android:textAlignment="center"
-            android:textSize="25dp"
+            android:textSize="20dp"
             android:textColor="@color/black"
             android:paddingBottom="5dp"
-        />
+            />
 
         <EditText
-            android:id="@+id/txtCorreo"
+            android:id="@+id/txtCedula"
+            android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:hint="Correo electrónico"
+            android:hint="Digite sin comas ni puntos"
             android:textColorHint="@color/grisClaro"
             android:textSize="20sp"
             android:textColor="@color/black"
@@ -108,24 +108,73 @@
             android:layout_marginBottom="5dp"
         />
 
-        <EditText
-            android:id="@+id/txtContraseña"
-            android:password="true"
+        <Button
+            android:id="@+id/btnCedula"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Consultar Cédula"
+            android:textSize="15dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/negroSecundario"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"
+            app:strokeColor = "@color/negroSecundario"
+            />
+
+        <TextView
+            android:id="@+id/tvClave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:hint="Contraseña"
-            android:singleLine="true"
-            android:textColorHint="@color/grisClaro"
-            android:padding="10dp"
+            android:text="Digite la contraseña de su cuenta"
             android:textAlignment="center"
-            android:background="@drawable/edittext_format"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="10dp"
+            />
+
+
+
+        <GridLayout
+            android:id="@+id/gridPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="1"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="5dp"
-            tools:ignore="Deprecated"
-        />
+            app:layout_constraintTop_toBottomOf="@id/tvClave"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <EditText
+                android:id="@+id/txtClave"
+                android:inputType="textPassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:singleLine="true"
+                android:hint="Contraseña"
+                android:textColorHint="@color/grisClaro"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:background="@drawable/edittext_format"
+                android:layout_marginEnd="5dp" />
+
+            <Button
+                android:id="@+id/btnTogglePassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="👁"
+                android:textSize="18sp"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/white" />
+        </GridLayout>
+
 
     </GridLayout>
 
@@ -135,76 +184,39 @@
         android:layout_height="wrap_content"
         android:columnCount="1"
         android:rowCount="3"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-
         app:layout_constraintTop_toBottomOf="@id/GridLayoutTxt"
         app:layout_constraintEnd_toEndOf="@+id/v95"
         app:layout_constraintStart_toStartOf="@+id/v05"
         >
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnRestablecer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Iniciar Sesión"
-            android:textSize="15dp"
+            android:text="Restablecer Correo"
+            android:textSize="15sp"
             android:textColor="@color/white"
             android:backgroundTint="@color/negroSecundario"
-            android:layout_columnWeight="1"
             android:layout_gravity="fill"
             app:strokeColor = "@color/negroSecundario"
-        />
-
-        <Button
-            android:id="@+id/btnSignUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Cree su cuenta aquí"
-            android:backgroundTint="@color/negroSecundario"
-            android:textColor="@color/white"
-            android:textAlignment="center"
-            android:textSize="15dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            />
-
+            tools:ignore="HardcodedText" />
     </GridLayout>
 
     <Button
-        android:id="@+id/btnRecuperarPassword"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnVolver"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="¿Olvidó su contraseña?"
+        android:text="Volver"
         android:backgroundTint="@color/negroSecundario"
         android:textColor="@color/white"
         android:textAlignment="center"
         android:textSize="15dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
+
         app:layout_constraintBottom_toBottomOf="@id/h95"
         app:layout_constraintEnd_toEndOf="@+id/v95"
         app:layout_constraintStart_toStartOf="@+id/v05"
         />
-
-    <Button
-        android:id="@+id/btnRecuperarCorreo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="¿Olvidó su correo?"
-        android:backgroundTint="@color/negroSecundario"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@id/btnRecuperarPassword"
-        app:layout_constraintEnd_toEndOf="@+id/v95"
-        app:layout_constraintStart_toStartOf="@+id/v05"
-        />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
