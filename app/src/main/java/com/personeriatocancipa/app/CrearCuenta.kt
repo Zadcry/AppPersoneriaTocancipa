@@ -42,6 +42,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var spEscolaridad: Spinner
     private lateinit var spGrupo: Spinner
     private lateinit var spComunidad: Spinner
+    private lateinit var spEstado: Spinner
     private lateinit var txtGrupoEtnico: EditText
     private lateinit var btnConsultar: Button
     private lateinit var btnSalir: Button
@@ -52,6 +53,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var btnToggleCheckPassword: Button
     private lateinit var tvClave: TextView
     private lateinit var tvConfirmarClave: TextView
+    private lateinit var tvEstado: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
@@ -137,6 +139,16 @@ class CrearCuenta : AppCompatActivity() {
             spComunidad.adapter = adapter
         }
 
+        spEstado = findViewById(R.id.spEstado)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.opcionesEstadoCargo,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spEstado.adapter = adapter
+        }
+
 
         txtClave = findViewById(R.id.txtClave)
         txtConfirmarClave = findViewById(R.id.txtConfirmarClave)
@@ -186,6 +198,7 @@ class CrearCuenta : AppCompatActivity() {
         btnEliminar = findViewById(R.id.btnEliminar)
         tvClave = findViewById(R.id.tvClave)
         tvConfirmarClave = findViewById(R.id.tvConfirmarClave)
+        tvEstado = findViewById(R.id.tvEstado)
 
         if(tarea == "crear"){
             txtAnuncio.text = "Crear Cuenta"
@@ -193,9 +206,13 @@ class CrearCuenta : AppCompatActivity() {
             btnSignUp.visibility = Button.VISIBLE
             btnModificar.visibility = Button.GONE
             btnEliminar.visibility = Button.GONE
+            tvEstado.visibility = TextView.GONE
+            spEstado.visibility = Spinner.GONE
         }else{
             txtAnuncio.text = "Gestión de Cuenta"
             gridConsultar.visibility = View.VISIBLE
+            tvEstado.visibility = TextView.VISIBLE
+            spEstado.visibility = Spinner.VISIBLE
             when (tarea) {
                 "consultar" -> {
                     btnSignUp.visibility = Button.GONE
@@ -288,21 +305,22 @@ class CrearCuenta : AppCompatActivity() {
                     return@setOnClickListener
                 }else{
                     val nombre = campos[0]
-                    val documento = campos[2]
-                    val edad = campos[3].toInt()
-                    val direccion = campos[4]
-                    val telefono = campos[5]
-                    val correo = campos[6]
-                    val sexo = campos[7]
-                    val escolaridad = campos[8]
-                    val grupo = campos[9]
-                    val siGrupo = campos[10]
-                    val comunidad = campos[11]
+                    val documento = campos[3]
+                    val edad = campos[4].toInt()
+                    val direccion = campos[5]
+                    val telefono = campos[6]
+                    val correo = campos[7]
+                    val sexo = campos[8]
+                    val escolaridad = campos[9]
+                    val grupo = campos[10]
+                    val siGrupo = campos[11]
+                    val comunidad = campos[12]
+                    val estado = campos[13]
 
                     mDbRef = FirebaseDatabase.getInstance().getReference("userData")
                     mDbRef.child(uidConsultado).setValue(
                         Usuario(nombre, documento, edad, direccion, telefono,
-                            correo, sexo, escolaridad, siGrupo, grupo, comunidad,uidConsultado))
+                            correo, sexo, escolaridad, siGrupo, grupo, comunidad, estado, uidConsultado))
                     Toast.makeText(
                         this@CrearCuenta,
                         "Usuario modificado exitosamente",
@@ -386,7 +404,8 @@ class CrearCuenta : AppCompatActivity() {
         escolaridad: String,
         grupo: String,
         siGrupo: String?,
-        comunidad: String
+        comunidad: String,
+        estado: String
     ) {
 
         // Buscar en RealtimeDatabase si ya existe un usuario con el mismo documento
@@ -407,7 +426,7 @@ class CrearCuenta : AppCompatActivity() {
                                 addUserToDatabase(
                                     nombre, documento, edad, direccion,
                                     telefono, correo, sexo, escolaridad, grupo,
-                                    siGrupo, comunidad, mAuth.currentUser?.uid!!
+                                    siGrupo, comunidad, estado, mAuth.currentUser?.uid!!
                                 )
 
                                 println(mAuth.currentUser?.uid)
@@ -454,11 +473,12 @@ class CrearCuenta : AppCompatActivity() {
                                   grupo: String,
                                   siGrupo: String?,
                                   comunidad: String,
+                                  estado: String,
                                   uid: String) {
         mDbRef = FirebaseDatabase.getInstance().getReference()
         mDbRef.child("userData").child(uid).setValue(
             Usuario(nombre, documento, edad, direccion, telefono,
-                correo, sexo, escolaridad, siGrupo, grupo, comunidad,uid))
+                correo, sexo, escolaridad, siGrupo, grupo, comunidad, estado, uid))
         Toast.makeText(
             this@CrearCuenta,
             "Cuenta creada exitosamente",
@@ -480,16 +500,20 @@ class CrearCuenta : AppCompatActivity() {
         val grupo = spGrupo.selectedItem.toString()
         val comunidad = spComunidad.selectedItem.toString()
         val grupoEtnico = txtGrupoEtnico.text.toString()
+        val estado = spEstado.selectedItem.toString()
 
-        return arrayOf(nombre, clave, confirmarClave, documento, edad, direccion, telefono, correo, sexo, escolaridad, grupo, grupoEtnico, comunidad)
+        return arrayOf(nombre, clave, confirmarClave, documento, edad, direccion, telefono, correo, sexo, escolaridad, grupo, grupoEtnico, comunidad, estado)
     }
 
     private fun verificarCampos(campos: Array<String>): Boolean {
        //Verifica que todos los campos estén diligenciados
         // Si el grupo étnico es "Sí", se debe diligenciar el campo de grupo étnico
-        if (campos[0].isEmpty() || campos[1].isEmpty() || campos[2].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty() || campos[5].isEmpty() || campos[6].isEmpty()) {
+        if((tarea == "modificar") && (campos[0].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty() || campos[5].isEmpty() || campos[6].isEmpty())){
             return false
-        } else if (campos[9] == "Sí" && campos[11].isEmpty()) {
+        }else if (tarea == "crear" && (campos[0].isEmpty() || campos[1].isEmpty() || campos[2].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty() || campos[5].isEmpty() || campos[6].isEmpty() || campos[7].isEmpty() || campos[10].isEmpty() || campos[12].isEmpty())) {
+            return false
+        }
+        if (campos[9] == "Sí" && campos[11].isEmpty()) {
             return false
         }
         return true
@@ -511,6 +535,7 @@ class CrearCuenta : AppCompatActivity() {
         spGrupo.isEnabled = false
         spComunidad.isEnabled = false
         txtGrupoEtnico.isEnabled = false
+        spEstado.isEnabled = false
     }
 
     private fun consultarPorCedula() {
@@ -544,9 +569,11 @@ class CrearCuenta : AppCompatActivity() {
                         val grupo = it.child("grupo").value.toString()
                         val grupoSi = it.child("grupoSi").value.toString()
                         val comunidad = it.child("comunidad").value.toString()
+                        val estado = it.child("estado").value.toString()
 
                         txtNombre.setText(nombre)
-                        txtClave.setText("********")
+                        //txtClave.setText("********")
+                        //txtConfirmarClave.setText("********")
                         txtDocumento.setText(documento)
                         txtEdad.setText(edad)
                         txtDireccion.setText(direccion)
@@ -557,6 +584,7 @@ class CrearCuenta : AppCompatActivity() {
                         spGrupo.setSelection((spGrupo.adapter as ArrayAdapter<String>).getPosition(grupo))
                         spComunidad.setSelection((spComunidad.adapter as ArrayAdapter<String>).getPosition(comunidad))
                         txtGrupoEtnico.setText(grupoSi)
+                        spEstado.setSelection((spEstado.adapter as ArrayAdapter<String>).getPosition(estado))
                     }
                     if(tarea == "modificar"){
                         btnModificar.visibility = Button.VISIBLE

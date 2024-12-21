@@ -424,15 +424,12 @@
 
         <GridLayout
             android:id="@+id/gridSiGrupo"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:rowCount="2"
             android:columnCount="1"
-            android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp">
+            android:layout_marginRight="5dp">
 
             <!-- En caso de SÍ -->
             <TextView
@@ -441,7 +438,6 @@
                 android:text="¿Cuál?"
                 android:textSize="15dp"
                 android:textColor="@color/black"
-                android:layout_marginLeft="5dp"
             />
 
             <EditText
@@ -455,6 +451,7 @@
                 android:background="@drawable/edittext_format"
                 android:singleLine="true"
                 android:layout_marginBottom="15dp"
+                android:layout_marginTop="5dp"
             />
         </GridLayout>
 
@@ -470,6 +467,30 @@
 
         <Spinner
             android:id="@+id/spComunidad"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="15dp"
+            />
+
+        <!-- Estado -->
+        <TextView
+            android:id="@+id/tvEstado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estado"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
+            />
+
+        <Spinner
+            android:id="@+id/spEstado"
             android:background="@drawable/spinner_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
