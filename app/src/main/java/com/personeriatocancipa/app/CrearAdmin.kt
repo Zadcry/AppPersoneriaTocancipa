@@ -14,9 +14,8 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -164,34 +163,57 @@ class CrearAdmin : AppCompatActivity() {
         }
 
         btnSignUp.setOnClickListener {
-            val campos = conseguirCampos()
-            if (!verificarCampos(campos)) {
-                Toast.makeText(
-                    this@CrearAdmin,
-                    "Diligencie todos los datos",
-                    Toast.LENGTH_SHORT,
-                ).show()
-                return@setOnClickListener
-            } else{
-                val nombre = campos[0]
-                val clave = campos[1]
-                val confirmarClave = campos[2]
-                val documento = campos[3]
-                val correo = campos[4]
-                val estado = campos[5]
+            // Crear y configurar el diálogo inicial
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Permiso de Habeas Data")
+            builder.setMessage("Al crear una cuenta, autorizas el tratamiento de tus datos personales conforme a nuestra política de privacidad. ¿Aceptas continuar?")
 
-                if(clave != confirmarClave){
+            // Agregar botones de acción
+            builder.setPositiveButton("Acepto") { dialog, which ->
+                // Continuar con la creación de la cuenta
+                val campos = conseguirCampos()
+                if (!verificarCampos(campos)) {
                     Toast.makeText(
                         this@CrearAdmin,
-                        "Las contraseñas no coinciden",
+                        "Diligencie todos los datos",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    return@setOnClickListener
-                }else{
-                    signUp(nombre, clave, documento,
-                        correo, estado)
+                    return@setPositiveButton
+                } else{
+                    val nombre = campos[0]
+                    val clave = campos[1]
+                    val confirmarClave = campos[2]
+                    val documento = campos[3]
+                    val correo = campos[4]
+                    val estado = campos[5]
+
+                    if(clave != confirmarClave){
+                        Toast.makeText(
+                            this@CrearAdmin,
+                            "Las contraseñas no coinciden",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        return@setPositiveButton
+                    }else{
+                        signUp(nombre, clave, documento,
+                            correo, estado)
+                    }
                 }
             }
+
+            builder.setNegativeButton("No acepto") { dialog, which ->
+                // Cancelar el flujo
+                dialog.dismiss()
+                Toast.makeText(
+                    this@CrearAdmin,
+                    "No se puede continuar sin aceptar el permiso de habeas data",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+
+            // Mostrar el diálogo de permiso de habeas data
+            builder.create().show()
+
         }
 
         btnConsultar.setOnClickListener{
