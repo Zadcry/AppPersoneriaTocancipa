@@ -19,6 +19,7 @@ class InterfazCliente : AppCompatActivity() {
     private lateinit var btnAgendarCita: Button
     private lateinit var btnVerCitas: Button
     private lateinit var btnSalir: Button
+    private lateinit var btnModificar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,7 @@ class InterfazCliente : AppCompatActivity() {
         btnAgendarCita = findViewById(R.id.btnAgendarCita)
         btnVerCitas = findViewById(R.id.btnVerCitas)
         btnSalir = findViewById(R.id.btnSalir)
+        btnModificar = findViewById(R.id.btnModificar)
 
         cargarNombre()
 
@@ -42,6 +44,14 @@ class InterfazCliente : AppCompatActivity() {
         btnVerCitas.setOnClickListener{
             // Redirigir a la actividad de consulta de citas
             val intent = Intent(this@InterfazCliente, ConsultarCitasCliente::class.java)
+            startActivity(intent)
+        }
+
+        btnModificar.setOnClickListener{
+            // Redirigir a la actividad de gestión de cuenta
+            val intent = Intent(this@InterfazCliente, CrearCuenta::class.java)
+            intent.putExtra("tarea", "modificar")
+            intent.putExtra("sujeto", "propio")
             startActivity(intent)
         }
 
