@@ -334,6 +334,7 @@ class CrearCuenta : AppCompatActivity() {
                         "Usuario modificado exitosamente",
                         Toast.LENGTH_SHORT,
                     ).show()
+                    finish()
                 }
             }
         }
