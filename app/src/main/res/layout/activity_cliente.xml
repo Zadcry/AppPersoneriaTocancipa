@@ -113,9 +113,39 @@
                     android:layout_gravity="fill"
                     android:backgroundTint="@color/negroSecundario"
                     android:text="Ver Citas"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
             </GridLayout>
         </GridLayout>
+    </GridLayout>
+
+    <!-- Modificar  -->
+    <GridLayout
+        android:id="@+id/gridModificar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:padding="15dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/modificar"
+            tools:ignore="ContentDescription" />
+
+        <Button
+            android:id="@+id/btnModificar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:backgroundTint="@color/negroSecundario"
+            android:text="Editar Cuenta"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText" />
     </GridLayout>
 
     <!-- Espacio para empujar el botón hacia abajo -->

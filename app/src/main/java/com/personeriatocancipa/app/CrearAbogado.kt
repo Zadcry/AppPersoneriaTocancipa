@@ -43,9 +43,13 @@ class CrearAbogado : AppCompatActivity() {
     private lateinit var btnEliminar: Button
     private lateinit var tvClave: TextView
     private lateinit var tvConfirmarClave: TextView
+    private lateinit var tvEstado: TextView
+    private lateinit var tvCargo: TextView
+    private lateinit var tvTema: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
+    private var sujeto: String = ""
     private var uidConsultado: String = ""
 
     @SuppressLint("ResourceType", "MissingInflatedId")
@@ -57,6 +61,7 @@ class CrearAbogado : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         tarea = intent.getStringExtra("tarea").toString()
+        sujeto = intent.getStringExtra("sujeto").toString()
 
         gridConsultar = findViewById(R.id.gridConsultar)
         txtConsultar = findViewById(R.id.txtConsultar)
@@ -75,6 +80,9 @@ class CrearAbogado : AppCompatActivity() {
         btnToggleCheckPassword = findViewById(R.id.btnToggleCheckPassword)
         tvClave = findViewById(R.id.tvClave)
         tvConfirmarClave = findViewById(R.id.tvConfirmarClave)
+        tvEstado = findViewById(R.id.tvEstado)
+        tvCargo = findViewById(R.id.tvCargo)
+        tvTema = findViewById(R.id.tvTema)
 
         spCargo = findViewById(R.id.spCargo)
         ArrayAdapter.createFromResource(
@@ -156,6 +164,16 @@ class CrearAbogado : AppCompatActivity() {
                     disableFields()
                 }
                 "modificar" -> {
+                    if(sujeto == "propio"){
+                        gridConsultar.visibility = GridLayout.GONE
+                        txtDocumento.isEnabled = false
+                        tvEstado.visibility = TextView.GONE
+                        spEstado.visibility = Spinner.GONE
+                        tvTema.visibility = TextView.GONE
+                        spTema.visibility = Spinner.GONE
+                        tvCargo.visibility = TextView.GONE
+                        spCargo.visibility = Spinner.GONE
+                    }
                     btnSignUp.visibility = Button.GONE
                     btnModificar.visibility = Button.GONE
                     btnEliminar.visibility = Button.GONE
@@ -217,6 +235,50 @@ class CrearAbogado : AppCompatActivity() {
 
         btnEliminar.setOnClickListener {
             eliminarAbogado()
+        }
+
+        if (sujeto == "propio"){
+            mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
+            val query = mDbRef.orderByChild("correo").equalTo(mAuth.currentUser?.email)
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    println(snapshot)
+                    if (snapshot.exists()) {
+                        snapshot.children.forEach {
+                            uidConsultado = it.key.toString()
+                            println(it)
+                            val nombre = it.child("nombreCompleto").value.toString()
+                            val documento = it.child("documento").value.toString()
+                            val correo = it.child("correo").value.toString()
+                            val cargo = it.child("cargo").value.toString()
+                            val tema = it.child("tema").value.toString()
+
+                            txtNombre.setText(nombre)
+                            txtDocumento.setText(documento)
+                            txtCorreo.setText(correo)
+                            spCargo.setSelection((spCargo.adapter as ArrayAdapter<String>).getPosition(cargo))
+                            spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(tema))
+                        }
+                        if(tarea == "modificar"){
+                            btnModificar.visibility = Button.VISIBLE
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@CrearAbogado,
+                            "No se encontró un abogado con la cédula ingresada",
+                            Toast.LENGTH_LONG,
+                        ).show()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@CrearAbogado,
+                        "Error al consultar la base de datos",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            })
         }
 
     }
@@ -393,7 +455,7 @@ class CrearAbogado : AppCompatActivity() {
             ).show()
             return
         }else{
-            if (nombre.isEmpty() || clave.isEmpty() || correo.isEmpty()) {
+            if (((sujeto != "propio") && (nombre.isEmpty() || clave.isEmpty() || correo.isEmpty())) || ((sujeto == "propio") && (nombre.isEmpty() || correo.isEmpty()))) {
                 Toast.makeText(
                     this@CrearAbogado,
                     "Diligencie todos los datos",

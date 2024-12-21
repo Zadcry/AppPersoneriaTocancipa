@@ -57,6 +57,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
+    private var sujeto: String = ""
     private var usuario: String = ""
     private var uidConsultado: String = ""
 
@@ -69,6 +70,7 @@ class CrearCuenta : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         tarea = intent.getStringExtra("tarea").toString()
+        sujeto = intent.getStringExtra("sujeto").toString()
         usuario = intent.getStringExtra("usuario").toString()
         // Manejo valores de Combo Box
 
@@ -213,6 +215,7 @@ class CrearCuenta : AppCompatActivity() {
             gridConsultar.visibility = View.VISIBLE
             tvEstado.visibility = TextView.VISIBLE
             spEstado.visibility = Spinner.VISIBLE
+            txtDocumento.isEnabled = false
             when (tarea) {
                 "consultar" -> {
                     btnSignUp.visibility = Button.GONE
@@ -227,6 +230,11 @@ class CrearCuenta : AppCompatActivity() {
                     disableFields()
                 }
                 "modificar" -> {
+                    if(sujeto == "propio"){
+                        gridConsultar.visibility = GridLayout.GONE
+                        tvEstado.visibility = TextView.GONE
+                        spEstado.visibility = Spinner.GONE
+                    }
                     btnSignUp.visibility = Button.GONE
                     btnModificar.visibility = Button.GONE
                     btnEliminar.visibility = Button.GONE
@@ -326,6 +334,7 @@ class CrearCuenta : AppCompatActivity() {
                         "Usuario modificado exitosamente",
                         Toast.LENGTH_SHORT,
                     ).show()
+                    finish()
                 }
             }
         }
@@ -349,6 +358,63 @@ class CrearCuenta : AppCompatActivity() {
             }
         }
 
+        if (sujeto == "propio"){
+            mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+            val query = mDbRef.orderByChild("correo").equalTo(mAuth.currentUser?.email)
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    println(snapshot)
+                    if (snapshot.exists()) {
+                        snapshot.children.forEach {
+                            uidConsultado = it.key.toString()
+                            println(it)
+                            val nombre = it.child("nombreCompleto").value.toString()
+                            val documento = it.child("documento").value.toString()
+                            val edad = it.child("edad").value.toString()
+                            val direccion = it.child("direccion").value.toString()
+                            val telefono = it.child("telefono").value.toString()
+                            val correo = it.child("correo").value.toString()
+                            val sexo = it.child("sexo").value.toString()
+                            val escolaridad = it.child("escolaridad").value.toString()
+                            val grupo = it.child("grupo").value.toString()
+                            val grupoSi = it.child("grupoSi").value.toString()
+                            val comunidad = it.child("comunidad").value.toString()
+                            val estado = it.child("estado").value.toString()
+
+                            txtNombre.setText(nombre)
+                            txtDocumento.setText(documento)
+                            txtEdad.setText(edad)
+                            txtDireccion.setText(direccion)
+                            txtTelefono.setText(telefono)
+                            txtCorreo.setText(correo)
+                            spSexo.setSelection((spSexo.adapter as ArrayAdapter<String>).getPosition(sexo))
+                            spEscolaridad.setSelection((spEscolaridad.adapter as ArrayAdapter<String>).getPosition(escolaridad))
+                            spGrupo.setSelection((spGrupo.adapter as ArrayAdapter<String>).getPosition(grupo))
+                            spComunidad.setSelection((spComunidad.adapter as ArrayAdapter<String>).getPosition(comunidad))
+                            txtGrupoEtnico.setText(grupoSi)
+                            spEstado.setSelection((spEstado.adapter as ArrayAdapter<String>).getPosition(estado))
+                        }
+                        if(tarea == "modificar"){
+                            btnModificar.visibility = Button.VISIBLE
+                        }
+                    } else {
+                        Toast.makeText(
+                            this@CrearCuenta,
+                            "No se encontró un usuario con la cédula ingresada",
+                            Toast.LENGTH_LONG,
+                        ).show()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@CrearCuenta,
+                        "Error al consultar la base de datos",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
+            })
+        }
     }
 
     private fun procesarCreacionCuenta() {
@@ -513,7 +579,7 @@ class CrearCuenta : AppCompatActivity() {
         }else if (tarea == "crear" && (campos[0].isEmpty() || campos[1].isEmpty() || campos[2].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty() || campos[5].isEmpty() || campos[6].isEmpty() || campos[7].isEmpty() || campos[10].isEmpty() || campos[12].isEmpty())) {
             return false
         }
-        if (campos[9] == "Sí" && campos[11].isEmpty()) {
+        if (campos[10] == "Sí" && campos[11].isEmpty()) {
             return false
         }
         return true
@@ -572,8 +638,6 @@ class CrearCuenta : AppCompatActivity() {
                         val estado = it.child("estado").value.toString()
 
                         txtNombre.setText(nombre)
-                        //txtClave.setText("********")
-                        //txtConfirmarClave.setText("********")
                         txtDocumento.setText(documento)
                         txtEdad.setText(edad)
                         txtDireccion.setText(direccion)

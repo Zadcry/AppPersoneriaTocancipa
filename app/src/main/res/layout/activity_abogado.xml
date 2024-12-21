@@ -32,22 +32,78 @@
             android:textStyle="bold"
             android:textColor="@color/negroSecundario" />
 
-        <ImageView
-            android:id="@+id/imgConsultarCitas"
-            android:layout_width="wrap_content"
+        <Space
+            android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="80dp"
-            android:src="@drawable/citasabogadoce" />
+            />
 
-        <Button
-            android:id="@+id/btnConsultarCitas"
-            android:layout_width="wrap_content"
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="@color/negroSecundario"
-            android:text="Consultar Citas"
-            android:textColor="@color/white" />
+            android:columnCount="2"
+            android:rowCount="1">
+
+            <!-- Agendar Cita -->
+            <GridLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:columnCount="1"
+                android:rowCount="2"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/imgConsultarCitas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/citasabogadoce">
+                </ImageView>
+
+                <Button
+                    android:id="@+id/btnConsultarCitas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/negroSecundario"
+                    android:text="Consultar Citas"
+                    android:textColor="@color/white" />
+            </GridLayout>
+
+            <!-- Ver citas agendadas -->
+            <GridLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:columnCount="1"
+                android:rowCount="2"
+                android:padding="15dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/modificar"
+                    android:layout_marginTop="10dp"
+                    tools:ignore="ContentDescription">
+                </ImageView>
+
+                <Button
+                    android:id="@+id/btnModificar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/negroSecundario"
+                    android:text="Editar Cuenta"
+                    android:textColor="@color/white"
+                    tools:ignore="HardcodedText" />
+            </GridLayout>
+        </GridLayout>
     </LinearLayout>
 
     <!-- Espacio vacío para empujar el botón hacia abajo -->
