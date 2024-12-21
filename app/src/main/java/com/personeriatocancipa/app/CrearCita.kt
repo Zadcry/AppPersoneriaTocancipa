@@ -480,6 +480,7 @@ class CrearCita : AppCompatActivity() {
                     //  Tambien quitar horario de la cita
                     println(snapshot)
                     conseguirNombreAbogado(snapshot.child("correoAbogado").value.toString(), "eliminar")
+                    abogado = spAbogado.selectedItem.toString()
                     eliminarHorarioOcupado(idCita.toString(),abogado, snapshot.child("fecha").value.toString())
 
                     snapshot.ref.removeValue()
@@ -681,7 +682,7 @@ class CrearCita : AppCompatActivity() {
                     snapshot.children.forEach { childSnapshot ->
                         // Extraer el correo
                         println(snapshot)
-                        var nombreAbogado = childSnapshot.child("nombreCompleto").value.toString()
+                        val nombreAbogado = childSnapshot.child("nombreCompleto").value.toString()
                         //
                         if (modo=="modificar"){
                         spAbogado.setSelection((spAbogado.adapter as ArrayAdapter<String>).getPosition(nombreAbogado))
