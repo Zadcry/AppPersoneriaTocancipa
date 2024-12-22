@@ -1,84 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Bienvenida"
-    android:orientation="vertical">
+    android:background="@color/white">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/h05"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".05" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/h95"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".95" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/v05"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".05" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/v95"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent=".95" />
-
-
-    <!-- Imagen -->
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:src="@drawable/escudo"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toTopOf="@id/h05"
-        app:layout_constraintEnd_toEndOf="@+id/v95"
-        app:layout_constraintStart_toStartOf="@+id/v05"
-        >
-    </ImageView>
-
-    <TextView
-        android:id="@+id/tvTemp"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Restablecer Correo"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        android:textColor="@color/black"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        tools:ignore="RtlCompat"
-        app:layout_constraintTop_toBottomOf="@id/img"
-        app:layout_constraintEnd_toEndOf="@+id/v95"
-        app:layout_constraintStart_toStartOf="@+id/v05"
-        />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <!-- Inputs -->
-    <GridLayout
-        android:id="@+id/GridLayoutTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="1"
-        android:rowCount="3"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTemp"
-        app:layout_constraintEnd_toEndOf="@+id/v95"
-        app:layout_constraintStart_toStartOf="@+id/v05"
-        >
+        <!-- Imagen -->
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:src="@drawable/escudo"
+            android:layout_marginBottom="10dp" />
 
+        <TextView
+            android:id="@+id/tvTemp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Actualizar Correo"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textColor="@color/black"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp" />
+
+        <!-- Inputs -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,15 +39,13 @@
             android:textAlignment="center"
             android:textSize="20dp"
             android:textColor="@color/black"
-            android:paddingBottom="5dp"
-            />
+            android:paddingBottom="5dp"/>
 
         <EditText
             android:id="@+id/txtCedula"
             android:inputType="number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:hint="Digite sin comas ni puntos"
             android:textColorHint="@color/grisClaro"
             android:textSize="20sp"
@@ -102,11 +53,7 @@
             android:padding="10dp"
             android:textAlignment="center"
             android:background="@drawable/edittext_format"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="5dp"
-        />
+            android:layout_marginBottom="10dp" />
 
         <Button
             android:id="@+id/btnCedula"
@@ -116,10 +63,8 @@
             android:textSize="15dp"
             android:textColor="@color/white"
             android:backgroundTint="@color/negroSecundario"
-            android:layout_columnWeight="1"
             android:layout_gravity="center"
-            app:strokeColor = "@color/negroSecundario"
-            />
+            android:layout_marginBottom="10dp" />
 
         <TextView
             android:id="@+id/tvClave"
@@ -129,32 +74,19 @@
             android:textAlignment="center"
             android:textSize="20dp"
             android:textColor="@color/black"
-            android:paddingBottom="5dp"
-            android:layout_marginTop="10dp"
-            />
+            android:paddingBottom="5dp" />
 
-
-
-        <GridLayout
-            android:id="@+id/gridPassword"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            app:layout_constraintTop_toBottomOf="@id/tvClave"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/txtClave"
                 android:inputType="textPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                android:singleLine="true"
+                android:layout_weight="1"
                 android:hint="Contraseña"
                 android:textColorHint="@color/grisClaro"
                 android:textSize="20sp"
@@ -162,61 +94,78 @@
                 android:padding="10dp"
                 android:textAlignment="center"
                 android:background="@drawable/edittext_format"
-                android:layout_marginEnd="5dp" />
+                android:layout_marginBottom="10dp"/>
 
             <Button
                 android:id="@+id/btnTogglePassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="👁"
                 android:textSize="18sp"
-                android:layout_marginStart="5dp"
                 android:backgroundTint="@color/white" />
-        </GridLayout>
+        </LinearLayout>
+
+        <!-- Botón Verificar -->
+        <Button
+            android:id="@+id/btnClave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Verificar Contraseña"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/negroSecundario" />
+
+        <!-- Nueva Sección -->
+        <TextView
+            android:id="@+id/tvNuevoCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Digite el nuevo correo"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:paddingBottom="5dp"
+            android:layout_marginTop="10dp" />
+
+        <EditText
+            android:id="@+id/txtNuevoCorreo"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/grisClaro"
+            android:hint="Este correo será asignado a su cuenta"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:background="@drawable/edittext_format"
+            android:layout_marginBottom="10dp" />
 
 
-    </GridLayout>
-
-    <!-- Botones -->
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:columnCount="1"
-        android:rowCount="3"
-        app:layout_constraintTop_toBottomOf="@id/GridLayoutTxt"
-        app:layout_constraintEnd_toEndOf="@+id/v95"
-        app:layout_constraintStart_toStartOf="@+id/v05"
-        >
+        <!-- Botón Verificar -->
         <Button
             android:id="@+id/btnRestablecer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Restablecer Correo"
+            android:text="Restablecer correo"
             android:textSize="15sp"
             android:textColor="@color/white"
             android:backgroundTint="@color/negroSecundario"
-            android:layout_gravity="fill"
-            app:strokeColor = "@color/negroSecundario"
-            tools:ignore="HardcodedText" />
-    </GridLayout>
+            android:layout_marginBottom="20dp" />
 
-    <Button
-        android:id="@+id/btnVolver"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Volver"
-        android:backgroundTint="@color/negroSecundario"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:textSize="15dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        <!-- Botón Volver -->
+        <Button
+            android:id="@+id/btnVolver"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Volver"
+            android:backgroundTint="@color/negroSecundario"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp" />
 
-        app:layout_constraintBottom_toBottomOf="@id/h95"
-        app:layout_constraintEnd_toEndOf="@+id/v95"
-        app:layout_constraintStart_toStartOf="@+id/v05"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>
