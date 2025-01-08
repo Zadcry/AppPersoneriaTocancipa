@@ -27,7 +27,7 @@ import java.util.Calendar
 
 class CrearCuenta : AppCompatActivity() {
 
-    //Crea variables de Layout
+    // Variables globales que representan los elementos de la vista
     private lateinit var gridConsultar: LinearLayout
     private lateinit var txtConsultar: EditText
     private lateinit var txtAnuncio: TextView
@@ -71,6 +71,8 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private lateinit var calendar: Calendar
+
+    // Variables globales que representan los datos de la actividad
     private var tarea: String = ""
     private var sujeto: String = ""
     private var usuario: String = ""
@@ -81,17 +83,16 @@ class CrearCuenta : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_crear_cuenta)
-
         supportActionBar?.hide()
+        // Inicializar la instancia de autenticación de Firebase
         mAuth = FirebaseAuth.getInstance()
 
+        // Obtener los datos del Intent
         tarea = intent.getStringExtra("tarea").toString()
         sujeto = intent.getStringExtra("sujeto").toString()
         usuario = intent.getStringExtra("usuario").toString()
 
-        // Manejo valores de Combo Box
-
-        // Consultar Tipo de Documento
+        // Configurar spinner de tipo de documento al consultar
         spConsultarTipoDocumento = findViewById(R.id.spConsultarTipoDocumento)
         ArrayAdapter.createFromResource(
             this,
@@ -102,7 +103,7 @@ class CrearCuenta : AppCompatActivity() {
             spConsultarTipoDocumento.adapter = adapter
         }
 
-        // Sexo
+        // Configurar spinner de sexo
         spSexo = findViewById(R.id.spSexo)
         ArrayAdapter.createFromResource(
             this,
@@ -113,7 +114,7 @@ class CrearCuenta : AppCompatActivity() {
             spSexo.adapter = adapter
         }
 
-        // Escolaridad
+        // Configurar spinner de escolaridad
         spEscolaridad = findViewById(R.id.spEscolaridad)
         ArrayAdapter.createFromResource(
             this,
@@ -124,7 +125,7 @@ class CrearCuenta : AppCompatActivity() {
             spEscolaridad.adapter = adapter
         }
 
-        // Grupo Étnico
+        // Configurar spinner de grupo étnico
         spGrupo = findViewById(R.id.spGrupo)
         ArrayAdapter.createFromResource(
             this,
@@ -135,7 +136,7 @@ class CrearCuenta : AppCompatActivity() {
             spGrupo.adapter = adapter
         }
 
-        // Comunidad Vulnerable
+        // Configurar spinner de comunidad
         spComunidad = findViewById(R.id.spComunidad)
         ArrayAdapter.createFromResource(
             this,
@@ -146,7 +147,7 @@ class CrearCuenta : AppCompatActivity() {
             spComunidad.adapter = adapter
         }
 
-        // Estado
+        // Configurar spinner de estado
         spEstado = findViewById(R.id.spEstado)
         ArrayAdapter.createFromResource(
             this,
@@ -157,7 +158,7 @@ class CrearCuenta : AppCompatActivity() {
             spEstado.adapter = adapter
         }
 
-        // Tipo de Documento
+        // Configurar spinner de tipo de documento
         spTipoDocumento = findViewById(R.id.spTipoDocumento)
         ArrayAdapter.createFromResource(
             this,
@@ -168,7 +169,7 @@ class CrearCuenta : AppCompatActivity() {
             spTipoDocumento.adapter = adapter
         }
 
-        // Sector y/o vereda
+        // Configurar spinner de sector y/o vereda
         spSector = findViewById(R.id.spSector)
         ArrayAdapter.createFromResource(
             this,
@@ -179,7 +180,7 @@ class CrearCuenta : AppCompatActivity() {
             spSector.adapter = adapter
         }
 
-        // Identidad de Género
+        // Configurar spinner de identidad de género
         spIdentidad = findViewById(R.id.spIdentidad)
         ArrayAdapter.createFromResource(
             this,
@@ -190,7 +191,7 @@ class CrearCuenta : AppCompatActivity() {
             spIdentidad.adapter = adapter
         }
 
-        // Orientación Sexual
+        // Configurar spinner de orientación sexual
         spOrientacion = findViewById(R.id.spOrientacion)
         ArrayAdapter.createFromResource(
             this,
@@ -201,7 +202,7 @@ class CrearCuenta : AppCompatActivity() {
             spOrientacion.adapter = adapter
         }
 
-        // Nacionalidad
+        // Configurar spinner de nacionalidad
         spNacionalidad = findViewById(R.id.spNacionalidad)
         ArrayAdapter.createFromResource(
             this,
@@ -212,7 +213,7 @@ class CrearCuenta : AppCompatActivity() {
             spNacionalidad.adapter = adapter
         }
 
-        // Discapacidad
+        // Configurar spinner de discapacidad
         spDiscapacidad = findViewById(R.id.spDiscapacidad)
         ArrayAdapter.createFromResource(
             this,
@@ -223,7 +224,7 @@ class CrearCuenta : AppCompatActivity() {
             spDiscapacidad.adapter = adapter
         }
 
-        // Estrato
+        // Configurar spinner de estrato
         spEstrato = findViewById(R.id.spEstrato)
         ArrayAdapter.createFromResource(
             this,
@@ -234,7 +235,7 @@ class CrearCuenta : AppCompatActivity() {
             spEstrato.adapter = adapter
         }
 
-
+        // Inicializar los elementos de la vista
         txtClave = findViewById(R.id.txtClave)
         txtConfirmarClave = findViewById(R.id.txtConfirmarClave)
 
@@ -265,7 +266,7 @@ class CrearCuenta : AppCompatActivity() {
         }
 
 
-        //Obtiene demás elementos de Layout
+        // Obtiene demás elementos de Layout
         gridConsultar = findViewById(R.id.gridConsultar)
         txtConsultar = findViewById(R.id.txtConsultar)
         txtAnuncio = findViewById(R.id.txtAnuncio)
@@ -290,6 +291,8 @@ class CrearCuenta : AppCompatActivity() {
         tvCorreo = findViewById(R.id.tvCorreo)
         tvEstado = findViewById(R.id.tvEstado)
 
+        // Configurar la vista según la tarea y el sujeto
+        // Algunos elementos se ocultan o se deshabilitan según la tarea
         if(tarea == "crear"){
             txtAnuncio.text = "Crear Cuenta"
             gridConsultar.visibility = GridLayout.GONE
@@ -356,7 +359,7 @@ class CrearCuenta : AppCompatActivity() {
         }
 
         btnFecha.setOnClickListener {
-            calendar = Calendar.getInstance()
+            calendar = Calendar.getInstance() // Creacion de instancia de calendario
             seleccionarFecha()
         }
 
@@ -364,6 +367,7 @@ class CrearCuenta : AppCompatActivity() {
             finish()
         }
 
+        // Preliminar para crear cuenta
         btnSignUp.setOnClickListener {
             // Crear y configurar el diálogo inicial
             val builder = AlertDialog.Builder(this)
@@ -377,7 +381,7 @@ class CrearCuenta : AppCompatActivity() {
 
             // Agregar botones de acción
             builder.setPositiveButton("Sí") { dialog, which ->
-                // Continuar con la creación de la cuenta
+                // Continuar con la creación de la cuenta si el usuario acepta
                 procesarCreacionCuenta()
             }
 
@@ -400,8 +404,10 @@ class CrearCuenta : AppCompatActivity() {
         }
 
         btnModificar.setOnClickListener{
+            // Proceso para modificar los datos del usuario
             val campos = conseguirCampos()
             if(campos[2].isEmpty()){
+                // Verificar que el campo de documento no esté vacío
                 Toast.makeText(
                     this@CrearCuenta,
                     "Ingrese documento para modificar",
@@ -410,6 +416,7 @@ class CrearCuenta : AppCompatActivity() {
                 return@setOnClickListener
             }else{
                 if (!verificarCampos(campos)) {
+                    // Usar la función verificarCampos para asegurar que todos los campos estén diligenciados
                     Toast.makeText(
                         this@CrearCuenta,
                         "Diligencie todos los datos",
@@ -417,6 +424,8 @@ class CrearCuenta : AppCompatActivity() {
                     ).show()
                     return@setOnClickListener
                 }else{
+                    // Si todos los campos están diligenciados, se procede a modificar el usuario
+                    // Se obtienen los datos de los campos
                     val nombre = campos[0]
                     val tipoDocumento = campos[1]
                     val documento = campos[2]
@@ -438,6 +447,7 @@ class CrearCuenta : AppCompatActivity() {
                     val comunidad = campos[18]
                     val estado = campos[21]
 
+                    // Se actualizan los datos del usuario en la base de datos
                     mDbRef = FirebaseDatabase.getInstance().getReference("userData")
                     mDbRef.child(uidConsultado).setValue(
                         Usuario(nombre, tipoDocumento, documento, fechaNacimiento,
@@ -456,6 +466,8 @@ class CrearCuenta : AppCompatActivity() {
         }
 
         btnEliminar.setOnClickListener{
+            // Proceso para eliminar un usuario
+            // Se verifica que el campo de documento en la consulta no esté vacío
             if(uidConsultado.isEmpty()){
                 Toast.makeText(
                     this@CrearCuenta,
@@ -464,6 +476,7 @@ class CrearCuenta : AppCompatActivity() {
                 ).show()
                 return@setOnClickListener
             }else{
+                // Si el campo de documento no está vacío, se procede a eliminar el usuario con ese ID
                 mDbRef = FirebaseDatabase.getInstance().getReference("userData")
                 mDbRef.child(uidConsultado).removeValue()
                 Toast.makeText(
@@ -474,6 +487,7 @@ class CrearCuenta : AppCompatActivity() {
             }
         }
 
+        // Si el usuario entra a modificar su propia cuenta, se cargan los datos en los campos
         if (sujeto == "propio"){
             mDbRef = FirebaseDatabase.getInstance().getReference("userData")
             val query = mDbRef.orderByChild("correo").equalTo(mAuth.currentUser?.email)
@@ -482,8 +496,8 @@ class CrearCuenta : AppCompatActivity() {
                     println(snapshot)
                     if (snapshot.exists()) {
                         snapshot.children.forEach {
+                            // Se obtienen los datos del usuario a partir de Firebase
                             uidConsultado = it.key.toString()
-                            println(it)
                             val comunidad = it.child("comunidad").value.toString()
                             val correo = it.child("correo").value.toString()
                             val direccion = it.child("direccion").value.toString()
@@ -505,6 +519,7 @@ class CrearCuenta : AppCompatActivity() {
                             val telefono = it.child("telefono").value.toString()
                             val tipoDocumento = it.child("tipoDocumento").value.toString()
 
+                            // Se cargan los datos en los campos de la vista
                             txtNombre.setText(nombreCompleto)
                             spTipoDocumento.setSelection((spTipoDocumento.adapter as ArrayAdapter<String>).getPosition(tipoDocumento))
                             txtDocumento.setText(documento)
@@ -549,6 +564,7 @@ class CrearCuenta : AppCompatActivity() {
         }
     }
 
+    // Función para seleccionar la fecha de nacimiento
     @SuppressLint("SetTextI18n")
     private fun seleccionarFecha(){
         DatePickerDialog(this, { _, year, month, day ->
@@ -575,9 +591,11 @@ class CrearCuenta : AppCompatActivity() {
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
     }
 
+    // Función para verificar la creación de la cuenta
     private fun procesarCreacionCuenta() {
         val campos = conseguirCampos()
         if (!verificarCampos(campos)) {
+            // Usar la función verificarCampos para asegurar que todos los campos estén diligenciados
             Toast.makeText(
                 this@CrearCuenta,
                 "Diligencie todos los datos",
@@ -585,6 +603,8 @@ class CrearCuenta : AppCompatActivity() {
             ).show()
             return
         } else {
+            // Si todos los campos están diligenciados, se procede a crear la cuenta
+            // Se obtienen los datos de los campos
             val nombre = campos[0]
             val tipoDocumento = campos[1]
             val documento = campos[2]
@@ -608,6 +628,7 @@ class CrearCuenta : AppCompatActivity() {
             val confirmarClave = campos[20]
             val estado = campos[21]
 
+            // Verificar que las contraseñas coincidan
             if (clave != confirmarClave) {
                 Toast.makeText(
                     this@CrearCuenta,
@@ -616,6 +637,7 @@ class CrearCuenta : AppCompatActivity() {
                 ).show()
                 return
             } else {
+                // Si todas las validariones pasan, se procede a crear la cuenta
                 signUp(nombre, tipoDocumento, documento, fechaNacimiento, edad,
                     grupoEtario, direccion, sector, telefono, correo, sexo,
                     identidad, orientacion, nacionalidad, escolaridad, grupoEtnico,
@@ -624,6 +646,7 @@ class CrearCuenta : AppCompatActivity() {
         }
     }
 
+    // Función para continuar con la creación de la cuenta
     private fun signUp(
         nombre: String,
         tipoDocumento: String,
@@ -824,6 +847,7 @@ class CrearCuenta : AppCompatActivity() {
         })
     }
 
+    // Función para agregar el usuario a la base de datos
     private fun addUserToDatabase(
         nombre: String,
         tipoDocumento: String,
@@ -847,6 +871,7 @@ class CrearCuenta : AppCompatActivity() {
         estado: String,
         uid: String
     ) {
+        // Agregar el usuario a la base de datos con los parámetros obtenidos
         mDbRef = FirebaseDatabase.getInstance().getReference()
         mDbRef.child("userData").child(uid).setValue(
             Usuario(nombre, tipoDocumento, documento, fechaNacimiento,
@@ -856,6 +881,7 @@ class CrearCuenta : AppCompatActivity() {
                 comunidad, estado, uid))
     }
 
+    // Función para obtener los campos de la vista
     private fun conseguirCampos(): Array<String> {
         val nombre = txtNombre.text.toString()
         val tipoDocumento = spTipoDocumento.selectedItem.toString()
@@ -883,6 +909,7 @@ class CrearCuenta : AppCompatActivity() {
         return arrayOf(nombre, tipoDocumento, documento, fechaNacimiento, edad, grupoEtario, direccion, sector, telefono, correo, sexo, identidad, orientacion, nacionalidad, escolaridad, grupoEtnico, discapacidad, estrato, comunidad, clave, confirmarClave, estado)
     }
 
+    // Función para verificar que todos los campos estén diligenciados
     private fun verificarCampos(campos: Array<String>): Boolean {
        //Verifica que todos los campos estén diligenciados
         if((tarea == "modificar") && (campos[0].isEmpty() || campos[2].isEmpty() || campos[6].isEmpty() || campos[8].isEmpty())){
@@ -893,6 +920,7 @@ class CrearCuenta : AppCompatActivity() {
         return true
     }
 
+    // Función para deshabilitar los campos de la vista
     private fun disableFields(){
         txtNombre.isEnabled = false
         spTipoDocumento.isEnabled = false
@@ -918,11 +946,13 @@ class CrearCuenta : AppCompatActivity() {
         spEstado.isEnabled = false
     }
 
+    // Función para consultar un usuario por el numero de documento
     @Suppress("NAME_SHADOWING")
     private fun consultarPorDocumento() {
         val cedula = txtConsultar.text.toString()
         val tipoDocumento = spConsultarTipoDocumento.selectedItem.toString()
         if (cedula.isEmpty()) {
+            // Verificar que el campo de documento no esté vacío
             Toast.makeText(
                 this@CrearCuenta,
                 "Ingrese documento para consultar",
@@ -935,15 +965,15 @@ class CrearCuenta : AppCompatActivity() {
 
         queryTipoDocumento.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                println(snapshot)
                 if (snapshot.exists()) {
                     val queryDocumento = mDbRef.orderByChild("documento").equalTo(cedula)
                     queryDocumento.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (snapshot.exists()) {
                                 snapshot.children.forEach { it ->
+                                    // Se obtienen los datos del usuario a partir de Firebase si el usuario existe
+                                    // Recuperar el ID del usuario
                                     uidConsultado = it.key.toString()
-                                    println(it)
 
                                     // Recuperar valores del snapshot
                                     val comunidad = it.child("comunidad").value.toString()
@@ -1014,7 +1044,7 @@ class CrearCuenta : AppCompatActivity() {
                                     )
                                 }
 
-                                // Mostrar botón según la tarea
+                                // Mostrar botón según la tarea despues de haber consultado
                                 when (tarea) {
                                     "modificar" -> btnModificar.visibility = Button.VISIBLE
                                     "eliminar" -> btnEliminar.visibility = Button.VISIBLE

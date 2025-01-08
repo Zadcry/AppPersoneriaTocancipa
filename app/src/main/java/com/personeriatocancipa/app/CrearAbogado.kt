@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener
 
 class CrearAbogado : AppCompatActivity() {
 
+    // Variables globales que representan los elementos de la vista
     private lateinit var gridConsultar: LinearLayout
     private lateinit var txtConsultar: EditText
     private lateinit var txtAnuncio: TextView
@@ -55,7 +56,7 @@ class CrearAbogado : AppCompatActivity() {
     private var sujeto: String = ""
     private var uidConsultado: String = ""
 
-    // Horario
+    // Elementos de la vista del Horario
     private lateinit var btnVerHorario: Button
     private lateinit var gridHorario: LinearLayout
 
@@ -83,8 +84,6 @@ class CrearAbogado : AppCompatActivity() {
     private lateinit var chkJueves: CheckBox
     private lateinit var chkViernes: CheckBox
 
-
-
     @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,9 +92,11 @@ class CrearAbogado : AppCompatActivity() {
         supportActionBar?.hide()
         mAuth = FirebaseAuth.getInstance()
 
+        // Obtener los valores del Intent
         tarea = intent.getStringExtra("tarea").toString()
         sujeto = intent.getStringExtra("sujeto").toString()
 
+        // Asignar los elementos de la vista a las variables
         gridConsultar = findViewById(R.id.gridConsultar)
         txtConsultar = findViewById(R.id.txtConsultar)
         txtAnuncio = findViewById(R.id.txtAnuncio)
@@ -150,6 +151,7 @@ class CrearAbogado : AppCompatActivity() {
 
         // Array con el nombre de los spinner
         val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
+        // Configurar los spinner de horario
         for (spinner in spinnerDiasArray) {
             ArrayAdapter.createFromResource(
                 this,
@@ -162,15 +164,17 @@ class CrearAbogado : AppCompatActivity() {
             spinner.visibility = Spinner.GONE
         }
 
+        // Iniciar y Ocultar TextViews de días
         val tvDiasArray = arrayOf(tvLunes, tvMartes, tvMiercoles, tvJueves, tvViernes)
         for (tv in tvDiasArray) {
             tv.visibility = TextView.GONE
         }
 
-
+        // Configurar CheckBoxes
         val checkBoxesArray = arrayOf(chkLunes, chkMartes, chkMiercoles, chkJueves, chkViernes)
         for (checkBox in checkBoxesArray) {
             checkBox.setOnClickListener {
+                // Mostrar u ocultar los spinners de horario al seleccionar o deseleccionar un día
                 if (checkBox.isChecked) {
                     val index = checkBoxesArray.indexOf(checkBox)
                     tvDiasArray[index].visibility = TextView.VISIBLE
@@ -185,8 +189,7 @@ class CrearAbogado : AppCompatActivity() {
             }
         }
 
-
-
+        // Configurar Spinner de Cargo
         spCargo = findViewById(R.id.spCargo)
         ArrayAdapter.createFromResource(
             this,
@@ -197,6 +200,7 @@ class CrearAbogado : AppCompatActivity() {
             spCargo.adapter = adapter
         }
 
+        // Configurar Spinner de Tema
         spTema = findViewById(R.id.spTema)
         ArrayAdapter.createFromResource(
             this,
@@ -207,6 +211,7 @@ class CrearAbogado : AppCompatActivity() {
             spTema.adapter = adapter
         }
 
+        // Configurar Spinner de Estado
         spEstado = findViewById(R.id.spEstado)
         ArrayAdapter.createFromResource(
             this,
@@ -216,7 +221,6 @@ class CrearAbogado : AppCompatActivity() {
             adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
             spEstado.adapter = adapter
         }
-
 
         // Botón Ver Contraseña
         btnTogglePassword = findViewById(R.id.btnTogglePassword)
@@ -244,6 +248,8 @@ class CrearAbogado : AppCompatActivity() {
             txtConfirmarClave.setSelection(txtConfirmarClave.text.length) // Mantener cursor al final
         }
 
+        // Configurar la vista según la tarea y el sujeto
+        // Algunos elementos se ocultan o se deshabilitan según la tarea
         if(tarea == "crear"){
             txtAnuncio.text = "Crear Abogado"
             gridConsultar.visibility = GridLayout.GONE
@@ -307,6 +313,7 @@ class CrearAbogado : AppCompatActivity() {
             }
         }
 
+        // Configurar el botón Ver Horario
         btnVerHorario.setOnClickListener {
             if (gridHorario.visibility == LinearLayout.GONE) {
                 btnVerHorario.text = "Ocultar Horario"
@@ -325,6 +332,7 @@ class CrearAbogado : AppCompatActivity() {
             consultarPorCedula()
         }
 
+        // Preliminares de la creacion de cuenta
         btnSignUp.setOnClickListener {
             // Crear y configurar el diálogo inicial
             val builder = AlertDialog.Builder(this)
@@ -365,6 +373,7 @@ class CrearAbogado : AppCompatActivity() {
             eliminarAbogado()
         }
 
+        // Cargar datos del usuario actual si entra a modificar su propio perfil
         if (sujeto == "propio"){
             mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
             val query = mDbRef.orderByChild("correo").equalTo(mAuth.currentUser?.email)
@@ -434,6 +443,7 @@ class CrearAbogado : AppCompatActivity() {
 
     }
 
+    // Función para consultar un abogado por su cédula
     private fun consultarPorCedula() {
         val cedula = txtConsultar.text.toString()
         if (cedula.isEmpty()) {
@@ -452,16 +462,17 @@ class CrearAbogado : AppCompatActivity() {
                 println(snapshot)
                 if (snapshot.exists()) {
                     snapshot.children.forEach {
+                        // Si se encuentra un abogado en Firebase,
+                        // Mostrar los datos del abogado en los campos de texto
                         uidConsultado = it.key.toString()
-                        println(it)
                         val nombre = it.child("nombreCompleto").value.toString()
-                        println(nombre)
                         val documento = it.child("documento").value.toString()
                         val correo = it.child("correo").value.toString()
                         val cargo = it.child("cargo").value.toString()
                         val tema = it.child("tema").value.toString()
                         val estado = it.child("estado").value.toString()
 
+                        // Mostrar los datos del abogado en los campos de texto
                         txtNombre.setText(nombre)
                         txtClave.setText("********")
                         txtDocumento.setText(documento)
@@ -470,8 +481,10 @@ class CrearAbogado : AppCompatActivity() {
                         spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(tema))
                         spEstado.setSelection((spEstado.adapter as ArrayAdapter<String>).getPosition(estado))
 
+                        // Utilizar la funcion para obtener el horario del abogado
                         conseguirHorarioDeFirebase(nombre)
                     }
+                    // Mostrar los botones de modificar o eliminar según la tarea despues de haber consultado
                     if(tarea == "modificar"){
                         btnModificar.visibility = Button.VISIBLE
                     }else if(tarea == "eliminar"){
@@ -496,6 +509,7 @@ class CrearAbogado : AppCompatActivity() {
         })
     }
 
+    // Función para obtener el horario de un abogado desde Firebase
     private fun conseguirHorarioDeFirebase(nombre: String) {
         val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
         val checkBoxesArray = arrayOf(chkLunes, chkMartes, chkMiercoles, chkJueves, chkViernes)
@@ -503,9 +517,10 @@ class CrearAbogado : AppCompatActivity() {
         val query = mDbRef.orderByKey().equalTo(nombre)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                println(snapshot)
                 if (snapshot.exists()) {
                     snapshot.children.forEach {
+                        // Si se encuentra un horario en Firebase,
+                        // Mostrar los datos del horario en los spinners
                         val dias = it.children
                         dias.forEach {
                             val dia = it.key.toString()
@@ -520,6 +535,8 @@ class CrearAbogado : AppCompatActivity() {
                                 else -> -1
                             }
                             if (index != -1) {
+                                // Si ese día tiene un horario, marcar el checkbox y mostrar los spinners
+                                // de lo contrario, desmarcar el checkbox y ocultar los spinners
                                 if (inicio != "" && fin != "") {
                                     checkBoxesArray[index].isChecked = true
                                     spinnerDiasArray[index * 2].visibility = Spinner.VISIBLE
@@ -553,6 +570,7 @@ class CrearAbogado : AppCompatActivity() {
         })
     }
 
+    // Función para obtener el horario de los spinners y retornarlo como un array de pares
     private fun getHorario(): Array<Pair<String, String>> {
         val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
         val horario = arrayOf(Pair("", ""), Pair("", ""), Pair("", ""), Pair("", ""), Pair("", ""))
@@ -563,11 +581,11 @@ class CrearAbogado : AppCompatActivity() {
                 horario[i] = Pair(inicio, fin)
             }
         }
-        println(horario)
 
         return horario
     }
 
+    // Función para agregar el horario de un abogado a Firebase
     private fun agregarHorarioAFirebase(nombre: String, horario: Array<Pair<String, String>>) {
         mDbRef = FirebaseDatabase.getInstance().getReference("horarioAbogados")
         val horarioRef = mDbRef.child(nombre)
@@ -588,7 +606,9 @@ class CrearAbogado : AppCompatActivity() {
 
     }
 
+    // Función para crear un abogado en Firebase
     private fun crearAbogado() {
+        // Obtener los valores de los campos de texto
         val nombre = txtNombre.text.toString()
         val clave = txtClave.text.toString()
         val confirmarClave = txtConfirmarClave.text.toString()
@@ -598,6 +618,7 @@ class CrearAbogado : AppCompatActivity() {
         val tema = spTema.selectedItem.toString()
         val estado = spEstado.selectedItem.toString()
 
+        // Validacion de campos vacios
         if (nombre.isEmpty() || clave.isEmpty() || documento.isEmpty() || correo.isEmpty()) {
             Toast.makeText(
                 this@CrearAbogado,
@@ -630,6 +651,7 @@ class CrearAbogado : AppCompatActivity() {
                         Toast.LENGTH_SHORT,
                     ).show()
                 } else {
+                    // Si no existe un usuario con el mismo documento, crear el usuario
                     var horario = Array<Pair<String, String>>(5) { Pair("", "") }
                     horario = getHorario()
                     // Validaciones Horario
@@ -659,6 +681,7 @@ class CrearAbogado : AppCompatActivity() {
                             }
                         }
                     }
+                    // Si las validaciones de horario son correctas, crear el usuario
                     mAuth.createUserWithEmailAndPassword(correo, clave).addOnCompleteListener {
                         if (it.isSuccessful) {
                             val user = mAuth.currentUser
@@ -702,7 +725,9 @@ class CrearAbogado : AppCompatActivity() {
         })
     }
 
+    // Función para modificar un abogado en Firebase
     private fun modificarAbogado() {
+        // Obtener los valores de los campos de texto
         val nombre = txtNombre.text.toString()
         val clave = txtClave.text.toString()
         val documento = txtDocumento.text.toString()
@@ -711,6 +736,7 @@ class CrearAbogado : AppCompatActivity() {
         val tema = spTema.selectedItem.toString()
         val estado = spEstado.selectedItem.toString()
 
+        // Validacion de campos vacios
         if(documento.isEmpty()){
             Toast.makeText(
                 this@CrearAbogado,
@@ -759,6 +785,7 @@ class CrearAbogado : AppCompatActivity() {
             }
         }
 
+        // Si las validaciones de horario son correctas, modificar el usuario
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
         val abogado = Abogado(documento, nombre, cargo, tema, correo, estado)
         agregarHorarioAFirebase(nombre, horario)
@@ -780,7 +807,9 @@ class CrearAbogado : AppCompatActivity() {
         }
     }
 
+    // Función para eliminar un abogado en Firebase
     private fun eliminarAbogado() {
+        // Validacion de ID consultado
         if(uidConsultado.isEmpty()){
             Toast.makeText(
                 this@CrearAbogado,
@@ -789,6 +818,7 @@ class CrearAbogado : AppCompatActivity() {
             ).show()
             return
         }
+        // Eliminar el abogado de Firebase una vez confirmado
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
         mDbRef.child(uidConsultado).removeValue().addOnSuccessListener {
             Toast.makeText(

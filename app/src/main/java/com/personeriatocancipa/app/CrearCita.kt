@@ -2,16 +2,7 @@ package com.personeriatocancipa.app
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -25,20 +16,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.util.Calendar
 import java.util.Properties
 import javax.mail.Message
@@ -51,6 +38,7 @@ class CrearCita : AppCompatActivity() {
 
     private var appointmentID = 1 // ID consecutivo para las citas
 
+    // Variables Globales que representan los elementos de la vista
     private lateinit var gridSeleccionarAbogado: GridLayout
     private lateinit var txtConsultar: EditText
     private lateinit var txtDescripcion: EditText
@@ -87,6 +75,8 @@ class CrearCita : AppCompatActivity() {
     private lateinit var descripcion: String
     private lateinit var calendar: Calendar
     private lateinit var correosAdicionales: List<String>
+
+    // Variables globales generales para la creación de la cita
     private var abogado: String = ""
     private var autorizaCorreo: String = ""
     private var correoVigente: String = ""
@@ -100,12 +90,14 @@ class CrearCita : AppCompatActivity() {
     private var modCitaFecha = ""
     private var modCitaAbogado = ""
 
+    // Listas de abogados activos y sus horarios
     private lateinit var abogadosActivos: List<String>
     private var abogadosPorTema = mutableMapOf<String, List<String>>()
     private var horariosAbogados = mutableMapOf<String, Map<String, Pair<String, String>>>()
 
+    // Duración de las citas por abogado
     private val duracionCitas = mapOf(
-        "Edwin Yovanni Franco Bahamón" to 60, // Duración en minutos
+        "Edwin Yovanni Franco Bahamón" to 60,
         "Emilio Alexander Mejía Ángulo" to 60,
         "Fransy Yanet Mambuscay López" to 60,
         "José Francisco Alfonso Rojas" to 60,
@@ -119,9 +111,11 @@ class CrearCita : AppCompatActivity() {
 
     private val horaAlmuerzo = Pair("12:00", "12:59")
 
+    // Variables para la selección de fecha y hora
     private var seleccionFecha=Calendar.getInstance()
     private var seleccionHora=""
 
+    // Instancia de Firebase
     private val auth = FirebaseAuth.getInstance()
 
     @SuppressLint("ResourceType", "MissingInflatedId")
@@ -131,7 +125,7 @@ class CrearCita : AppCompatActivity() {
 
         nombreCliente = ""
 
-        // Buscar elementos de layout
+        // Buscar los elementos de layout
         txtAnuncio = findViewById(R.id.txtAnuncio)
         txtConsultar = findViewById(R.id.txtConsultar)
         txtDescripcion = findViewById(R.id.txtDescripcion)
@@ -155,7 +149,7 @@ class CrearCita : AppCompatActivity() {
         // Obtener el ID más alto de citas en Firebase al iniciar
         obtenerUltimoID()
 
-        // Inicializar abogados por tema (solo key) para evitar valores null
+        // Inicializar abogados por tema para evitar valores null
         resources.getStringArray(R.array.opcionesTema).forEach { tema ->
             // Convertir en una lista mutable vacia
             abogadosPorTema[tema] = mutableListOf()
@@ -167,7 +161,7 @@ class CrearCita : AppCompatActivity() {
         // Mapear opciones de abogados según tema
         val temaAbogadoMap = abogadosPorTema
 
-        // Tema de la cita
+        // Ingresar opciones de tema en el Spinner
         spTema = findViewById(R.id.spTema)
         ArrayAdapter.createFromResource(
             this,
@@ -178,6 +172,7 @@ class CrearCita : AppCompatActivity() {
             spTema.adapter = adapter
         }
 
+        // Ingresar opciones de hora en el Spinner
         spHora = findViewById(R.id.spHora)
         ArrayAdapter.createFromResource(
             this,
@@ -188,6 +183,7 @@ class CrearCita : AppCompatActivity() {
             spHora.adapter = adapter
         }
 
+        // Ingresar opciones de autorización de correo en el Spinner
         spAutorizaCorreo = findViewById(R.id.spAutorizaCorreo)
         ArrayAdapter.createFromResource(
             this,
@@ -198,6 +194,7 @@ class CrearCita : AppCompatActivity() {
             spAutorizaCorreo.adapter = adapter
         }
 
+        // Ingresar opciones de correo vigente en el Spinner
         spCorreoVigente = findViewById(R.id.spCorreoVigente)
         ArrayAdapter.createFromResource(
             this,
@@ -208,7 +205,7 @@ class CrearCita : AppCompatActivity() {
             spCorreoVigente.adapter = adapter
         }
 
-        // Tema de la cita
+        // Ingresar opciones de tipo de documento en el Spinner
         spTipoDocumento = findViewById(R.id.spTipoDocumento)
         ArrayAdapter.createFromResource(
             this,
@@ -219,13 +216,14 @@ class CrearCita : AppCompatActivity() {
             spTipoDocumento.adapter = adapter
         }
 
-        // Configurar abogado según el tema seleccionado
+        // Configurar las opciones de abogado según el tema seleccionado
         spAbogado = findViewById(R.id.spAbogado)
         spTema.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedTema = spTema.selectedItem.toString()
                 val abogados = temaAbogadoMap[selectedTema] ?: emptyList()
 
+                // En caso de tener ya seleccionado un dia, cambiar el horario al cambiar el abogado
                 if (txtDia.text.isNotEmpty()) {
                     cambiarHorarioSegunAbogado()
                 }
@@ -234,7 +232,7 @@ class CrearCita : AppCompatActivity() {
                 // Configurar el adaptador del Spinner de abogados
                 val abogadoAdapter = ArrayAdapter(
                     this@CrearCita,
-                    R.drawable.spinner_item, // Usa el estilo definido
+                    R.drawable.spinner_item,
                     abogados
                 )
                 abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
@@ -246,6 +244,7 @@ class CrearCita : AppCompatActivity() {
             }
         }
 
+        // Listener para cambiar el horario cuando se seleccione un abogado
         spAbogado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (txtDia.text.isNotEmpty()) {
@@ -258,10 +257,10 @@ class CrearCita : AppCompatActivity() {
             }
         }
 
+        // Listener para actualizar el valor de la variable global de seleccionHora
         spHora.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 seleccionHora = spHora.selectedItem.toString()
-                println("Hora seleccionada: $seleccionHora")
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -269,11 +268,13 @@ class CrearCita : AppCompatActivity() {
             }
         }
 
-        // Obtener el valor de la tarea desde el Intent
+        // Obtener los valores desde el Intent
         tarea = intent.getStringExtra("tarea").toString()
         sujeto = intent.getStringExtra("sujeto").toString()
 
         // Configurar acciones en función de la tarea
+        // Dependiendo de la tarea, se habilitan o se deshabilitan los campos
+        // Tambien se ajusta la visibilidad de los elementos
         when (tarea) {
             "crear" -> {
                 habilitarCampos(true)
@@ -379,6 +380,7 @@ class CrearCita : AppCompatActivity() {
         }
 
         btnFecha.setOnClickListener {
+            // Ajustar la instancia global del calendario
             calendar = Calendar.getInstance()
             seleccionarFecha()
         }
@@ -396,6 +398,8 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
+    // Función para buscar los horarios de los abogados activos en
+    // Firebase y almacenarlos en la variable global de mapa mutable
     private fun conseguirHorariosAbogados(){
         val ref = FirebaseDatabase.getInstance().getReference("horarioAbogados")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -406,12 +410,14 @@ class CrearCita : AppCompatActivity() {
                         val horarios = mutableMapOf<String, Pair<String, String>>()
                         if (abogadosActivos.contains(abogado)) {
                             childSnapshot.children.forEach { diaSnapshot ->
+                                // Extraer los horarios de cada día
+                                // Y ajustarlos como un par de horas
                                 val dia = diaSnapshot.key.toString()
                                 val horaInicio = diaSnapshot.child("inicio").value.toString()
                                 val horaFin = diaSnapshot.child("fin").value.toString()
                                 horarios[dia] = Pair(horaInicio, horaFin)
-                                println("$abogado: $dia: $horaInicio - $horaFin")
                             }
+                            // Almacenar el horario en la variable global
                             horariosAbogados[abogado] = horarios
                         }
                     }
@@ -425,6 +431,8 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
+    // Función para buscar en Firebase los abogados activos
+    // y almacenarlos en la variable de lista global
     private fun buscarAbogadosActivos(): List<String> {
         val abogadosActivos = mutableListOf<String>()
         val ref = FirebaseDatabase.getInstance().getReference("abogadoData")
@@ -435,6 +443,7 @@ class CrearCita : AppCompatActivity() {
                     snapshot.children.forEach { childSnapshot ->
                         val estado = childSnapshot.child("estado").value.toString()
                         if (estado == "Activo") {
+                            // SI el abogado encontrado está activo, añadirlo a la lista
                             val nombreAbogado = childSnapshot.child("nombreCompleto").value.toString()
                             abogadosActivos.add(nombreAbogado)
 
@@ -444,9 +453,7 @@ class CrearCita : AppCompatActivity() {
                         }
                     }
 
-                    println("Abogados activos: $abogadosActivos")
-                    println("Abogados por tema: $abogadosPorTema")
-                    // Poner el primer tema en el Spinner
+                    // Poner el primer tema en el Spinner (Evita errores)
                     spTema.setSelection(0)
                     // Agregar al Spinner de Abogados los abogados del primer tema
                     val abogadosPrimerTema = abogadosPorTema[spTema.selectedItem.toString()] ?: emptyList()
@@ -463,7 +470,6 @@ class CrearCita : AppCompatActivity() {
                         val horarios = horariosAbogados[abogado] ?: emptyMap()
                         horariosAbogados[abogado] = horarios
                     }
-                    println("Horarios de abogados: $horariosAbogados")
                     // Agregar Horarios de Abogados
                     conseguirHorariosAbogados()
                 }
@@ -476,11 +482,12 @@ class CrearCita : AppCompatActivity() {
         return abogadosActivos
     }
 
+    // Función que agrega un abogado a la lista mutable global de abogados por tema
+    // Se da por hecho que el abogado está activo
     private fun agregarAbogadoPorTema(tema: String, abogado: String) {
         if(tema=="Todo excepto Victimas"){
             // Incluir al abogado al map de abogados por tema en todos los temas excepto Víctimas
             for (temaF in resources.getStringArray(R.array.opcionesTema).filter { it != "Victimas" }) {
-                // .EmptyList cannot be cast to kotlin.collections.MutableList
                 if (abogadosPorTema.containsKey(temaF)) {
                     val abogados = abogadosPorTema[temaF] as MutableList<String>
                     abogados.add(abogado)
@@ -491,6 +498,7 @@ class CrearCita : AppCompatActivity() {
             }
         }
         else{
+            // Buscar el tema en el mapa y añadir el abogado a dicho tema
             if (abogadosPorTema.containsKey(tema)) {
                 val abogados = abogadosPorTema[tema] as MutableList<String>
                 abogados.add(abogado)
@@ -515,9 +523,11 @@ class CrearCita : AppCompatActivity() {
         spTipoDocumento.isEnabled = habilitar
     }
 
+    // Función principal para modificar cita una vez se pulse el boton de modificar
     private fun modificarCita(){
         val idCita = txtConsultar.text.toString().toIntOrNull()
 
+        // Verificar que el ID de la cita sea válido
         if (idCita == null) {
             Toast.makeText(this, "ID de cita inválido", Toast.LENGTH_SHORT).show()
             return
@@ -530,10 +540,9 @@ class CrearCita : AppCompatActivity() {
         ref.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    //  Tambien quitar horario de la cita
+                    //  Utiliza la funcion para ajustar el nombre del abogado
                     conseguirNombreAbogado(snapshot.child("correoAbogado").value.toString(), "modificar")
-
-                    // Modificar la cita
+                    // Intenta la reprogramacion de la cita con los nuevos parametros
                     scheduleAppointment("admin","modificar")
                 } else {
                     Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
@@ -546,6 +555,9 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
+    // Función corta para que el usuario ajuste la fecha en
+    // el cuadro de dialogo. Selecciona la fecha y la muestra
+    // en el TextView de la fecha.
     private fun seleccionarFecha(){
         DatePickerDialog(this, { _, year, month, day ->
 
@@ -556,16 +568,21 @@ class CrearCita : AppCompatActivity() {
             seleccionFecha = fechaSeleccionada
             txtDia.text = "$diaNombre, $day/${month + 1}/$year"
 
+            // Actualizar el horario con el abogado seleccionado
             cambiarHorarioSegunAbogado()
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
     }
 
+    // Función para actualizar el horario en el Spinner de horas
+    // según el abogado seleccionado y el día seleccionado
     @SuppressLint("ResourceType")
     private fun cambiarHorarioSegunAbogado(){
         val abogadoSeleccionado = spAbogado.selectedItem.toString()
         val diaSeleccionado = txtDia.text.split(",")[0]
         val horarioAbogado = horariosAbogados[abogadoSeleccionado]?.get(diaSeleccionado)
         if (horarioAbogado != null) {
+            // Si el abogado tiene horario para el día seleccionado
+            // Conseguir las horas disponibles y ponerlas en el Spinner
             val (horaInicio, horaFin) = horarioAbogado
             val horas = mutableListOf<String>()
             horas.add("Seleccionar hora")
@@ -573,8 +590,6 @@ class CrearCita : AppCompatActivity() {
             val duracionCita = duracionCitas[abogadoSeleccionado] ?: 60
             while (hora <= horaFin) {
                 horas.add(hora)
-                println(hora)
-                println(duracionCita)
                 if(horarioAbogado.second != ""){
                     hora = calcularHoraFin(hora.split(":")[0].toInt(), hora.split(":")[1].toInt(), duracionCita)
                 }else{
@@ -592,6 +607,8 @@ class CrearCita : AppCompatActivity() {
             horaAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
             spHora.adapter = horaAdapter
         } else {
+            // Si el abogado no tiene horario para el día seleccionado
+            // Dejar el Spinner de horas vacío con una opcion por defecto
             val horaAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.horas,
@@ -602,6 +619,7 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
+    // Función principal para eliminar una cita al presionar el boton de eliminar
     private fun eliminarCita(){
         val idCita = txtConsultar.text.toString().toIntOrNull()
         if (idCita == null) {
@@ -614,12 +632,13 @@ class CrearCita : AppCompatActivity() {
         ref.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    //  Tambien quitar horario de la cita
-                    println(snapshot)
+                    // Conseguir el nombre del abogado de la cita
+                    // Y con ello, eliminar el horario ocupado de esa cita.
                     conseguirNombreAbogado(snapshot.child("correoAbogado").value.toString(), "eliminar")
                     abogado = spAbogado.selectedItem.toString()
                     eliminarHorarioOcupado(idCita.toString(),abogado, snapshot.child("fecha").value.toString())
 
+                    // Eliminar en Firebase la cita
                     snapshot.ref.removeValue()
                     Toast.makeText(this@CrearCita, "Cita eliminada con éxito", Toast.LENGTH_SHORT).show()
                     finish()
@@ -634,14 +653,15 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
+    // Función que elimina el horario ocupado de Firebase
     private fun eliminarHorarioOcupado(idCita: String, abogado: String, fecha: String){
         println("Eliminando horario ocupado")
         val ref = FirebaseDatabase.getInstance().getReference("horariosOcupados/$abogado/$fecha/$idCita")
         ref.removeValue()
     }
 
+    // Función principal para consultar una cita por ID
     private fun consultarPorID() {
-        // Consultar datos de la cita por el ID de la misma
         val idCita = txtConsultar.text.toString().toIntOrNull()
         if (idCita == null) {
             Toast.makeText(this, "Ingrese ID a consultar", Toast.LENGTH_SHORT).show()
@@ -653,6 +673,7 @@ class CrearCita : AppCompatActivity() {
             @SuppressLint("SetTextI18n")
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
+                    // Si la cita existe, extraer los datos y mostrarlos en la vista
                     val descripcionC = snapshot.child("descripcion").value.toString()
                     val fechaC = snapshot.child("fecha").value.toString()
                     fechaAntigua = fechaC
@@ -664,13 +685,12 @@ class CrearCita : AppCompatActivity() {
                     val correoVigenteC = snapshot.child("correoVigente").value.toString()
                     autorizaCorreoConsulta = autorizaCorreoC
                     correoVigenteConsulta = correoVigenteC
-
                     txtConsultar.setText(snapshot.key.toString())
                     txtDescripcion.setText(descripcionC)
                     txtFecha.text = "Fecha: $fechaC, Hora: $horaC"
                     spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(temaC))
 
-                    // Change the format of the day and make it like the one in the calendar
+                    // Ajustar el formato de la fecha para mostrar el día de la semana
                     val fecha = fechaC.split("-")
                     val year = fecha[2].toInt()
                     val month = fecha[1].toInt()
@@ -681,18 +701,22 @@ class CrearCita : AppCompatActivity() {
                     val diaNombre = dias[diaSemana - 1]
                     txtDia.text = "$diaNombre, $day/$month/$year"
 
-                    // Put the hour in the spinner
+                    // Actualizar el horario para poder ponerlo en el spinner
                     cambiarHorarioSegunAbogado()
                     spHora.setSelection((spHora.adapter as ArrayAdapter<String>).getPosition(horaC))
+                    // Ajustar los spinners de autorización de correo
                     spAutorizaCorreo.setSelection((spAutorizaCorreo.adapter as ArrayAdapter<String>).getPosition(autorizaCorreoC))
                     spCorreoVigente.setSelection((spCorreoVigente.adapter as ArrayAdapter<String>).getPosition(correoVigenteC))
 
+                    // Ajustar variables globales para la modificacion de cita
                     modCitaID = idCita.toString()
                     modCitaFecha = fechaC
 
+                    // Conseguir el nombre del abogado y el documento del cliente
                     conseguirNombreAbogado(abogadoC, "modificar")
                     conseguirCedulaCliente(clienteC)
 
+                    // Mostrar botones de accion una vez la consulta finaliza
                     if (tarea == "modificar") {
                         btnModificar.visibility = Button.VISIBLE
                     } else if (tarea == "eliminar") {
@@ -711,21 +735,23 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
+    // Función para conseguir el nombre de un abogado usando su correo
+    // Varia su utilidad dependiendo del modo en que se llame
     private fun conseguirNombreAbogado(correoAbogado: String, modo:String){
         val ref = FirebaseDatabase.getInstance().getReference("abogadoData")
         ref.orderByChild("correo").equalTo(correoAbogado).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { childSnapshot ->
-                        // Extraer el correo
-                        println(snapshot)
+                        // Extraer el nombre de Firebase
                         val nombreAbogado = childSnapshot.child("nombreCompleto").value.toString()
-                        //
                         if (modo=="modificar"){
+                            // Si se usa en modificar, ajustar el spinner de abogado
                             spAbogado.setSelection((spAbogado.adapter as ArrayAdapter<String>).getPosition(nombreAbogado))
                             modCitaAbogado = nombreAbogado
                         }
                         else if (modo=="eliminar"){
+                            // Si se usa en eliminar, ajustar la variable global de abogado
                             abogado=nombreAbogado
                         }
                     }
@@ -740,14 +766,14 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
+    // Función para conseguir la cédula de un cliente usando su correo
     private fun conseguirCedulaCliente(correoCliente: String){
         val ref = FirebaseDatabase.getInstance().getReference("userData")
         ref.orderByChild("correo").equalTo(correoCliente).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    println(snapshot)
                     snapshot.children.forEach { childSnapshot ->
-                        // Extraer el correo
+                        // Extraer la cedula de Firebase y mostrarla en el TextView
                         var cedulaCliente = childSnapshot.child("documento").value.toString()
                         txtDocumento.setText(cedulaCliente)
                     }
@@ -762,7 +788,7 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
-
+    // Función para calcular el ultimo ID de las citas en Firebase
     private fun obtenerUltimoID() {
         val ref = FirebaseDatabase.getInstance().getReference("citas")
         ref.orderByKey().limitToLast(1).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -779,6 +805,7 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
+    // Función para enviar un correo electrónico a cada destinatario seleccionado como correoAdicional
     private fun enviarCorreoAdicionales(
         subject: String,
         body: String,
@@ -789,6 +816,7 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
+    // Función principal para programar una cita
     @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun scheduleAppointment(sujeto: String, modo:String) {
         calendar = Calendar.getInstance()
@@ -799,7 +827,6 @@ class CrearCita : AppCompatActivity() {
             abogado = spAbogado.selectedItem.toString()
         }
 
-        // Obtener correo del abogado teniendo su nombre
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
 
         var query = mDbRef.orderByChild("nombreCompleto").equalTo(abogado)
@@ -839,7 +866,6 @@ class CrearCita : AppCompatActivity() {
                         // Verificar si existe algún dato que coincida con el nombre
                         if (snapshot.exists()) {
                             snapshot.children.forEach { childSnapshot ->
-                                // Extraer el correo
                                 nombreCliente = childSnapshot.child("nombreCompleto").value.toString()
                                 println(nombreCliente)
                                 if (nombreCliente.isNotEmpty()) {
@@ -879,7 +905,7 @@ class CrearCita : AppCompatActivity() {
 
             query.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    // Verificar si existe algún dato que coincida con el número de documento
+                    // Verificar si existe algún dato que coincida con el tipo de documento
                     if (snapshot.exists()) {
                         query = mDbRef.orderByChild("documento").equalTo(cedulaCliente)
                         query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -923,6 +949,8 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
+    // Función que contiene la lógica para finalizar la creación de una cita
+    // Contiene las validaciones finales y la creación de la cita en Firebase
     @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun finalizarCreacion(modo: String) {
         // Validación: Seleccionar Fecha
@@ -975,6 +1003,7 @@ class CrearCita : AppCompatActivity() {
         if (fechaSeleccionada.before(fechaActual)) {
             Toast.makeText(this, "Debe agendarse con al menos una semana de antelación.", Toast.LENGTH_SHORT).show()
         }else{
+            // Validación: Descripción no vacía
             if (descripcion.isEmpty()) {
                 Toast.makeText(this, "Debe ingresar una descripción", Toast.LENGTH_SHORT).show()
                 return
@@ -990,16 +1019,21 @@ class CrearCita : AppCompatActivity() {
                         val horaSeleccionada = seleccionHora
                         val hourOfDay = horaSeleccionada.split(":")[0].toInt()
                         val minute = horaSeleccionada.split(":")[1].toInt()
+                        // Validación: Hora seleccionada no disponible
                         if(horaSeleccionada !in horaInicio..horaFin || horaSeleccionada in horaAlmuerzo.first..horaAlmuerzo.second){
                             Toast.makeText(this, "Hora seleccionada no disponible", Toast.LENGTH_SHORT).show()
                         }else{
                             val duracion = duracionCitas[abogado] ?: 60 // Duración predeterminada de 60 minutos
                             val fecha = "$day-${month + 1}-$year"
-                            println("Fecha: $fecha")
                             val horaFinCita = calcularHoraFin(hourOfDay, minute, duracion)
 
+                            // Se valida la disponibilidad de la hora seleccionada como validacion final
                             verificarDisponibilidad(abogado, fecha, horaSeleccionada, horaFinCita) { disponible ->
                                 if (disponible) {
+                                    // Logica de creacion de cita en Firebase
+                                    // En este punto, la cita es válida y se puede crear
+
+                                    // Si el modo es crear, se obtiene el último ID
                                     if(modo == "crear"){
                                         obtenerUltimoID()
                                         if((spAutorizaCorreo.visibility == Spinner.VISIBLE) && (spCorreoVigente.visibility == Spinner.VISIBLE)){
@@ -1007,6 +1041,8 @@ class CrearCita : AppCompatActivity() {
                                             correoVigente = spCorreoVigente.selectedItem.toString()
                                         }
                                     }
+                                    // Si el modo es modificar, se obtiene el ID de la cita a modificar y
+                                    // se elimina el horario ocupado de la cita para reemplazarlo con uno nuevo
                                     else if(modo == "modificar"){
                                         eliminarHorarioOcupado(modCitaID,modCitaAbogado, modCitaFecha)
                                         autorizaCorreo = autorizaCorreoConsulta
@@ -1014,12 +1050,14 @@ class CrearCita : AppCompatActivity() {
                                         Toast.makeText(this, "Autoriza correo: $autorizaCorreo, Correo vigente: $correoVigente", Toast.LENGTH_SHORT).show()
                                         appointmentID = txtConsultar.text.toString().toInt()
                                     }else{
+                                        // Si el modo es eliminar, se obtiene el ID de la cita a eliminar
                                         autorizaCorreo = autorizaCorreoConsulta
                                         correoVigente = correoVigenteConsulta
                                         Toast.makeText(this, "Autoriza correo: $autorizaCorreo, Correo vigente: $correoVigente", Toast.LENGTH_SHORT).show()
                                         appointmentID = txtConsultar.text.toString().toInt()
                                     }
 
+                                    // Crear instancia de un objeto Cita
                                     var cita = Cita(
                                         appointmentID,
                                         descripcion,
@@ -1072,7 +1110,6 @@ class CrearCita : AppCompatActivity() {
                                 """.trimIndent()
                                     enviarCorreoAdicionales(subject, bodyAdicionales, correosAdicionales)
 
-                                    //body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                                     if (modo == "crear"){
                                         body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                                     }else if (modo == "modificar"){
@@ -1097,13 +1134,16 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
+    // Función para verificar si el cliente tiene una cita en la semana seleccionada
     private fun verificarCitasPorSemana(correoCliente: String, fechaSeleccionada: Calendar, callback: (Boolean) -> Unit) {
+       // Obtener el inicio y fin de la semana
         val inicioSemana = fechaSeleccionada.clone() as Calendar
         inicioSemana.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
 
         val finSemana = fechaSeleccionada.clone() as Calendar
         finSemana.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
 
+        // Verificar si el cliente tiene una cita en la semana seleccionada
         val citasRef = FirebaseDatabase.getInstance().getReference("citas")
         citasRef.orderByChild("correoCliente").equalTo(correoCliente)
             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -1115,10 +1155,12 @@ class CrearCita : AppCompatActivity() {
                             set(parts[2].toInt(), parts[1].toInt() - 1, parts[0].toInt())
                         }
                         if (!fechaCita.before(inicioSemana) && !fechaCita.after(finSemana)) {
+                            // Si la cita está dentro de la semana, no se puede agendar y retorna falso
                             callback(false)
                             return
                         }
                     }
+                    // Si no hay citas en la semana, se puede agendar y retorna verdadero
                     callback(true)
                 }
 
@@ -1128,6 +1170,7 @@ class CrearCita : AppCompatActivity() {
             })
     }
 
+    // Función para calcular la hora de finalizacion de una cita
     @SuppressLint("DefaultLocale")
     private fun calcularHoraFin(hour: Int, minute: Int, duracion: Int): String {
         val calendar = Calendar.getInstance()
@@ -1137,6 +1180,7 @@ class CrearCita : AppCompatActivity() {
         return String.format("%02d:%02d", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE))
     }
 
+    // Función para verificar la disponibilidad de una hora en un día
     private fun verificarDisponibilidad(
         abogado: String,
         fecha: String,
@@ -1144,6 +1188,7 @@ class CrearCita : AppCompatActivity() {
         horaFin: String,
         callback: (Boolean) -> Unit
     ) {
+        // Verificar si la hora seleccionada está disponible en los horarios ocupados de Firebase
         val ref = FirebaseDatabase.getInstance().getReference("horariosOcupados/$abogado/$fecha")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -1173,7 +1218,7 @@ class CrearCita : AppCompatActivity() {
         })
     }
 
-
+    // Función para guardar una cita en Firebase
     private fun saveAppointmentToFirebase(
         cita: Cita,
         abogado: String,
@@ -1186,8 +1231,6 @@ class CrearCita : AppCompatActivity() {
         val database = FirebaseDatabase.getInstance()
         val citasRef = database.getReference("citas")
         val horariosRef = database.getReference("horariosOcupados/$abogado/$fecha")
-
-        println("modificacionExitosa: $modificacionExitosa")
 
         if(tarea == "modificar" && modificacionExitosa){
             // Eliminar el horario ocupado anterior
@@ -1226,6 +1269,7 @@ class CrearCita : AppCompatActivity() {
                 if(((tarea == "modificar") && (modificacionExitosa)) || (tarea == "crear")){
                     horariosRef.child(cita.id.toString()).setValue(horarioData)
                         .addOnSuccessListener {
+                            // Mostrar mensaje de éxito
                             if(tarea == "modificar"){
                                 Toast.makeText(this, "Cita modificada exitosamente", Toast.LENGTH_SHORT).show()
                             }else if(tarea == "crear"){
@@ -1253,7 +1297,7 @@ class CrearCita : AppCompatActivity() {
     }
 
 
-
+    // Función que activa el envío de un correo electrónico en segundo plano
     private fun sendEmailInBackground(recipientEmail: String, subject: String, body: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -1264,6 +1308,7 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
+    // Función asincrona para enviar un correo electrónico usando JavaMail
     private suspend fun sendEmail(recipientEmail: String, subject: String, body: String) {
         withContext(Dispatchers.IO) {
             val props = Properties()
