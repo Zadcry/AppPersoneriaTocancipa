@@ -16,59 +16,65 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+// Clase para recuperar contraseña
 class RecuperarPassword : AppCompatActivity() {
 
-    private lateinit var txtCorreo: EditText
-    private lateinit var btnRestablecer: Button
-    private lateinit var btnVolver: Button
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var mDbRef: DatabaseReference
+    // Variables para Layout y Firebase
+    private lateinit var txtCorreo: EditText // Campo de texto para correo
+    private lateinit var btnRestablecer: Button // Botón para restablecer contraseña
+    private lateinit var btnVolver: Button // Botón para volver
+    private lateinit var mAuth: FirebaseAuth // Autenticación de Firebase
+    private lateinit var mDbRef: DatabaseReference // Referencia a la base de datos
 
+    // Método que se ejecuta al crear la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recuperar_password)
 
+        // Inicializa Autenticación de Firebase
         mAuth = FirebaseAuth.getInstance()
 
-        //Obtiene valores de Layout
+        // Asigna las referencias de los elementos de la interfaz
         txtCorreo = findViewById(R.id.txtCorreo)
         btnRestablecer = findViewById(R.id.btnRestablecer)
         btnVolver = findViewById(R.id.btnVolver)
 
-        //Crea eventListener para clicks en "Restablecer"
+        // Listener para el botón Restablecer
         btnRestablecer.setOnClickListener(){
-            val correo = txtCorreo.text.toString()
-            if(correo.isEmpty()){
-                Toast.makeText(this, "Ingrese un correo", Toast.LENGTH_SHORT).show()
-            }else{
+            val correo = txtCorreo.text.toString() // Obtiene el correo ingresado
+            if(correo.isEmpty()){ // Verifica si el campo está vacío
+                Toast.makeText(this, // Muestra mensaje de error
+                    "Ingrese un correo",
+                    Toast.LENGTH_SHORT).show()
+            }else{ // Si el campo no está vacío
                 // Verificar si el correo está registrado en Admin.
                 mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
                 var query = mDbRef.orderByChild("correo").equalTo(correo)
                 query.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            // Si encuentra en Admin.
+                            // Si el correo existe en Admin, se procede al restablecimiento de contraseña
                             restablecer(correo)
                         } else {
-                            // Si no es Admin.
                             // Verificar si el correo está registrado en Abogados
                             mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
                             query = mDbRef.orderByChild("correo").equalTo(correo)
                             query.addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     if (snapshot.exists()) {
-                                        // Si encuentra en Abogados
+                                        // Si el correo existe en Abogados, restablece
                                         restablecer(correo)
                                     } else {
-                                        // Si no es Abogado
-                                        // Verificar si el correo está registrado en Cliente
+                                        // Verificar si el correo está registrado en Clientes
                                         mDbRef = FirebaseDatabase.getInstance().getReference("userData")
                                         query = mDbRef.orderByChild("correo").equalTo(correo)
                                         query.addListenerForSingleValueEvent(object : ValueEventListener {
                                             override fun onDataChange(snapshot: DataSnapshot) {
                                                 if (snapshot.exists()) {
+                                                    // Si el correo existe en Clientes, restablece
                                                     restablecer(correo)
                                                 } else {
+                                                    // Muestra un mensaje si el correo no está registrado en ninguna categoría
                                                     Toast.makeText(
                                                         this@RecuperarPassword,
                                                         "Correo no registrado",
@@ -77,7 +83,7 @@ class RecuperarPassword : AppCompatActivity() {
                                                 }
                                             }
                                             override fun onCancelled(error: DatabaseError) {
-                                                Toast.makeText(
+                                                Toast.makeText(  // Error en la consulta para Clientes
                                                     this@RecuperarPassword,
                                                     "Error al consultar la base de datos",
                                                     Toast.LENGTH_SHORT,
@@ -87,7 +93,7 @@ class RecuperarPassword : AppCompatActivity() {
                                     }
                                 }
                                 override fun onCancelled(error: DatabaseError) {
-                                    Toast.makeText(
+                                    Toast.makeText( // Error en la consulta para Abogados
                                         this@RecuperarPassword,
                                         "Error al consultar la base de datos",
                                         Toast.LENGTH_SHORT,
@@ -97,7 +103,7 @@ class RecuperarPassword : AppCompatActivity() {
                         }
                     }
                     override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(
+                        Toast.makeText( // Error en la consulta para Admin.
                             this@RecuperarPassword,
                             "Error al consultar la base de datos",
                             Toast.LENGTH_SHORT,
@@ -107,20 +113,21 @@ class RecuperarPassword : AppCompatActivity() {
             }
         }
 
-        //Crea eventListener para clicks en "Volver"
+        // Listener para el botón Volver
         btnVolver.setOnClickListener(){
-            finish()
+            finish() // Finaliza la actividad actual y vuelve a la pantalla anterior
         }
     }
 
+    // Método para enviar el correo de restablecimiento de contraseña
     private fun restablecer(correo: String) {
         mAuth.sendPasswordResetEmail(correo)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Email sent
+                    // Muestra un mensaje indicando que el correo fue enviado con éxito
                     Toast.makeText(this, "Correo enviado. Revise su bandeja de entrada o su carpeta de 'No Deseados'", Toast.LENGTH_LONG).show()
                 } else {
-                    // Email not sent
+                    // Muestra un mensaje si hubo un error al enviar el correo
                     Toast.makeText(this, "Error al enviar correo", Toast.LENGTH_SHORT).show()
                 }
             }

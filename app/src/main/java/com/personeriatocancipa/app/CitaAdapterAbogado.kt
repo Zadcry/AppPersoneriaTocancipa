@@ -22,67 +22,75 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
+// Adaptador para el RecyclerView de citas del abogado
 class CitaAdapterAbogado(private var citas: List<Cita>) :
     RecyclerView.Adapter<CitaAdapterAbogado.CitaViewHolder>() {
 
-    // Método para actualizar las citas
+    // Método para actualizar las citas y refrescar el RecyclerView
     fun actualizarCitas(citasActualizadas: List<Cita>) {
         citas = citasActualizadas
         notifyDataSetChanged()  // Notifica que los datos han cambiado para actualizar el RecyclerView
     }
 
+    // ViewHolder que representa cada cita
     inner class CitaViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvTema: TextView = view.findViewById(R.id.tvTema)
-        val tvId: TextView = view.findViewById(R.id.tvID)
-        val tvFechaHora: TextView = view.findViewById(R.id.tvFechaHora)
-        val tvCorreoCliente: TextView = view.findViewById(R.id.tvCorreoCliente)
-        val tvDescripcion: TextView = view.findViewById(R.id.tvDescripcion)
-        val spEstado: Spinner = view.findViewById(R.id.spEstado)
-        val itemContainer: View = view.findViewById(R.id.itemContainer)
+        // Referencias a los elementos de la vista para cada cita
+        val tvTema: TextView = view.findViewById(R.id.tvTema) // Tema de la cita
+        val tvId: TextView = view.findViewById(R.id.tvID) // ID de la cita
+        val tvFechaHora: TextView = view.findViewById(R.id.tvFechaHora) // Fecha y hora de la cita
+        val tvCorreoCliente: TextView = view.findViewById(R.id.tvCorreoCliente) // Correo del cliente
+        val tvDescripcion: TextView = view.findViewById(R.id.tvDescripcion) // Descripción de la cita
+        val spEstado: Spinner = view.findViewById(R.id.spEstado) // Spinner para el estado de la cita
+        val itemContainer: View = view.findViewById(R.id.itemContainer) // Contenedor de la vista
     }
 
+    // Crea un nuevo ViewHolder para cada cita
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitaViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_cita_abogado, parent, false)
-        return CitaViewHolder(view)
+            .inflate(R.layout.item_cita_abogado, parent, false) // Inflar la vista del ítem
+        return CitaViewHolder(view) // Crear un nuevo ViewHolder con la vista inflada
     }
 
+    // Método que se llama para asignar los datos a cada elemento del RecyclerView
     @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
-        val cita = citas[position]
+        val cita = citas[position] // Obtener la cita en la posición actual
 
+        // Obtener el nombre del cliente usando el correo
         val mDbRef = FirebaseDatabase.getInstance().getReference("userData")
         var nombreCliente = ""
         val query = mDbRef.orderByChild("correo").equalTo(cita.correoCliente)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (snap in snapshot.children) {
-                    nombreCliente = snap.child("nombreCompleto").value.toString()
-                    holder.tvCorreoCliente.text = applyBoldStyle("Nombre Cliente: ", nombreCliente)
+                for (snap in snapshot.children) { // Solo se espera un resultado
+                    nombreCliente = snap.child("nombreCompleto").value.toString() // Obtener el nombre
+                    holder.tvCorreoCliente.text = applyBoldStyle("Nombre Cliente: ", nombreCliente) // Mostrar el nombre
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
+                // Manejar errores
                 Log.e("CitaAdapterAbogado", "Error al obtener el nombre del cliente: ${error.message}")
             }
         })
 
-        holder.tvTema.text = applyBoldStyle("Tema: ", cita.tema.toString())
-        holder.tvId.text = applyBoldStyle("ID: ", cita.id.toString())
-        holder.tvFechaHora.text = applyBoldStyle("Fecha y hora: ", "${cita.fecha} a las ${cita.hora}")
-        holder.tvDescripcion.text = applyBoldStyle("Descripción: ", cita.descripcion.toString())
+        // Asignar los valores de la cita a los elementos de la vista
+        holder.tvTema.text = applyBoldStyle("Tema: ", cita.tema.toString()) // Tema de la cita
+        holder.tvId.text = applyBoldStyle("ID: ", cita.id.toString()) // ID de la cita
+        holder.tvFechaHora.text = applyBoldStyle("Fecha y hora: ", "${cita.fecha} a las ${cita.hora}") // Fecha y hora
+        holder.tvDescripcion.text = applyBoldStyle("Descripción: ", cita.descripcion.toString()) //
 
         // Configura el adaptador del Spinner con estilo
         val estados = holder.itemView.context.resources.getStringArray(R.array.opcionesEstado)
         val adapter = ArrayAdapter.createFromResource(
             holder.itemView.context,
-            R.array.opcionesEstado,
-            R.drawable.spinner_itemestadocita
+            R.array.opcionesEstado, // Array de opciones
+            R.drawable.spinner_itemestadocita // Estilo del Spinner
         )
-        adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+        adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item) // Estilo del menú desplegable
         holder.spEstado.adapter = adapter
 
-        // Selecciona el estado actual
+        // Seleccionar el estado actual de la cita en el Spinner
         val estadoIndex = estados.indexOf(cita.estado)
         if (estadoIndex >= 0) {
             holder.spEstado.setSelection(estadoIndex)
