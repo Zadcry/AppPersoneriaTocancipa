@@ -15,6 +15,7 @@
         android:gravity="center"
         android:layout_marginTop="10dp">
 
+        <!-- Imagen Principal -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="150dp"
@@ -22,6 +23,7 @@
             android:layout_margin="10dp"
             android:src="@drawable/escudo"/>
 
+        <!-- Texto Bienvenido, señor Usuario -->
         <TextView
             android:id="@+id/txtUsuario"
             android:layout_width="match_parent"
@@ -35,7 +37,7 @@
             />
     </LinearLayout>
 
-    <!-- Empuja botones -->
+    <!-- Empuja botones con imagenes -->
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -50,13 +52,14 @@
         android:layout_gravity="center"
         android:gravity="center">
 
+        <!-- Contenedor con imágenes y botones -->
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
             android:rowCount="1">
 
-            <!-- Agendar Cita -->
+            <!-- Contenedor "Agendar Cita" -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -67,6 +70,7 @@
                 android:rowCount="2"
                 android:padding="15dp">
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:id="@+id/imgAgendarCita"
                     android:layout_width="wrap_content"
@@ -76,6 +80,7 @@
                     android:src="@drawable/agendarcita">
                 </ImageView>
 
+                <!-- Botón "Agendar Cita" -->
                 <Button
                     android:id="@+id/btnAgendarCita"
                     android:layout_width="wrap_content"
@@ -86,7 +91,7 @@
                     android:textColor="@color/white" />
             </GridLayout>
 
-            <!-- Ver citas agendadas -->
+            <!-- Contenedor "Consultar Cita" -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -97,6 +102,7 @@
                 android:rowCount="2"
                 android:padding="15dp">
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:id="@+id/imgVerCitas"
                     android:layout_width="wrap_content"
@@ -106,6 +112,7 @@
                     android:src="@drawable/consultarcita">
                 </ImageView>
 
+                <!-- Botón "Ver Citas" -->
                 <Button
                     android:id="@+id/btnVerCitas"
                     android:layout_width="wrap_content"
@@ -119,7 +126,7 @@
         </GridLayout>
     </GridLayout>
 
-    <!-- Modificar  -->
+    <!-- Contenedor "Editar Cuenta"  -->
     <GridLayout
         android:id="@+id/gridModificar"
         android:layout_width="match_parent"
@@ -129,6 +136,7 @@
         android:rowCount="2"
         android:padding="15dp">
 
+        <!-- Imagen del Botón -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -137,6 +145,7 @@
             android:src="@drawable/modificar"
             tools:ignore="ContentDescription" />
 
+        <!-- Botón "Editar Cuenta" -->
         <Button
             android:id="@+id/btnModificar"
             android:layout_width="wrap_content"
@@ -154,6 +163,7 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <!-- Botón "Salir" -->
     <Button
         android:id="@+id/btnSalir"
         android:layout_width="match_parent"

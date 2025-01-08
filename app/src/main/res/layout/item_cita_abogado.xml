@@ -9,7 +9,7 @@
     android:layout_margin="8dp"
     android:elevation="4dp">
 
-    <!-- Tema -->
+    <!-- Texto "Tema" -->
     <TextView
         android:id="@+id/tvTema"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         android:textColor="@color/negroSecundario"
         android:paddingBottom="4dp"/>
 
-    <!-- ID -->
+    <!-- Texto "ID" -->
     <TextView
         android:id="@+id/tvID"
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         android:textColor="@color/negroSecundario"
         android:paddingBottom="4dp"/>
 
-    <!-- Fecha y hora -->
+    <!-- Texto "Fecha y hora" -->
     <TextView
         android:id="@+id/tvFechaHora"
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         android:textColor="@color/negroSecundario"
         android:paddingBottom="4dp"/>
 
-    <!-- Correo Cliente -->
+    <!-- Texto "Nombre Cliente" -->
     <TextView
         android:id="@+id/tvCorreoCliente"
         android:layout_width="match_parent"
@@ -49,7 +49,7 @@
         android:textColor="@color/negroSecundario"
         android:paddingBottom="4dp"/>
 
-    <!-- Descripción -->
+    <!-- Texto "Descripción" -->
     <TextView
         android:id="@+id/tvDescripcion"
         android:layout_width="match_parent"
@@ -59,6 +59,7 @@
         android:textColor="@color/negroSecundario"
         android:paddingBottom="4dp"/>
 
+    <!-- Texto "Estado de la Cita" -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +70,7 @@
         android:layout_marginLeft="0dp"
         />
 
-    <!-- Estado -->
+    <!-- Spinner "Estado de la Cita" -->
     <Spinner
         android:id="@+id/spEstado"
         android:layout_width="match_parent"

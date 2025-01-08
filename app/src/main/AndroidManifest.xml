@@ -2,17 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Definir las características del dispositivo necesarias para la aplicación -->
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+        android:required="false" /> <!-- Cámara no obligatoria -->
+    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- Autofoco disponible si existe -->
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- Permiso para acceder a Internet -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- Permiso para usar la cámara -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Permiso para mostrar notificaciones -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- Permiso para leer almacenamiento externo -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Permiso para escribir almacenamiento externo -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" /> <!-- Permiso para administrar almacenamiento externo -->
 
     <application
         android:allowBackup="true"
@@ -26,32 +27,49 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Citas"
         tools:targetApi="31">
+
+        <!-- Explicación
+        android:allowBackup="true"  Permite realizar copias de seguridad de la aplicación
+        android:dataExtractionRules="@xml/data_extraction_rules"   Reglas de extracción de datos
+        android:enableOnBackInvokedCallback="true"   Habilita el uso del botón de retroceso
+        android:fullBackupContent="@xml/backup_rules"   Reglas de respaldo completo
+        android:icon="@mipmap/ic_logo"   Icono de la aplicación
+        android:label="@string/app_name"   Nombre de la aplicación
+        android:requestLegacyExternalStorage="true"   Permite usar almacenamiento externo legado
+        android:roundIcon="@mipmap/ic_logo_round"   Icono redondo para dispositivos con esa capacidad
+        android:supportsRtl="true"   Soporte para lenguajes de derecha a izquierda
+        android:theme="@style/Theme.Citas"   Estilo o tema de la aplicación
+        tools:targetApi="31">   Especifica la versión de la API que se va a usar -->
+
+        <!-- Declaración de actividades (pantallas) que componen la aplicación -->
         <activity
             android:name=".RecuperarPassword"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para recuperar la contraseña -->
         <activity
             android:name=".CrearAbogado"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para crear un abogado -->
         <activity
             android:name=".CrearAdmin"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para crear un administrador -->
         <activity
             android:name=".ConsultarCitasAbogado"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para consultar citas del abogado -->
         <activity
             android:name=".ConsultarCitasCliente"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para consultar citas del cliente -->
         <activity
             android:name=".CrearCita"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para crear una cita -->
         <activity
             android:name=".CRUD"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para realizar CRUD -->
 
+        <!-- Metadatos para ML Kit de Google -->
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
-            android:value="barcode, text, face" />
+            android:value="barcode, text, face" /> <!-- Dependencias de ML Kit: código de barras, texto, reconocimiento facial -->
 
+        <!-- Configuración de un proveedor de contenido -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.personeriatocancipa.app.provider"
@@ -59,7 +77,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+                android:resource="@xml/file_paths" /> <!-- Reglas de rutas de archivo -->
         </provider>
         <!--
         <activity
@@ -68,27 +86,29 @@
             android:exported="false" >
         </activity>
         -->
+
+        <!-- Actividad de inicio (pantalla de bienvenida) -->
         <activity
             android:name=".Bienvenida"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" /> <!-- Acción principal -->
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" /> <!-- Categoría de lanzamiento -->
             </intent-filter>
         </activity>
         <activity
             android:name=".CrearCuenta"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para crear cuenta -->
         <activity
             android:name=".InterfazCliente"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para interfaz de cliente -->
         <activity
             android:name=".InterfazAdmin"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para interfaz de administrador -->
         <activity
             android:name=".InterfazAbogado"
-            android:exported="false" />
+            android:exported="false" /> <!-- Actividad para interfaz de abogado -->
     </application>
 
 </manifest>
