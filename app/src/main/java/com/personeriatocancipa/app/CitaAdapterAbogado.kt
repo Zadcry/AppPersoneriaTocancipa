@@ -56,12 +56,13 @@ class CitaAdapterAbogado(private var citas: List<Cita>) :
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
         val cita = citas[position] // Obtener la cita en la posición actual
 
-        // Obtener el nombre del cliente usando el correo
+        // Obtener el nombre del cliente desde Firebase usando el correo
         val mDbRef = FirebaseDatabase.getInstance().getReference("userData")
         var nombreCliente = ""
-        val query = mDbRef.orderByChild("correo").equalTo(cita.correoCliente)
+        val query = mDbRef.orderByChild("correo").equalTo(cita.correoCliente) // Consulta para obtener el cliente mediante su correo
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                // Recorre los resultados de la consulta
                 for (snap in snapshot.children) { // Solo se espera un resultado
                     nombreCliente = snap.child("nombreCompleto").value.toString() // Obtener el nombre
                     holder.tvCorreoCliente.text = applyBoldStyle("Nombre Cliente: ", nombreCliente) // Mostrar el nombre
@@ -78,9 +79,9 @@ class CitaAdapterAbogado(private var citas: List<Cita>) :
         holder.tvTema.text = applyBoldStyle("Tema: ", cita.tema.toString()) // Tema de la cita
         holder.tvId.text = applyBoldStyle("ID: ", cita.id.toString()) // ID de la cita
         holder.tvFechaHora.text = applyBoldStyle("Fecha y hora: ", "${cita.fecha} a las ${cita.hora}") // Fecha y hora
-        holder.tvDescripcion.text = applyBoldStyle("Descripción: ", cita.descripcion.toString()) //
+        holder.tvDescripcion.text = applyBoldStyle("Descripción: ", cita.descripcion.toString()) // Descripción
 
-        // Configura el adaptador del Spinner con estilo
+        // Configura el adaptador del Spinner con estilo y muestra las opciones de estado
         val estados = holder.itemView.context.resources.getStringArray(R.array.opcionesEstado)
         val adapter = ArrayAdapter.createFromResource(
             holder.itemView.context,
@@ -93,33 +94,33 @@ class CitaAdapterAbogado(private var citas: List<Cita>) :
         // Seleccionar el estado actual de la cita en el Spinner
         val estadoIndex = estados.indexOf(cita.estado)
         if (estadoIndex >= 0) {
-            holder.spEstado.setSelection(estadoIndex)
+            holder.spEstado.setSelection(estadoIndex) // Seleccionar el estado actual
         }
 
-        // **Actualizar el contorno inicial según el estado**
+        // Actualiza el contorno de la vista según el estado actual de la cita
         actualizarContorno(holder.itemContainer, cita.estado, holder)
         actualizarContornoSpinner(holder.spEstado, cita.estado, holder)
 
-        // Listener para el cambio de estado
+        // Listener que maneja el cambio de estado en el Spinner
         holder.spEstado.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>, view: View?, position: Int, id: Long
             ) {
-                val nuevoEstado = estados[position]
+                val nuevoEstado = estados[position] // Obtiene el nuevo estado seleccionado en el Spinner
 
-                // Cambiar dinámicamente el color del texto seleccionado
+                // Cambiar el color del texto seleccionado según el estado seleccionado
                 val textView = holder.spEstado.selectedView as? TextView
                 textView?.setTextColor(getColorForEstado(nuevoEstado, holder.itemView.context))
 
-                // Verificar si el estado realmente ha cambiado
+                // Si el estado ha cambiado, actualiza la cita en Firebase y el contorno del item
                 if (cita.estado != nuevoEstado) {
                     cita.estado = nuevoEstado
                     actualizarEstadoEnFirebase(cita)
 
-                    // Actualizar el contorno del ítem
+                    // Actualiza el contorno del item con el nuevo estado
                     actualizarContorno(holder.itemContainer, nuevoEstado, holder)
 
-                    // Mostrar el mensaje de estado actualizado
+                    // Muestra un mensaje indicando que el estado ha sido actualizado
                     Toast.makeText(
                         holder.itemView.context,
                         "Estado actualizado a: $nuevoEstado",
@@ -133,17 +134,20 @@ class CitaAdapterAbogado(private var citas: List<Cita>) :
 
     }
 
+    // Devuelve la cantidad de elementos en el RecyclerView
     override fun getItemCount(): Int = citas.size
 
+    // Método para aplicar estilo en negrita a un texto
     private fun applyBoldStyle(label: String, value: String): SpannableString {
         val fullText = "$label$value"
-        val spannable = SpannableString(fullText)
+        val spannable = SpannableString(fullText) // Aplica la negrita sólo a la etiqueta
         spannable.setSpan(
             StyleSpan(Typeface.BOLD), 0, label.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
         return spannable
     }
 
+    // Método para actualizar el estado de la cita en Firebase
     private fun actualizarEstadoEnFirebase(cita: Cita) {
         val databaseReference: DatabaseReference =
             FirebaseDatabase.getInstance().getReference("citas")
@@ -151,26 +155,30 @@ class CitaAdapterAbogado(private var citas: List<Cita>) :
     }
 
     private fun getColorForEstado(estado: String, context: android.content.Context): Int {
+        // Devuelve el color correspondiente al estado de la cita
         return when (estado.toLowerCase()) {
-            "cancelada" -> context.getColor(R.color.Rojo)
-            "asistió" -> context.getColor(R.color.verde)
-            "no asistió" -> context.getColor(R.color.grisClaro)
-            "pendiente" -> context.getColor(R.color.azul)
+            "cancelada" -> context.getColor(R.color.Rojo) // Color Rojo para "Cancelada"
+            "asistió" -> context.getColor(R.color.verde) // Color Verde para "Asistió"
+            "no asistió" -> context.getColor(R.color.grisClaro) // Color Gris para "No asistió"
+            "pendiente" -> context.getColor(R.color.azul) // Color Azul para "Pendiente"
             else -> context.getColor(android.R.color.black) // Color por defecto
         }
     }
 
+    // Método para actualizar el contorno del item según el estado de la cita
     private fun actualizarContorno(itemContainer: View, estado: String?, holder: CitaViewHolder) {
         val color = getColorForEstado(estado ?: "", holder.itemView.context)
         val background = itemContainer.background
-        if (background is GradientDrawable) {
+        if (background is GradientDrawable) { // Verifica si el fondo es un GradientDrawable
             background.setStroke(7, color) // Cambiar grosor y color del contorno
         }
     }
 
+    // Método para actualizar el contorno del Spinner según el estado de la cita
     private fun actualizarContornoSpinner(spinner: Spinner, estado: String?, holder: CitaViewHolder) {
         val color = getColorForEstado(estado ?: "", holder.itemView.context)
         val background = spinner.background
+        // Verifica si el fondo es un GradientDrawable
         if (background is GradientDrawable) {
             background.setStroke(5, color) // Cambiar grosor y color del contorno del Spinner
         }
