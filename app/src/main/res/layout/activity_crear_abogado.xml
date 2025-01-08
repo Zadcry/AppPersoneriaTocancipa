@@ -9,6 +9,7 @@
     android:background="@color/white"
     tools:context=".CrearAbogado">
 
+    <!-- Contenedor Principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,6 +17,7 @@
         android:paddingRight="20dp"
         android:orientation="vertical">
 
+        <!-- Imagen Principal -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="200dp"
@@ -26,6 +28,7 @@
             >
         </ImageView>
 
+        <!-- Texto "Crear o Gestionar" -->
         <TextView
             android:id="@+id/txtAnuncio"
             android:layout_width="match_parent"
@@ -37,6 +40,7 @@
             android:paddingBottom="15dp"
             />
 
+        <!-- Contenedor "Consultar Abogado" -->
         <LinearLayout
         android:id="@+id/gridConsultar"
         android:layout_width="match_parent"
@@ -45,6 +49,7 @@
         android:orientation="vertical"
         >
 
+            <!-- Texto "Consultar Abogado" -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,12 +60,13 @@
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
 
+            <!-- Contenedor "Texto Editable y Botón" -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- EditText para ingresar datos de consulta -->
+                <!-- Texto Editable "Digita número de documento" -->
                 <EditText
                     android:id="@+id/txtConsultar"
                     android:layout_width="wrap_content"
@@ -78,7 +84,7 @@
                     android:layout_marginRight="10dp"
                     android:singleLine="true"/>
 
-                <!-- Botón para la acción de consultar -->
+                <!-- Botón "Consultar" -->
                 <Button
                     android:id="@+id/btnConsultar"
                     android:layout_width="wrap_content"
@@ -92,6 +98,7 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Texto "Nombres y Apellidos" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,6 +108,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Nombres y Apellidos" -->
         <EditText
             android:id="@+id/txtNombre"
             android:layout_width="match_parent"
@@ -118,7 +126,7 @@
             android:singleLine="true"
             />
 
-        <!-- Contraseña -->
+        <!-- Texto "Contraseña" -->
         <TextView
             android:id="@+id/tvClave"
             android:layout_width="match_parent"
@@ -128,11 +136,13 @@
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"/>
 
+        <!-- Contenedor "Texto Editable y Botón" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Texto Editable "Contraseña" -->
             <EditText
                 android:id="@+id/txtClave"
                 android:layout_width="0dp"
@@ -150,7 +160,7 @@
                 android:layout_marginBottom="15dp"
                 android:singleLine="true"/>
 
-            <!-- Botón de Mostrar/Ocultar Contraseña -->
+            <!-- Botón "Mostrar/Ocultar Contraseña" -->
             <Button
                 android:id="@+id/btnTogglePassword"
                 android:layout_width="wrap_content"
@@ -163,7 +173,7 @@
                 android:backgroundTint="@color/white"/>
         </LinearLayout>
 
-        <!-- Confirmar Contraseña -->
+        <!-- Texto "Confirmar Contraseña" -->
         <TextView
             android:id="@+id/tvConfirmarClave"
             android:layout_width="match_parent"
@@ -173,11 +183,13 @@
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"/>
 
+        <!-- Contenedor "Texto Editable y Botón" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Texto Editable "Confirmar Contraseña" -->
             <EditText
                 android:id="@+id/txtConfirmarClave"
                 android:layout_width="0dp"
@@ -194,7 +206,7 @@
                 android:layout_marginBottom="15dp"
                 android:singleLine="true"/>
 
-            <!-- Botón de Mostrar/Ocultar Contraseña -->
+            <!-- Botón "Mostrar/Ocultar Contraseña" -->
             <Button
                 android:id="@+id/btnToggleCheckPassword"
                 android:layout_width="wrap_content"
@@ -207,6 +219,7 @@
                 android:backgroundTint="@color/white"/>
         </LinearLayout>
 
+        <!-- Texto "Documento de Identidad" -->
         <TextView
             android:id="@+id/tvDocumento"
             android:layout_width="match_parent"
@@ -217,6 +230,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Documento de Identidad" -->
         <EditText
             android:id="@+id/txtDocumento"
             android:layout_width="match_parent"
@@ -235,6 +249,7 @@
             android:singleLine="true"
             />
 
+        <!-- Texto "Correo Electrónico" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -244,6 +259,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Correo Electrónico" -->
         <EditText
             android:id="@+id/txtCorreo"
             android:layout_width="match_parent"
@@ -261,6 +277,7 @@
             android:singleLine="true"
             />
 
+        <!-- Texto "Cargo" -->
         <TextView
             android:id="@+id/tvCargo"
             android:layout_width="match_parent"
@@ -271,6 +288,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Cargo" -->
         <Spinner
             android:id="@+id/spCargo"
             android:background="@drawable/spinner_background"
@@ -284,6 +302,7 @@
             android:layout_marginBottom="15dp"
             />
 
+        <!-- Texto "Tema" -->
         <TextView
             android:id="@+id/tvTema"
             android:layout_width="match_parent"
@@ -294,6 +313,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Tema" -->
         <Spinner
             android:id="@+id/spTema"
             android:background="@drawable/spinner_background"
@@ -307,6 +327,7 @@
             android:layout_marginBottom="15dp"
             />
 
+        <!-- Texto "Estado" -->
         <TextView
             android:id="@+id/tvEstado"
             android:layout_width="match_parent"
@@ -317,6 +338,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Estado" -->
         <Spinner
             android:id="@+id/spEstado"
             android:background="@drawable/spinner_background"
@@ -330,6 +352,7 @@
             android:layout_marginBottom="15dp"
             />
 
+        <!-- Contenedor "Horario de Trabajo" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -342,12 +365,14 @@
             android:background="@drawable/spinner_background"
             >
 
+            <!-- Contenedor "Texto y Botón" -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="5dp">
 
+                <!-- Texto "Horario de Trabajo" -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -362,6 +387,7 @@
                     android:layout_marginRight="10dp"
                     android:singleLine="true"/>
 
+                <!-- Botón "Mostrar Horario" -->
                 <Button
                     android:id="@+id/btnVerHorario"
                     android:layout_width="wrap_content"
@@ -374,19 +400,22 @@
                     android:backgroundTint="@color/negroSecundario"
                     />
             </LinearLayout>
+
+            <!-- Contenedor "Días de la semana y horas" -->
             <LinearLayout
                 android:id="@+id/gridHorario"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <!-- Lunes -->
+                <!-- Contenedor "Lunes" -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginStart="5dp">
 
+                    <!-- CheckBox "Lunes" -->
                     <CheckBox
                         android:layout_width="110dp"
                         android:layout_height="50dp"
@@ -401,6 +430,7 @@
                         android:buttonTint="@color/negroSecundario"
                         />
 
+                    <!-- Spinner "LunesInicio" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -413,6 +443,7 @@
                         android:layout_marginRight="10dp"
                         />
 
+                    <!-- Texto "a" Hora Inicio a Fin -->
                     <TextView
                         android:id="@+id/tvLunes"
                         android:layout_width="wrap_content"
@@ -426,6 +457,7 @@
                         android:layout_marginRight="10dp"
                         android:singleLine="true"/>
 
+                    <!-- Spinner "LunesFin" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -440,13 +472,14 @@
 
                 </LinearLayout>
 
-                <!-- Martes -->
+                <!-- Contenedor "Martes" -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginStart="5dp">
 
+                    <!-- CheckBox "Martes" -->
                     <CheckBox
                         android:layout_width="110dp"
                         android:layout_height="50dp"
@@ -461,6 +494,7 @@
                         android:buttonTint="@color/negroSecundario"
                         />
 
+                    <!-- Spinner "MartesInicio" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -472,7 +506,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginRight="10dp"
                         />
-
+                    <!-- Texto "a" Hora Inicio a Fin -->
                     <TextView
                         android:id="@+id/tvMartes"
                         android:layout_width="wrap_content"
@@ -486,6 +520,7 @@
                         android:layout_marginRight="10dp"
                         android:singleLine="true"/>
 
+                    <!-- Spinner "MartesFin" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -498,13 +533,14 @@
                         />
                 </LinearLayout>
 
-                <!-- Miércoles -->
+                <!-- Contenedor "Miercoles" -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginStart="5dp">
 
+                    <!-- CheckBox "Miercoles" -->
                     <CheckBox
                         android:id="@+id/chkMiercoles"
                         android:layout_width="110dp"
@@ -518,6 +554,7 @@
                         android:textColor="@color/black"
                         android:textSize="16dp" />
 
+                    <!-- Spinner "MiercolesInicio" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -530,6 +567,7 @@
                         android:layout_marginRight="10dp"
                         />
 
+                    <!-- Texto "a" Hora Inicio a Fin -->
                     <TextView
                         android:id="@+id/tvMiercoles"
                         android:layout_width="wrap_content"
@@ -543,6 +581,7 @@
                         android:layout_marginRight="10dp"
                         android:singleLine="true"/>
 
+                    <!-- Spinner "MiercolesFin" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -556,13 +595,14 @@
                         />
                 </LinearLayout>
 
-                <!-- Jueves -->
+                <!-- Contenedor "Jueves" -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginStart="5dp">
 
+                    <!-- CheckBox "Jueves" -->
                     <CheckBox
                         android:layout_width="110dp"
                         android:layout_height="50dp"
@@ -577,6 +617,7 @@
                         android:buttonTint="@color/negroSecundario"
                         />
 
+                    <!-- Spinner "JuevesInicio" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -589,6 +630,7 @@
                         android:layout_marginRight="10dp"
                         />
 
+                    <!-- Texto "a" Hora Inicio a Fin -->
                     <TextView
                         android:id="@+id/tvJueves"
                         android:layout_width="wrap_content"
@@ -602,6 +644,7 @@
                         android:layout_marginRight="10dp"
                         android:singleLine="true"/>
 
+                    <!-- Spinner "JuevesFin" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -614,7 +657,7 @@
                         />
                 </LinearLayout>
 
-                <!-- Viernes -->
+                <!-- Contenedor "Viernes" -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -622,6 +665,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginBottom="10dp">
 
+                    <!-- CheckBox "Viernes" -->
                     <CheckBox
                         android:layout_width="110dp"
                         android:layout_height="50dp"
@@ -636,6 +680,7 @@
                         android:buttonTint="@color/negroSecundario"
                         />
 
+                    <!-- Spinner "ViernesInicio" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -648,6 +693,7 @@
                         android:layout_marginRight="10dp"
                         />
 
+                    <!-- Texto "a" Hora Inicio a Fin -->
                     <TextView
                         android:id="@+id/tvViernes"
                         android:layout_width="wrap_content"
@@ -661,6 +707,7 @@
                         android:layout_marginRight="10dp"
                         android:singleLine="true"/>
 
+                    <!-- Spinner "ViernesFin" -->
                     <Spinner
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -679,6 +726,7 @@
         </LinearLayout>
 
 
+        <!-- Contenedor "Botones" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -687,6 +735,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp">
 
+            <!-- Botón "Salir" -->
             <Button
                 android:id="@+id/btnSalir"
                 android:layout_width="wrap_content"
@@ -697,6 +746,8 @@
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
                 />
+
+            <!-- Botón "Crear Cuenta" -->
             <Button
                 android:id="@+id/btnSignUp"
                 android:layout_width="wrap_content"
@@ -708,6 +759,7 @@
                 android:layout_gravity="center"
                 />
 
+            <!-- Botón "Modificar" -->
             <Button
                 android:id="@+id/btnModificar"
                 android:layout_width="wrap_content"
@@ -719,6 +771,7 @@
                 android:layout_gravity="center"
                 />
 
+            <!-- Botón "Eliminar" -->
             <Button
                 android:id="@+id/btnEliminar"
                 android:layout_width="wrap_content"

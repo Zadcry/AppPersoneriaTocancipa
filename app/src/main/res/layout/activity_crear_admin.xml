@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <!-- Contenedor Principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,6 +13,7 @@
         android:paddingRight="20dp"
         android:orientation="vertical">
 
+        <!-- Imagen Principal -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="200dp"
@@ -22,6 +24,7 @@
             >
         </ImageView>
 
+        <!-- Texto "Crear o Gestionar" -->
         <TextView
             android:id="@+id/txtAnuncio"
             android:layout_width="match_parent"
@@ -33,7 +36,7 @@
             android:paddingBottom="15dp"
             />
 
-        <!-- Consulta -->
+        <!-- Contenedor "Consultar Administrador" -->
         <LinearLayout
             android:id="@+id/gridConsultar"
             android:layout_width="match_parent"
@@ -42,6 +45,7 @@
             android:orientation="vertical"
             >
 
+            <!-- Texto "Consultar Administrador" -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,10 +56,13 @@
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
 
+            <!-- Contenedor "Texto Editable y Botón" -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
+                <!-- Texto Editable "Digita número de documento" -->
                 <EditText
                     android:id="@+id/txtConsultar"
                     android:layout_width="wrap_content"
@@ -73,6 +80,7 @@
                     android:layout_marginRight="10dp"
                     android:singleLine="true"/>
 
+                <!-- Botón "Consultar" -->
                 <Button
                     android:id="@+id/btnConsultar"
                     android:layout_width="wrap_content"
@@ -86,7 +94,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Nombres y Apellidos-->
+        <!-- Texto "Nombres y Apellidos"-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,6 +104,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Nombres y Apellidos"-->
         <EditText
             android:id="@+id/txtNombre"
             android:layout_width="match_parent"
@@ -113,7 +122,7 @@
             android:singleLine="true"
             />
 
-        <!-- Contraseña -->
+        <!-- Texto "Contraseña" -->
         <TextView
             android:id="@+id/tvClave"
             android:layout_width="match_parent"
@@ -123,11 +132,13 @@
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"/>
 
+        <!-- Contenedor "Texto Editable y Botón" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Texto Editable "Contraseña" -->
             <EditText
                 android:id="@+id/txtClave"
                 android:layout_width="0dp"
@@ -145,7 +156,7 @@
                 android:layout_marginBottom="15dp"
                 android:singleLine="true"/>
 
-            <!-- Botón de Mostrar/Ocultar Contraseña -->
+            <!-- Botón "Mostrar/Ocultar Contraseña" -->
             <Button
                 android:id="@+id/btnTogglePassword"
                 android:layout_width="wrap_content"
@@ -158,7 +169,7 @@
                 android:backgroundTint="@color/white"/>
         </LinearLayout>
 
-        <!-- Confirmar Contraseña -->
+        <!-- Texto "Confirmar Contraseña" -->
         <TextView
             android:id="@+id/tvConfirmarClave"
             android:layout_width="match_parent"
@@ -168,11 +179,13 @@
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"/>
 
+        <!-- Contenedor "Texto Editable y Botón" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Texto Editable "Confirmar Contraseña" -->
             <EditText
                 android:id="@+id/txtConfirmarClave"
                 android:layout_width="0dp"
@@ -189,7 +202,7 @@
                 android:layout_marginBottom="15dp"
                 android:singleLine="true"/>
 
-            <!-- Botón de Mostrar/Ocultar Contraseña -->
+            <!-- Botón "Mostrar/Ocultar Contraseña" -->
             <Button
                 android:id="@+id/btnToggleCheckPassword"
                 android:layout_width="wrap_content"
@@ -202,7 +215,7 @@
                 android:backgroundTint="@color/white"/>
         </LinearLayout>
 
-        <!-- Documento de Identidad -->
+        <!-- Texto "Documento de Identidad" -->
         <TextView
             android:id="@+id/tvDocumento"
             android:layout_width="match_parent"
@@ -213,6 +226,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Documento de Identidad" -->
         <EditText
             android:id="@+id/txtDocumento"
             android:layout_width="match_parent"
@@ -231,7 +245,7 @@
             android:singleLine="true"
             />
 
-        <!-- Correo Electrónico -->
+        <!-- Texto "Correo Electrónico" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -241,6 +255,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Correo Electrónico" -->
         <EditText
             android:id="@+id/txtCorreo"
             android:layout_width="match_parent"
@@ -258,7 +273,7 @@
             android:singleLine="true"
             />
 
-        <!-- Estado -->
+        <!-- Texto "Estado" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -268,6 +283,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Estado" -->
         <Spinner
             android:id="@+id/spEstado"
             android:background="@drawable/spinner_background"
@@ -281,7 +297,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Botones -->
+        <!-- Contenedor "Botones" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -290,6 +306,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp">
 
+            <!-- Botón "Salir" -->
             <Button
                 android:id="@+id/btnSalir"
                 android:layout_width="wrap_content"
@@ -300,6 +317,8 @@
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
                 />
+
+            <!-- Botón "Crear Cuenta" -->
             <Button
                 android:id="@+id/btnSignUp"
                 android:layout_width="wrap_content"
@@ -311,6 +330,7 @@
                 android:layout_gravity="center"
                 />
 
+            <!-- Botón "Modificar" -->
             <Button
                 android:id="@+id/btnModificar"
                 android:layout_width="wrap_content"
@@ -322,6 +342,7 @@
                 android:layout_gravity="center"
                 />
 
+            <!-- Botón "Eliminar" -->
             <Button
                 android:id="@+id/btnEliminar"
                 android:layout_width="wrap_content"

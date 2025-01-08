@@ -14,6 +14,7 @@
         android:gravity="center"
         android:layout_marginTop="10dp">
 
+        <!-- Imagen Principal -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="150dp"
@@ -21,6 +22,7 @@
             android:layout_margin="10dp"
             android:src="@drawable/escudo" />
 
+        <!-- Texto "Bienvenido, señor abogado" -->
         <TextView
             android:id="@+id/txtUsuario"
             android:layout_width="match_parent"
@@ -32,18 +34,20 @@
             android:textStyle="bold"
             android:textColor="@color/negroSecundario" />
 
+        <!-- Empuja botón con imagen-->
         <Space
             android:layout_width="match_parent"
             android:layout_height="100dp"
             />
 
+        <!-- Contenedor con imágenes y botones -->
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
             android:rowCount="1">
 
-            <!-- Agendar Cita -->
+            <!-- Contenedor "Consultar Cita" -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -54,6 +58,7 @@
                 android:rowCount="2"
                 android:padding="15dp">
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:id="@+id/imgConsultarCitas"
                     android:layout_width="wrap_content"
@@ -63,6 +68,7 @@
                     android:src="@drawable/citasabogadoce">
                 </ImageView>
 
+                <!-- Botón "Consultar Citas" -->
                 <Button
                     android:id="@+id/btnConsultarCitas"
                     android:layout_width="wrap_content"
@@ -73,7 +79,7 @@
                     android:textColor="@color/white" />
             </GridLayout>
 
-            <!-- Ver citas agendadas -->
+            <!-- Contenedor "Editar Cuenta" -->
             <GridLayout
                 android:visibility="gone"
                 android:layout_width="0dp"
@@ -85,6 +91,7 @@
                 android:rowCount="2"
                 android:padding="15dp">
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
@@ -94,6 +101,7 @@
                     tools:ignore="ContentDescription">
                 </ImageView>
 
+                <!-- Botón "Editar Cuenta" -->
                 <Button
                     android:id="@+id/btnModificar"
                     android:layout_width="wrap_content"
@@ -113,7 +121,7 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- Botón Salir -->
+    <!-- Botón "Salir" -->
     <Button
         android:id="@+id/btnSalir"
         android:layout_width="match_parent"

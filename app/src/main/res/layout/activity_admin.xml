@@ -15,6 +15,7 @@
         android:gravity="center"
         android:layout_marginTop="10dp">
 
+        <!-- Imagen Principal -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="150dp"
@@ -22,6 +23,7 @@
             android:layout_margin="10dp"
             android:src="@drawable/escudo"/>
 
+        <!-- Texto "Bienvenido, señor admin" -->
         <TextView
             android:id="@+id/txtUsuario"
             android:layout_width="match_parent"
@@ -35,7 +37,7 @@
             />
     </LinearLayout>
 
-    <!-- Empuja botones -->
+    <!-- Empuja botones con imágenes -->
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -50,13 +52,14 @@
         android:layout_gravity="center"
         android:gravity="center">
 
+        <!-- Contenedor con imágenes y botones -->
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
             android:rowCount="1">
 
-            <!-- Agendar Cita -->
+            <!-- Contenedor "Gestionar Citas" -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -67,6 +70,7 @@
                 android:rowCount="2"
                 android:padding="15dp">
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:id="@+id/imgGestionarCitas"
                     android:layout_width="wrap_content"
@@ -76,6 +80,7 @@
                     android:src="@drawable/gestioncitas">
                 </ImageView>
 
+                <!-- Botón "Gestionar Citas" -->
                 <Button
                     android:id="@+id/btnGestionarCitas"
                     android:layout_width="wrap_content"
@@ -86,7 +91,7 @@
                     android:textColor="@color/white" />
             </GridLayout>
 
-            <!-- Ver citas agendadas -->
+            <!-- Contenedor "Gestionar Usuarios" -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -97,6 +102,7 @@
                 android:rowCount="2"
                 android:padding="15dp">
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:id="@+id/imgGestionarUsuarios"
                     android:layout_width="wrap_content"
@@ -106,6 +112,7 @@
                     android:src="@drawable/gestionusuarios">
                 </ImageView>
 
+                <!-- Botón "Gestionar Usuarios" -->
                 <Button
                     android:id="@+id/btnGestionarUsuarios"
                     android:layout_width="wrap_content"
@@ -118,12 +125,13 @@
         </GridLayout>
     </GridLayout>
 
-    <!-- Espacio para empujar el botón hacia abajo -->
+    <!-- Espacio vacío para empujar el botón hacia abajo -->
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <!-- Botón "Salir" -->
     <Button
         android:id="@+id/btnSalir"
         android:layout_width="match_parent"

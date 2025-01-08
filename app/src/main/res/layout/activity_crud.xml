@@ -6,6 +6,8 @@
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".CRUD">
+
+    <!-- Sección superior -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,6 +15,7 @@
         android:gravity="center"
         android:layout_marginTop="10dp">
 
+        <!-- Imagen Principal -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="150dp"
@@ -20,6 +23,7 @@
             android:layout_margin="10dp"
             android:src="@drawable/escudo"/>
 
+        <!-- Texto "Gestión de..." -->
         <TextView
             android:id="@+id/txtTitulo"
             android:layout_width="match_parent"
@@ -32,6 +36,7 @@
             android:textColor="@color/negroSecundario"
             />
 
+        <!-- Spinner "Tipo de Cuenta" -->
         <Spinner
             android:id="@+id/spTipoCuenta"
             android:background="@drawable/spinner_background"
@@ -54,7 +59,7 @@
             android:layout_gravity="center"
             android:gravity="center">
 
-            <!-- Crear  -->
+            <!-- Contenedor "Crear"  -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -66,6 +71,7 @@
                 android:padding="15dp"
                 >
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:id="@+id/imgCrear"
                     android:layout_width="wrap_content"
@@ -74,6 +80,7 @@
                     android:layout_marginTop="10dp"
                     android:src="@drawable/crear" />
 
+                <!-- Botón "Crear" -->
                 <Button
                     android:id="@+id/btnCrear"
                     android:layout_width="wrap_content"
@@ -84,7 +91,7 @@
                     android:textColor="@color/white" />
             </GridLayout>
 
-            <!-- Consultar  -->
+            <!-- Contenedor "Consultar"  -->
             <GridLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -95,6 +102,7 @@
                 android:rowCount="2"
                 android:padding="15dp">
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:id="@+id/imgConsultar"
                     android:layout_width="wrap_content"
@@ -103,6 +111,7 @@
                     android:layout_marginTop="10dp"
                     android:src="@drawable/consultar" />
 
+                <!-- Botón "Consultar"  -->
                 <Button
                     android:id="@+id/btnConsultar"
                     android:layout_width="wrap_content"
@@ -113,7 +122,7 @@
                     android:textColor="@color/white" />
             </GridLayout>
 
-            <!-- Modificar  -->
+            <!-- Contenedor "ModificarGrid"  -->
             <GridLayout
                 android:id="@+id/gridModificarGrid"
                 android:visibility="gone"
@@ -126,6 +135,7 @@
                 android:rowCount="2"
                 android:padding="15dp">
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
@@ -133,6 +143,7 @@
                     android:layout_marginTop="10dp"
                     android:src="@drawable/modificar" />
 
+                <!-- Botón "ModificarGrid"  -->
                 <Button
                     android:id="@+id/btnModificarGrid"
                     android:layout_width="wrap_content"
@@ -143,7 +154,7 @@
                     android:textColor="@color/white" />
             </GridLayout>
 
-            <!-- Eliminar  -->
+            <!-- Contenedor "Eliminar"  -->
             <GridLayout
                 android:id="@+id/gridEliminar"
                 android:visibility="gone"
@@ -156,6 +167,7 @@
                 android:rowCount="2"
                 android:padding="15dp">
 
+                <!-- Imagen del Botón -->
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="100dp"
@@ -163,6 +175,7 @@
                     android:layout_marginTop="10dp"
                     android:src="@drawable/eliminar" />
 
+                <!-- Botón "Eliminar"  -->
                 <Button
                     android:id="@+id/btnEliminar"
                     android:layout_width="wrap_content"
@@ -174,7 +187,7 @@
             </GridLayout>
         </GridLayout>
 
-        <!-- Modificar  -->
+        <!-- Contenedor "Modificar"  -->
         <GridLayout
             android:id="@+id/gridModificar"
             android:layout_width="match_parent"
@@ -184,6 +197,7 @@
             android:rowCount="2"
             android:padding="15dp">
 
+            <!-- Imagen del Botón -->
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
@@ -191,6 +205,7 @@
                 android:layout_marginTop="10dp"
                 android:src="@drawable/modificar" />
 
+            <!-- Botón "Modificar"  -->
             <Button
                 android:id="@+id/btnModificar"
                 android:layout_width="wrap_content"
@@ -207,6 +222,7 @@
             android:layout_height="170dp"
             android:layout_weight="1" />
 
+        <!-- Botón "Salir" -->
         <Button
             android:id="@+id/btnSalir"
             android:layout_width="match_parent"

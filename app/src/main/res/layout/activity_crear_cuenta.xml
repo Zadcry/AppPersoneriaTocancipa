@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <!-- Contenedor Principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,7 +13,7 @@
         android:paddingRight="20dp"
         android:orientation="vertical">
 
-        <!-- Imagen -->
+        <!-- Imagen Principal -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="200dp"
@@ -23,6 +24,7 @@
             >
         </ImageView>
 
+        <!-- Texto "Crear o Gestionar" -->
         <TextView
             android:id="@+id/txtAnuncio"
             android:layout_width="match_parent"
@@ -34,7 +36,7 @@
             android:paddingBottom="15dp"
         />
 
-        <!-- Consulta -->
+        <!-- Contenedor "Consultar Usuario" -->
         <LinearLayout
             android:id="@+id/gridConsultar"
             android:layout_width="match_parent"
@@ -54,12 +56,13 @@
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
 
+            <!-- Contenedor "Texto Editable y Botón" -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- EditText para ingresar datos de consulta -->
+                <!-- Texto Editable "Digita número de documento" -->
                 <EditText
                     android:id="@+id/txtConsultar"
                     android:layout_width="wrap_content"
@@ -78,7 +81,7 @@
                     android:singleLine="true"
                     />
 
-                <!-- Botón para la acción de consultar -->
+                <!-- Botón "Consultar" -->
                 <Button
                     android:id="@+id/btnConsultar"
                     android:layout_width="wrap_content"
@@ -90,7 +93,8 @@
                     android:backgroundTint="@color/negroSecundario"
                     />
             </LinearLayout>
-            <!-- Tipo de Documento -->
+
+            <!-- Texto "Tipo de Documento" -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,6 +103,7 @@
                 android:textColor="@color/black"
                 />
 
+            <!-- Spinner "Consultar Tipo de Documento" -->
             <Spinner
                 android:id="@+id/spConsultarTipoDocumento"
                 android:background="@drawable/spinner_background"
@@ -111,10 +116,7 @@
                 />
         </LinearLayout>
 
-
-        <!-- Inputs -->
-
-        <!-- Nombre -->
+        <!-- Texto "Nombre y Apellidos" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -124,6 +126,7 @@
             android:layout_marginLeft="5dp"
         />
 
+        <!-- Texto Editable "Nombre y Apellidos" -->
         <EditText
             android:id="@+id/txtNombre"
             android:layout_width="match_parent"
@@ -141,7 +144,7 @@
             android:singleLine="true"
         />
 
-        <!-- Tipo de Documento -->
+        <!-- Texto "Tipo de Documento" -->
         <TextView
             android:id="@+id/tvTipoDocumento"
             android:layout_width="match_parent"
@@ -152,6 +155,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Tipo de Documento" -->
         <Spinner
             android:id="@+id/spTipoDocumento"
             android:background="@drawable/spinner_background"
@@ -165,7 +169,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Documento -->
+        <!-- Texto "Documento" -->
         <TextView
             android:id="@+id/tvDocumento"
             android:layout_width="match_parent"
@@ -176,6 +180,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Documento" -->
         <EditText
             android:id="@+id/txtDocumento"
             android:layout_width="match_parent"
@@ -194,7 +199,7 @@
             android:singleLine="true"
             />
 
-        <!-- Selección de fecha -->
+        <!-- Contenedor "Selección de fecha" -->
         <LinearLayout
             android:id="@+id/gridFecha"
             android:layout_width="match_parent"
@@ -214,12 +219,13 @@
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
 
+            <!-- Contenedor "Texto Editable y Botón" -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- EditText para escribir selección -->
+                <!-- Texto Editable "Fecha" -->
                 <EditText
                     android:id="@+id/txtFecha"
                     android:enabled="false"
@@ -239,7 +245,7 @@
                     android:singleLine="true"
                     />
 
-                <!-- Botón para la acción de consultar -->
+                <!-- Botón "Seleccionar Fecha" -->
                 <Button
                     android:id="@+id/btnFecha"
                     android:layout_width="wrap_content"
@@ -253,7 +259,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Edad -->
+        <!-- Texto "Edad" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -263,6 +269,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Edad" -->
         <EditText
             android:id="@+id/txtEdad"
             android:enabled="false"
@@ -281,7 +288,7 @@
             android:singleLine="true"
             />
 
-        <!-- Asignación de grupo etario -->
+        <!-- Contenedor "Asignación de grupo etario" -->
         <LinearLayout
             android:id="@+id/gridEtario"
             android:layout_width="match_parent"
@@ -290,7 +297,7 @@
             android:orientation="vertical"
             >
 
-            <!-- Texto "Seleccione su fecha de nacimiento" -->
+            <!-- Texto "Grupo Etario" -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -301,12 +308,13 @@
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
 
+            <!-- Contenedor "Texto Editable" -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- EditText para escribir selección -->
+                <!-- Texto Editable "Etario" -->
                 <EditText
                     android:id="@+id/txtEtario"
                     android:enabled="false"
@@ -327,7 +335,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Dirección -->
+        <!-- Texto "Dirección" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -337,6 +345,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Dirección" -->
         <EditText
             android:id="@+id/txtDireccion"
             android:layout_width="match_parent"
@@ -354,7 +363,7 @@
             android:singleLine="true"
             />
 
-        <!-- Sector -->
+        <!-- Texto "Sector" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -364,6 +373,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Sector" -->
         <Spinner
             android:id="@+id/spSector"
             android:background="@drawable/spinner_background"
@@ -377,7 +387,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Teléfono -->
+        <!-- Texto "Teléfono" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -387,6 +397,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Teléfono" -->
         <EditText
             android:id="@+id/txtTelefono"
             android:layout_width="match_parent"
@@ -405,7 +416,7 @@
             android:singleLine="true"
             />
 
-        <!-- Correo -->
+        <!-- Texto "Correo Electrónico" -->
         <TextView
             android:id="@+id/tvCorreo"
             android:layout_width="match_parent"
@@ -416,6 +427,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Correo Electrónico" -->
         <EditText
             android:id="@+id/txtCorreo"
             android:layout_width="match_parent"
@@ -433,7 +445,7 @@
             android:singleLine="true"
             />
 
-        <!-- Sexo -->
+        <!-- Texto "Sexo" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -443,6 +455,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Sexo" -->
         <Spinner
             android:id="@+id/spSexo"
             android:background="@drawable/spinner_background"
@@ -456,7 +469,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Identidad de Género -->
+        <!-- Texto "Identidad de Género" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -466,6 +479,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Identidad de Género" -->
         <Spinner
             android:id="@+id/spIdentidad"
             android:background="@drawable/spinner_background"
@@ -479,7 +493,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Orientaciuón Sexual -->
+        <!-- Texto "Orientaciuón Sexual" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -489,6 +503,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Orientaciuón Sexual" -->
         <Spinner
             android:id="@+id/spOrientacion"
             android:background="@drawable/spinner_background"
@@ -502,7 +517,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Nacionalidad -->
+        <!-- Texto "Nacionalidad" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -512,6 +527,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Nacionalidad" -->
         <Spinner
             android:id="@+id/spNacionalidad"
             android:background="@drawable/spinner_background"
@@ -525,7 +541,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Escolaridad -->
+        <!-- Texto "Nivel de Escolaridad" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -535,6 +551,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Nivel de Escolaridad" -->
         <Spinner
             android:id="@+id/spEscolaridad"
             android:background="@drawable/spinner_background"
@@ -548,7 +565,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Grupo Étnico -->
+        <!-- Texto "Grupo Étnico" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -558,6 +575,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Grupo Étnico" -->
         <Spinner
             android:id="@+id/spGrupo"
             android:background="@drawable/spinner_background"
@@ -571,7 +589,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Discapacidad -->
+        <!-- Texto "Discapacidad" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -581,6 +599,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Discapacidad" -->
         <Spinner
             android:id="@+id/spDiscapacidad"
             android:background="@drawable/spinner_background"
@@ -594,7 +613,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Estrato -->
+        <!-- Texto "Estrato Socioeconómico" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -604,6 +623,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Estrato Socioeconómico" -->
         <Spinner
             android:id="@+id/spEstrato"
             android:background="@drawable/spinner_background"
@@ -617,7 +637,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Comunidad Vulnerable -->
+        <!-- Texto "Comunidad Vulnerable" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -627,6 +647,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Comunidad Vulnerable" -->
         <Spinner
             android:id="@+id/spComunidad"
             android:background="@drawable/spinner_background"
@@ -640,7 +661,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Contraseña -->
+        <!-- Texto "Contraseña" -->
         <TextView
             android:id="@+id/tvClave"
             android:layout_width="match_parent"
@@ -650,11 +671,13 @@
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"/>
 
+        <!-- Contenedor "Texto Editable y Botón" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Texto Editable "Contraseña" -->
             <EditText
                 android:id="@+id/txtClave"
                 android:layout_width="0dp"
@@ -672,7 +695,7 @@
                 android:layout_marginBottom="15dp"
                 android:singleLine="true"/>
 
-            <!-- Botón de Mostrar/Ocultar Contraseña -->
+            <!-- Botón "Mostrar/Ocultar Contraseña" -->
             <Button
                 android:id="@+id/btnTogglePassword"
                 android:layout_width="wrap_content"
@@ -685,7 +708,7 @@
                 android:backgroundTint="@color/white"/>
         </LinearLayout>
 
-        <!-- Confirmar Contraseña -->
+        <!-- Texto "Confirmar Contraseña" -->
         <TextView
             android:id="@+id/tvConfirmarClave"
             android:layout_width="match_parent"
@@ -695,11 +718,13 @@
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"/>
 
+        <!-- Contenedor "Texto Editable y Botón" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Texto Editable "Confirmar Contraseña" -->
             <EditText
                 android:id="@+id/txtConfirmarClave"
                 android:layout_width="0dp"
@@ -716,7 +741,7 @@
                 android:layout_marginBottom="15dp"
                 android:singleLine="true"/>
 
-            <!-- Botón de Mostrar/Ocultar Contraseña -->
+            <!-- Botón "Mostrar/Ocultar Contraseña" -->
             <Button
                 android:id="@+id/btnToggleCheckPassword"
                 android:layout_width="wrap_content"
@@ -729,7 +754,7 @@
                 android:backgroundTint="@color/white"/>
         </LinearLayout>
 
-        <!-- Estado -->
+        <!-- Texto "Estado" -->
         <TextView
             android:id="@+id/tvEstado"
             android:layout_width="match_parent"
@@ -740,6 +765,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Spinner "Estado" -->
         <Spinner
             android:id="@+id/spEstado"
             android:background="@drawable/spinner_background"
@@ -753,6 +779,7 @@
             android:layout_marginBottom="5dp"
             />
 
+        <!-- Contenedor "Botones" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -761,6 +788,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp">
 
+            <!-- Botón "Salir" -->
             <Button
                 android:id="@+id/btnSalir"
                 android:layout_width="wrap_content"
@@ -771,6 +799,8 @@
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
                 />
+
+            <!-- Botón "Crear Cuenta" -->
             <Button
                 android:id="@+id/btnSignUp"
                 android:layout_width="wrap_content"
@@ -782,6 +812,7 @@
                 android:layout_gravity="center"
                 />
 
+            <!-- Botón "Modificar" -->
             <Button
                 android:id="@+id/btnModificar"
                 android:layout_width="wrap_content"
@@ -793,6 +824,7 @@
                 android:layout_gravity="center"
                 />
 
+            <!-- Botón "Eliminar" -->
             <Button
                 android:id="@+id/btnEliminar"
                 android:layout_width="wrap_content"

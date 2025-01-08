@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <!-- Contenedor Principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,7 +13,7 @@
         android:paddingRight="20dp"
         >
 
-        <!-- Imagen -->
+        <!-- Imagen Principal -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="200dp"
@@ -23,6 +24,7 @@
             >
         </ImageView>
 
+        <!-- Texto "Crear o Gestionar" -->
         <TextView
             android:id="@+id/txtAnuncio"
             android:layout_width="match_parent"
@@ -35,7 +37,7 @@
             android:paddingBottom="10dp"
             />
 
-        <!-- Consulta -->
+        <!-- Contenedor "Consultar Cita" -->
         <LinearLayout
             android:id="@+id/gridConsultar"
             android:layout_width="match_parent"
@@ -52,13 +54,13 @@
                 android:textColor="@color/black"
                 android:gravity="bottom" />
 
-            <!-- Contenedor horizontal para EditText y botón -->
+            <!-- Contenedor "Texto Editable y Botón" -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- EditText para ingresar datos de consulta -->
+                <!-- Texto Editable "Digita número de documento" -->
                 <EditText
                     android:id="@+id/txtConsultar"
                     android:layout_width="0dp"
@@ -76,7 +78,7 @@
                     android:layout_marginRight="10dp"
                     android:singleLine="true" />
 
-                <!-- Botón para consultar -->
+                <!-- Botón "Consultar" -->
                 <Button
                     android:id="@+id/btnConsultarID"
                     android:layout_width="wrap_content"
@@ -89,9 +91,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Inputs -->
-
-        <!-- Documento del Usuario-->
+        <!-- Texto "Documento de Identidad"-->
         <TextView
             android:id="@+id/tvDocumento"
             android:layout_width="match_parent"
@@ -101,6 +101,7 @@
             android:textColor="@color/black"
             android:textSize="15dp" />
 
+        <!-- Texto Editable "Documento de Identidad"-->
         <EditText
             android:id="@+id/txtDocumento"
             android:layout_width="match_parent"
@@ -119,7 +120,7 @@
             android:singleLine="true"
             />
 
-        <!-- Tipo de Documento -->
+        <!-- Texto "Tipo de Documento" -->
         <TextView
             android:id="@+id/tvTipoDocumento"
             android:layout_width="match_parent"
@@ -131,6 +132,7 @@
             android:textColor="@color/black"
             />
 
+        <!-- Spinner "Tipo de Documento" -->
         <Spinner
             android:id="@+id/spTipoDocumento"
             android:background="@drawable/spinner_background"
@@ -144,8 +146,7 @@
             android:layout_marginRight="5dp"
             />
 
-        <!-- Tema -->
-
+        <!-- Texto "Motivo de la solicitud" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -154,6 +155,7 @@
             android:textColor="@color/black"
             android:textSize="15dp" />
 
+        <!-- Spinner "Motivo de la solicitud" -->
         <Spinner
             android:id="@+id/spTema"
             android:background="@drawable/spinner_background"
@@ -167,8 +169,7 @@
             android:layout_marginBottom="15dp"
             />
 
-        <!-- Seleccionar Abogado -->
-
+        <!-- Contenedor "Seleccionar Abogado" -->
         <GridLayout
             android:id="@+id/gridSeleccionarAbogado"
             android:layout_width="match_parent"
@@ -176,6 +177,7 @@
             android:columnCount="1"
             android:visibility="gone"> <!-- Inicialmente oculto -->
 
+            <!-- Texto "Seleccionar Abogado" -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -184,6 +186,7 @@
                 android:textColor="@color/black"
                 android:textSize="15dp" />
 
+            <!-- Spinner "Abogado" -->
             <Spinner
                 android:id="@+id/spAbogado"
                 android:background="@drawable/spinner_background"
@@ -200,7 +203,7 @@
 
 
 
-        <!-- Descripción -->
+        <!-- Texto "Descripción" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -210,6 +213,7 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Texto Editable "Descripción" -->
         <EditText
             android:id="@+id/txtDescripcion"
             android:layout_width="match_parent"
@@ -227,7 +231,7 @@
             android:singleLine="true"
             />
 
-        <!-- Autorizar envío de correos -->
+        <!-- Texto "Autorizar envío de correos" -->
         <TextView
             android:id="@+id/tvAutorizaCorreo"
             android:visibility="gone"
@@ -238,6 +242,7 @@
             android:textColor="@color/black"
             android:textSize="15dp" />
 
+        <!-- Spinner "Autorizar envío de correos" -->
         <Spinner
             android:id="@+id/spAutorizaCorreo"
             android:enabled= "false"
@@ -253,7 +258,7 @@
             android:layout_marginBottom="5dp"
             />
 
-        <!-- Autorizar envío de correos -->
+        <!-- Texto "Correo Vigente" -->
         <TextView
             android:id="@+id/tvCorreoVigente"
             android:visibility="gone"
@@ -264,6 +269,7 @@
             android:textColor="@color/black"
             android:textSize="15dp" />
 
+        <!-- Spinner "Correo Vigente" -->
         <Spinner
             android:id="@+id/spCorreoVigente"
             android:enabled= "false"
@@ -279,6 +285,7 @@
             android:layout_marginBottom="5dp"
             />
 
+        <!-- Contenedor "Fecha" -->
         <LinearLayout
             android:id="@+id/gridFecha"
             android:layout_width="match_parent"
@@ -297,12 +304,13 @@
                 android:textColor="@color/black"
                 android:gravity="bottom"/>
 
+            <!-- Contenedor "Texto Editable y Botón" -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- EditText para la fecha -->
+                <!-- Texto Editable "Fecha" -->
                 <EditText
                     android:id="@+id/txtDia"
                     android:layout_width="wrap_content"
@@ -321,7 +329,7 @@
                     android:singleLine="true"
                     android:enabled="false" /> <!-- Inicialmente deshabilitado -->
 
-                <!-- Botón para seleccionar fecha -->
+                <!-- Botón "Seleccionar Fecha" -->
                 <Button
                     android:id="@+id/btnFecha"
                     android:layout_width="wrap_content"
@@ -335,8 +343,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Hora -->
-
+        <!-- Texto "Hora" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -345,6 +352,7 @@
             android:textColor="@color/black"
             android:textSize="15dp" />
 
+        <!-- Spinner "Hora" -->
         <Spinner
             android:id="@+id/spHora"
             android:background="@drawable/spinner_background"
@@ -358,7 +366,7 @@
             android:layout_marginBottom="5dp"
             />
 
-        <!-- Ver Selección -->
+        <!-- Texto "Ver Selección" -->
         <TextView
             android:id="@+id/txtFecha"
             android:layout_width="match_parent"
@@ -370,6 +378,7 @@
             android:gravity="center"
             />
 
+        <!-- Botón "Ver Selección" -->
         <Button
         android:id="@+id/btnSeleccionar"
         android:layout_width="200dp"
@@ -381,7 +390,7 @@
         android:layout_margin="5dp"
         />
 
-        <!-- Anexos -->
+        <!-- Texto "Anexos" -->
         <TextView
             android:id="@+id/tvAnexos"
             android:visibility="gone"
@@ -394,12 +403,14 @@
             android:layout_marginLeft="5dp"
             />
 
+        <!-- Contenedor "Botones" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
 
+            <!-- Botón "Salir" -->
             <Button
                 android:id="@+id/btnSalir"
                 android:layout_width="wrap_content"
@@ -411,6 +422,7 @@
                 android:layout_gravity="center"
                 />
 
+            <!-- Botón "Modificar" -->
             <Button
                 android:id="@+id/btnModificar"
                 android:layout_width="wrap_content"
@@ -422,8 +434,8 @@
                 android:layout_gravity="center"
                 />
 
+            <!-- Botón "Eliminar" -->
             <Button
-
                 android:id="@+id/btnEliminar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -5,6 +5,7 @@
     android:padding="16dp"
     android:background="@color/white">
 
+    <!-- Contendor Herramientas -->
     <LinearLayout
         android:id="@+id/gridConsultar"
         android:layout_width="match_parent"
@@ -13,13 +14,13 @@
         android:orientation="vertical"
         >
 
-        <!-- Texto "Mis Citas" -->
-
+        <!-- Contenedor "Texto y Botón" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Texto "Mis Citas" -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -31,12 +32,13 @@
                 android:textColor="@color/black"
                 android:gravity="center"/>
 
+            <!-- Vista en blanco entre texto y botón -->
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
-            <!-- Botón para la acción de consultar -->
+            <!-- Botón "Volver" -->
             <Button
                 android:id="@+id/btnSalir"
                 android:layout_width="wrap_content"
@@ -50,14 +52,14 @@
 
         </LinearLayout>
 
-        <!-- Filtros de Mes y Año -->
+        <!-- Contenedor "Filtros de Mes y Año" -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="16dp">
 
-            <!-- Spinner de Año -->
+            <!-- Spinner "Año" -->
             <Spinner
                 android:id="@+id/spinnerAnioFiltro"
                 android:layout_width="100dp"
@@ -65,7 +67,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@drawable/spinner_background"/>
 
-            <!-- Spinner de Mes -->
+            <!-- Spinner de "Mes" -->
             <Spinner
                 android:id="@+id/spinnerMesFiltro"
                 android:layout_width="100dp"
@@ -76,7 +78,7 @@
 
     </LinearLayout>
 
-
+    <!-- Listado de citas cargadas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCitaAbogado"
         android:layout_width="match_parent"
